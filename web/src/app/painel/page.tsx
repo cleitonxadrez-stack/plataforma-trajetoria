@@ -101,6 +101,7 @@ const MOCK_PROFILE: ProfileRow = {
   doc_quota_limit: 500,
   career_start_date: "2010-08-09",
 };
+// Fixture de dev (gate IS_DEV, consumida abaixo) — nunca em produção.
 const MOCK_ITEMS: IndicatorInputItem[] = [
   { itemType: "ARTIGO", year: 2022, state: "VALIDADO", evidenceStatus: "COMPROVADO" },
   { itemType: "ARTIGO", year: 2023, state: "DOCUMENTADO", evidenceStatus: "COM_COMPROVANTE_PARCIAL" },
@@ -110,6 +111,7 @@ const MOCK_ITEMS: IndicatorInputItem[] = [
   { itemType: "DIPLOMA", year: 2010, state: "VALIDADO", evidenceStatus: "COMPROVADO" },
   { itemType: "DIPLOMA", year: 2014, state: "VALIDADO", evidenceStatus: "COMPROVADO" },
 ];
+// Fixture de dev (gate IS_DEV, consumida abaixo) — nunca em produção.
 const MOCK_INTERRUPTIONS: IndicatorInputCareerInterruption[] = [
   { type: "MATERNIDADE", startDate: "2020-01-01", endDate: "2021-01-01" },
 ];

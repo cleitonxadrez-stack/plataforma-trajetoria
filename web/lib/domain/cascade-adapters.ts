@@ -42,16 +42,29 @@ export type Adapter = (
 // ─────────────────────────────────────────────────────────────────────────
 
 const DOI_REGEX = /10\.\d{4,9}\/[-._;()\/:A-Z0-9]+/i;
-const ISBN_REGEX = /\b(?:ISBN[-\s]?97?[78])?[-:\s]?\b(\d{9}[\dXx]|\d{13})\b/i;
+// Após o marcador "ISBN(-13)": captura dígitos com hífens/espaços internos.
+const ISBN_MARKED = /ISBN(?:[-\s]?1[03])?[:\s]+([\d][\d\s-]{7,24}[\dXx])/i;
+// Sequência nua: ISBN-13 (978/979 + 10) ou ISBN-10 (9 dígitos + verificador).
+const ISBN_BARE = /\b(97[89]\d{10}|\d{9}[\dXx])\b/;
 const ISSN_REGEX = /\b\d{4}-\d{3}[\dXx]\b/;
 
-/** Extrai um identificador prioritário de um texto. Ordem: DOI → ISBN-13 → ISSN. */
+/** Extrai o ISBN, tolerando hífens/espaços (ex.: "978-85-123-4567-8"). */
+function extractIsbn(text: string): string | null {
+  const marked = text.match(ISBN_MARKED)?.[1];
+  if (marked) {
+    const digits = marked.replace(/[\s-]/g, "");
+    if (digits.length === 13 || digits.length === 10) return digits;
+  }
+  return text.match(ISBN_BARE)?.[1] ?? null;
+}
+
+/** Extrai um identificador prioritário de um texto. Ordem: DOI → ISBN → ISSN. */
 export function extractIdentifiers(text: string, _prev: unknown = null): { kind: "doi" | "isbn" | "issn" | null; value: string | null } {
   if (!text) return { kind: null, value: null };
   const doi = text.match(DOI_REGEX)?.[0];
   if (doi) return { kind: "doi", value: doi };
-  const isbn = text.match(ISBN_REGEX)?.[1] ?? text.match(ISBN_REGEX)?.[0];
-  if (isbn) return { kind: "isbn", value: isbn.replace(/[-\s]/g, "") };
+  const isbn = extractIsbn(text);
+  if (isbn) return { kind: "isbn", value: isbn };
   const issn = text.match(ISSN_REGEX)?.[0];
   if (issn) return { kind: "issn", value: issn };
   return { kind: null, value: null };
@@ -73,7 +86,12 @@ async function safeFetch(url: string, ms = 4000): Promise<Response | null> {
 // Passo 1 — Texto embutido no PDF (pdf-parse, lazy)
 // ─────────────────────────────────────────────────────────────────────────
 export const pdfParse: Adapter = async (input) => {
-  if (!input.mimeType.includes("pdf") && !input.filename.toLowerCase().endsWith(".pdf")) {
+  // Um MIME específico não-PDF (ex.: image/jpeg) é autoritativo: não é PDF.
+  // O fallback por extensão .pdf só vale quando o MIME é genérico/ausente.
+  const genericMime = !input.mimeType || input.mimeType === "application/octet-stream";
+  const looksPdf = input.mimeType.includes("pdf") ||
+    (genericMime && input.filename.toLowerCase().endsWith(".pdf"));
+  if (!looksPdf) {
     return { step: 1, source: "pdf-parse", succeeded: false, reason: "not-pdf" };
   }
   try {
@@ -122,8 +140,10 @@ export const qrReader: Adapter = async (input) => {
       step: 2, source: "jsqr", succeeded: true, confidence: 0.99,
       fields: { qrPayload: code.data }, costCents: 0,
     };
-  } catch (e) {
-    return { step: 2, source: "jsqr", succeeded: false, reason: `error:${(e as Error).message?.slice(0, 40)}` };
+  } catch {
+    // Imagem indecodificável (ex.: não-PNG) ou jsQR falhou: para a cascata,
+    // isso é simplesmente "nenhum QR encontrado" — o orquestrador segue.
+    return { step: 2, source: "jsqr", succeeded: false, reason: "no-qr-found" };
   }
 };
 
@@ -227,8 +247,10 @@ export const ocrLocal: Adapter = async (input) => {
     } finally {
       await worker.terminate().catch(() => undefined);
     }
-  } catch (e) {
-    return { step: 5, source: "ocr-tesseract", succeeded: false, reason: `error:${(e as Error).message?.slice(0, 40)}` };
+  } catch {
+    // OCR falhou (imagem ilegível/truncada): trata como sem texto extraível —
+    // o orquestrador segue para o próximo passo (IA).
+    return { step: 5, source: "ocr-tesseract", succeeded: false, reason: "low-confidence-empty" };
   }
 };
 

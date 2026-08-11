@@ -77,15 +77,27 @@ export async function smtpTransport(msg: EmailMessage): Promise<EmailResult> {
         user: process.env.SMTP_USER,
         pass: process.env.SMTP_PASSWORD,
       },
+      // Falha rápido em host inacessível — nunca pendura o worker/cron.
+      connectionTimeout: 2500,
+      greetingTimeout: 2500,
+      socketTimeout: 4000,
     });
-    const info = await transporter.sendMail({
-      from: msg.from ?? process.env.EMAIL_FROM ?? "noreply@plataforma.local",
-      to: msg.to,
-      subject: msg.subject,
-      text: msg.text,
-      html: msg.html,
-      replyTo: msg.replyTo,
-    });
+    // Timeout rígido: mesmo que DNS/connect do nodemailer não respeite seus
+    // próprios timeouts, nunca penduramos o worker/cron por mais de 4s.
+    let timer: ReturnType<typeof setTimeout> | undefined;
+    const info = await Promise.race([
+      transporter.sendMail({
+        from: msg.from ?? process.env.EMAIL_FROM ?? "noreply@plataforma.local",
+        to: msg.to,
+        subject: msg.subject,
+        text: msg.text,
+        html: msg.html,
+        replyTo: msg.replyTo,
+      }),
+      new Promise<never>((_, reject) => {
+        timer = setTimeout(() => reject(new Error("smtp-timeout")), 3000);
+      }),
+    ]).finally(() => { if (timer) clearTimeout(timer); });
     return {
       ok: true,
       transportId: String(info.messageId ?? "smtp"),

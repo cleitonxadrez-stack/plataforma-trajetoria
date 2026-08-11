@@ -74,7 +74,7 @@ async function loadDashboard(
   return { user: user.data ?? null, pendings, institutions };
 }
 
-// ─── MOCK fallback (DB vazio, só em DEV) ───────────────────────────
+// ─── MOCK fallback (só DEV) — consumidos atrás do gate IS_DEV ───────
 const MOCK_USER = { id: "demo", full_name: "Cleiton Marino Santana", lattes_id: "K4000001P5", orcid: "0000-0000-0000-0001" };
 const MOCK_INSTITUTIONS: RecoveryInstitutionInput[] = [
   { id: "i-unipar", name: "Universidade Paranaense — UNIPAR",
@@ -84,6 +84,7 @@ const MOCK_INSTITUTIONS: RecoveryInstitutionInput[] = [
   { id: "i-ufop", name: "Universidade Federal de Ouro Preto",
     contactChannels: { secretariaAcademica: "sec@ufop.br" } },
 ];
+// Fixture de dev (gate IS_DEV, consumida abaixo) — nunca em produção.
 const MOCK_PENDINGS: RecoveryItemInput[] = [
   { id: "u1", title: "Monitoria de Cálculo I", year: 2022, itemType: "CERTIFICADO", institutionName: "UNIPAR", evidenceStatus: "SEM_COMPROVANTE" },
   { id: "u2", title: "Participação Semana Acadêmica", year: 2023, itemType: "CERTIFICADO", institutionName: "UNIPAR", evidenceStatus: "SEM_COMPROVANTE" },
