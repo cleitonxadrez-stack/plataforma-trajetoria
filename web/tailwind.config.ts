@@ -5,8 +5,8 @@ export default {
   theme: {
     extend: {
       colors: {
-        bg: "#f7f5f0",
-        bgstrip: "#f1ede4",
+        bg: "#e2edf9",
+        bgstrip: "#d0e1f4",
         ink: "#1a1f2c",
         muted: "#4a5266",
         soft: "#7a8294",

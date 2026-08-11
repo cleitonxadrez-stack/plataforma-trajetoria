@@ -8,7 +8,7 @@
                Roboto, "Helvetica Neue", Arial, "Apple Color Emoji";
 }
 body {
-  background: #f7f5f0;
+  background: #e2edf9;
   color: #1a1f2c;
 }
 .btn-primary {
@@ -25,13 +25,13 @@ body {
 .btn-secondary {
   background: #fff;
   color: #0f2942;
-  border: 1px solid #cfc8b6;
+  border: 1px solid #c4d6ea;
   padding: 10px 16px;
   border-radius: 8px;
   font-weight: 500;
 }
 .input {
-  border: 1px solid #cfc8b6;
+  border: 1px solid #c4d6ea;
   border-radius: 8px;
   padding: 9px 12px;
   font-size: 14px;
@@ -41,7 +41,7 @@ body {
 .input:focus { outline: none; border-color: #0f2942; box-shadow: 0 0 0 3px #e7edf4; }
 .card {
   background: #fff;
-  border: 1px solid #e4dfd3;
+  border: 1px solid #cddcec;
   border-radius: 14px;
   padding: 22px;
 }
