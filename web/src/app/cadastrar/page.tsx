@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { SignupForm } from "@/components/SignupForm";
 
-export const metadata = { title: "Criar conta — [NOME DA PLATAFORMA]" };
+export const metadata = { title: "Criar conta — Plataforma Trajetória" };
 
 export default function CadastrarPage() {
   return (

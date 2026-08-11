@@ -3,7 +3,7 @@
 
 import { signOut } from "@/lib/domain/auth";
 
-export const metadata = { title: "Sair — [NOME DA PLATAFORMA]" };
+export const metadata = { title: "Sair — Plataforma Trajetória" };
 
 export default function SignOutPage() {
   async function action() { "use server"; await signOut(); }

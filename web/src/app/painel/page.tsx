@@ -17,7 +17,7 @@ import {
 } from "@/lib/domain/indicators";
 import { chooseDataSource, FALLBACK_BADGE } from "@/lib/ui/data-source";
 
-export const metadata = { title: "Painel — [NOME DA PLATAFORMA]" };
+export const metadata = { title: "Painel — Plataforma Trajetória" };
 export const dynamic = "force-dynamic";
 
 interface ProfileRow {

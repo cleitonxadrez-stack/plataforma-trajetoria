@@ -18,7 +18,7 @@ import {
 import { RecoveryLetterPreview } from "@/components/RecoveryLetterPreview";
 import { chooseDataSource, FALLBACK_BADGE } from "@/lib/ui/data-source";
 
-export const metadata = { title: "Pendências — [NOME DA PLATAFORMA]" };
+export const metadata = { title: "Pendências — Plataforma Trajetória" };
 export const dynamic = "force-dynamic";
 
 interface ItemRow {

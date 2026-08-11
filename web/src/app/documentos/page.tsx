@@ -15,7 +15,7 @@ import {
 } from "@/lib/domain/document-queue";
 import { reconcileWithItem } from "@/lib/domain/document-queue";
 
-export const metadata = { title: "Cofre — [NOME DA PLATAFORMA]" };
+export const metadata = { title: "Cofre — Plataforma Trajetória" };
 export const dynamic = "force-dynamic";
 
 interface QueueDoc {

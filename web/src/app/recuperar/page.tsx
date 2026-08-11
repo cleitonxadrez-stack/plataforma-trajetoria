@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { RecoveryForm } from "@/components/RecoveryForm";
 
-export const metadata = { title: "Recuperar senha — [NOME DA PLATAFORMA]" };
+export const metadata = { title: "Recuperar senha — Plataforma Trajetória" };
 
 export default function RecuperarPage() {
   return (
