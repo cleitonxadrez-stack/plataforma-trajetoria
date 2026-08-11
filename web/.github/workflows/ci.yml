@@ -1,0 +1,87 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+# Cancela rodadas anteriores quando nova é empurrada — economiza créditos.
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+      DATABASE_URL: ${{ secrets.TEST_DATABASE_URL }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install
+        run: npm install --legacy-peer-deps --no-audit --no-fund
+
+      # ─ BLOCO 6 e 7 gancho — placeholder test ganha WARN quando rodando
+      - name: Indicators placeholders guard
+        run: |
+          if [ "${{ env.INDICATORS_PLACEHOLDERS_FORCE }}" = "true" ]; then
+            echo "::warning::Indicadores ainda com themeCount=0 / totalScore=0 — abrir story antes de produção"
+          fi
+
+      - name: Typecheck
+        run: npx tsc --noEmit
+
+      - name: Test (vitest)
+        run: npx vitest run --reporter=verbose
+
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+
+      - name: Smoke health check
+        run: |
+          npx next start -p 3000 &
+          sleep 8
+          curl -sS http://localhost:3000/api/health | head -c 200
+          kill %1
+        env:
+          NEXT_TELEMETRY_DISABLED: 1
+          NEXT_PUBLIC_SUPABASE_URL: ${{ env.SUPABASE_URL }}
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ${{ env.SUPABASE_ANON_KEY }}
+
+  migrations:
+    runs-on: ubuntu-latest
+    # Só no main — migrations em PR não devem rodar.
+    if: github.ref == 'refs/heads/main'
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - name: Apply migrations 0001 → 0011
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          for f in drizzle/*.sql; do
+            echo "→ $f"
+            psql "$DATABASE_URL" -f "$f" || { echo "FAIL at $f"; exit 1; }
+          done
+      - name: Seed Trajetória v1
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: npx tsx scripts/seed-trajetoria-v1.ts

@@ -1,0 +1,10 @@
+{
+  "$schema": "https://railway.com/railway.schema.json",
+  "build": { "dockerfilePath": "Dockerfile.worker", "builder": "DOCKERFILE" },
+  "deploy": {
+    "startCommand": "npx tsx scripts/worker.ts",
+    "healthcheckPath": null,
+    "restartPolicyType": "ON_FAILURE",
+    "restartPolicyMaxRetries": 5
+  }
+}
