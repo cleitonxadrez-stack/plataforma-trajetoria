@@ -18,22 +18,14 @@ const USER_ID = "11111111-1111-1111-1111-111111111111";
 // testes de integração. Insensível a namespaces/redações, contanto que
 // tenha o marcador estrutural aceito por `isProbablyLattesXml`.
 const FIXTURE_XML = `<?xml version="1.0" encoding="UTF-8"?>
-<CURRICULO-VITAE xmlns="http://www.lattes.cnpq.br">
-  <DADOS-GERAIS>
-    <NOME-COMPLETO>Maria de Souza</NOME-COMPLETO>
-    <NUMERO-IDENTIFICADOR>1234567890</NUMERO-IDENTIFICADOR>
-  </DADOS-GERAIS>
+<CURRICULO-VITAE NUMERO-IDENTIFICADOR="1234567890">
+  <DADOS-GERAIS NOME-COMPLETO="Maria de Souza"/>
   <PRODUCAO-BIBLIOGRAFICA>
-    <ARTIGOS-PUBLICADOS>
-      <ARTIGO-PUBLICADO>
-        <DADOS-BASICOS-DO-ARTIGO seq="1">
-          <TITULO-DO-ARTIGO>A novel approach to federated learning</TITULO-DO-ARTIGO>
-          <ANO-DO-ARTIGO>2024</ANO-DO-ARTIGO>
-          <FLAG-POTENCIAL-INOVACAO>SIM</FLAG-POTENCIAL-INOVACAO>
-          <DOI>10.1234/example.2024</DOI>
-        </DADOS-BASICOS-DO-ARTIGO>
-      </ARTIGO-PUBLICADO>
-    </ARTIGOS-PUBLICADOS>
+    <ARTIGO-PUBLICADO
+      TITULO-DO-TRABALHO="A novel approach to federated learning"
+      ANO-DO-TRABALHO="2024"
+      DOI="10.1234/example.2024"
+      FLAG-POTENCIAL-INOVACAO="SIM"/>
   </PRODUCAO-BIBLIOGRAFICA>
 </CURRICULO-VITAE>`;
 

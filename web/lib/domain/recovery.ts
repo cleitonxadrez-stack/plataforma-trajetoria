@@ -157,6 +157,21 @@ function normalizeName(s: string): string {
     .trim();
 }
 
+// Palavras ignoradas ao derivar a sigla de um nome de instituição.
+const ACRONYM_STOP = new Set(["de", "da", "do", "das", "dos", "e"]);
+
+/** Deriva a sigla a partir das iniciais das palavras significativas.
+ *  "Universidade Federal de Minas Gerais" → "ufmg". */
+function acronym(s: string): string {
+  return (s ?? "")
+    .normalize("NFD")
+    .replace(/\p{Diacritic}/gu, "")
+    .split(/[^a-zA-Z]+/)
+    .filter((w) => w.length > 0 && !ACRONYM_STOP.has(w.toLowerCase()))
+    .map((w) => w[0]!.toLowerCase())
+    .join("");
+}
+
 function nearest(normName: string, instMap: Map<string, RecoveryInstitutionInput>): RecoveryInstitutionInput | null {
   // 1. match exato normalizado
   for (const inst of instMap.values()) {
@@ -167,6 +182,11 @@ function nearest(normName: string, instMap: Map<string, RecoveryInstitutionInput
   for (const inst of instMap.values()) {
     const nn = normalizeName(inst.name);
     if (nn.includes(normName) || normName.includes(nn)) return inst;
+  }
+  // 3. match por sigla ("UFMG" ↔ "Universidade Federal de Minas Gerais")
+  const compact = normName.replace(/\s+/g, "");
+  for (const inst of instMap.values()) {
+    if (acronym(inst.name) === compact) return inst;
   }
   return null;
 }

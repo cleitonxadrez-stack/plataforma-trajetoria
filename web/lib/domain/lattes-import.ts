@@ -30,6 +30,7 @@ const XSD_MAP: Record<string, ItemType> = {
   "PARTICIPACAO-BANCA": "CERTIFICADO",
   "CURSO": "CERTIFICADO",
   "ESPECIALIZACAO": "CERTIFICADO",
+  "EXTENSAO": "CERTIFICADO",
   "FORMACAO": "DIPLOMA",
   "MESTRADO": "DIPLOMA",
   "DOUTORADO": "DIPLOMA",
@@ -158,7 +159,8 @@ export function isLattesAcceptedMime(mime: string): boolean {
 /** Heurística barata para detectar se um XML é de fato um Lattes. */
 export function isProbablyLattesXml(xml: string): boolean {
   // Apenas verifica marcadores estruturais — barato e estável.
-  return /<CURRICULO-VITAE[\s>]/i.test(xml) ||
-         /<LATTES[\s>]/i.test(xml) ||
+  // Aceita tag auto-fechada (`<CURRICULO-VITAE/>`) além de `\s` e `>`.
+  return /<CURRICULO-VITAE[\s/>]/i.test(xml) ||
+         /<LATTES[\s/>]/i.test(xml) ||
          /<?xml[^>]*?\bn[:s]?="[^"]*lattes/i.test(xml);
 }

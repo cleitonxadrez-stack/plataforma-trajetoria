@@ -16,13 +16,16 @@ function daysAgo(d: number): string {
 }
 
 function d(p: Partial<DossierRegenInput>): DossierRegenInput {
+  // Usa `in` (não `??`) nos campos anuláveis: `null ?? default` reintroduzia
+  // o default, então os testes de "campo ausente (null)" nunca exercitavam o
+  // caminho null na função. Com `in`, o null explícito do teste é preservado.
   return {
     id: p.id ?? "d-1",
     userId: p.userId ?? "u-1",
-    status: p.status ?? "PRONTO",
-    pdfStorageKey: p.pdfStorageKey ?? "quente/d-1/dossie.pdf",
-    pdfGeneratedAt: p.pdfGeneratedAt ?? daysAgo(10),
-    updatedAt: p.updatedAt ?? daysAgo(10),
+    status: "status" in p ? p.status : "PRONTO",
+    pdfStorageKey: "pdfStorageKey" in p ? p.pdfStorageKey : "quente/d-1/dossie.pdf",
+    pdfGeneratedAt: "pdfGeneratedAt" in p ? p.pdfGeneratedAt : daysAgo(10),
+    updatedAt: "updatedAt" in p ? p.updatedAt : daysAgo(10),
   };
 }
 
@@ -84,7 +87,7 @@ describe("pickDossiersToRegen", () => {
   it("ordena FIFO — mais velho primeiro, e estável para mesma idade", () => {
     const out = pickDossiersToRegen(
       [
-        d({ id: "a", pdfGeneratedAt: daysAgo(30) }),
+        d({ id: "a", pdfGeneratedAt: daysAgo(100) }),
         d({ id: "b", pdfGeneratedAt: daysAgo(200) }),
         d({ id: "c", pdfGeneratedAt: daysAgo(120) }),
       ],

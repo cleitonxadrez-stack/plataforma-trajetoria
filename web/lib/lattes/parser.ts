@@ -56,20 +56,27 @@ export function parseLattesXml(xml: string): ParsedLattes {
   const fullName = clean.match(/<DADOS-GERAIS[^>]*NOME-COMPLETO="([^"]+)"/i)?.[1] ?? null;
   const lattesId = clean.match(/<CURRICULO-VITAE[^>]*NUMERO-IDENTIFICADOR="([^"]+)"/i)?.[1] ?? null;
 
-  // Padrão tolerante: aceita <ARTIGO-PUBLICADO>, <CAPITULO-LIVRO>, <TRABALHO-EM-EVENTOS>...
-  const tagRe = /<([A-Z][A-Z0-9-]+)[^>]*\bTITULO-DO-TRABALHO="([^"]+)"[^>]*\bANO-DO-TRABALHO="(\d{4})"[^>]*?(?:\bDOI="(10\.\d{4,9}\/[-._;()\/:A-Z0-9]+)")?[^>]*?(?:\bISSN="([\dX-]+)")?[^>]*?(?:\bISBN="([\d-]+)")?[^>]*?(?:\bFLAG-POTENCIAL-INOVACAO="(SIM)")?[\s\S]*?<\/\1>/g;
+  // Casa cada ELEMENTO (auto-fechado `<TAG .../>` ou aberto `<TAG ...>`) e
+  // captura seu bloco de atributos; os campos são extraídos separadamente.
+  // Isso: (a) aceita tags auto-fechadas — o formato real do Lattes — que o
+  // regex monolítico anterior perdia por exigir `</TAG>`; (b) elimina o
+  // backtracking catastrófico daquele padrão (que deixava o parse em ~6s).
+  const tagRe = /<([A-Z][A-Z0-9-]+)\b([^>]*)>/g;
 
   const seen = new Set<string>();
   const items: LattesItemDraft[] = [];
   let m: RegExpExecArray | null;
   while ((m = tagRe.exec(clean)) !== null) {
-    const tag = m[1];
-    const title = m[2];
-    const year = Number(m[3]);
-    const doi = m[4] ?? null;
-    const issn = m[5] ?? null;
-    const isbn = m[6] ?? null;
-    const flag = m[7] === "SIM";
+    const tag = m[1]!;
+    const attrs = m[2]!;
+    const title = attrs.match(/\bTITULO-DO-TRABALHO="([^"]+)"/i)?.[1];
+    const yearStr = attrs.match(/\bANO-DO-TRABALHO="(\d{4})"/i)?.[1];
+    if (!title || !yearStr) continue; // não é um elemento de produção
+    const year = Number(yearStr);
+    const doi = attrs.match(/\bDOI="(10\.[^"]+)"/i)?.[1] ?? null;
+    const issn = attrs.match(/\bISSN="([\dX-]+)"/i)?.[1] ?? null;
+    const isbn = attrs.match(/\bISBN="([\d-]+)"/i)?.[1] ?? null;
+    const flag = /\bFLAG-POTENCIAL-INOVACAO="SIM"/i.test(attrs);
     const dedupe = `${tag}|${title}|${year}|${doi ?? ""}`;
     if (seen.has(dedupe)) continue;
     seen.add(dedupe);
