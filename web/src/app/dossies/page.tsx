@@ -2,23 +2,23 @@
 // BLOCO 4 — Listagem de dossiês do usuário.
 
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 
 export const dynamic = "force-dynamic";
 
 export default async function DossiersListPage() {
   const sb = await createClient();
-  const { data: ures } = await sb.auth.getUser();
-  const uid = ures?.user?.id ?? null;
+  const { data: ures, error: uerr } = await sb.auth.getUser();
+  if (uerr || !ures?.user) redirect("/entrar?redirect=/dossies");
+  const uid = ures.user.id;
 
-  const { data: rows } = uid
-    ? await sb
-        .from("dossiers")
-        .select("id, title, purpose, status, total_points, items_count, excluded_count, created_at")
-        .eq("user_id", uid)
-        .is("deleted_at", null)
-        .order("created_at", { ascending: false })
-    : { data: [] };
+  const { data: rows } = await sb
+    .from("dossiers")
+    .select("id, title, purpose, status, total_points, items_count, excluded_count, created_at")
+    .eq("user_id", uid)
+    .is("deleted_at", null)
+    .order("created_at", { ascending: false });
 
   const list = (rows ?? []) as Array<{
     id: string;
