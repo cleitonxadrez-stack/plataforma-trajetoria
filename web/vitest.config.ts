@@ -11,10 +11,12 @@ export default defineConfig({
     pool: "forks",
   },
   resolve: {
+    // Ordem importa: aliases mais específicos ANTES do genérico "@",
+    // senão "@" casa "@/lib/..." primeiro e resolve para ./src/lib (inexistente).
     alias: {
-      "@": new URL("./src", import.meta.url).pathname,
       "@/lib": new URL("./lib", import.meta.url).pathname,
       "@/mocks": new URL("./mocks", import.meta.url).pathname,
+      "@": new URL("./src", import.meta.url).pathname,
     },
   },
 });

@@ -3,13 +3,13 @@
 // Útil para integrações / bots / scripts de comissão de avaliação.
 
 import { NextResponse } from "next/server";
-import { createClient } from "../../../../lib/supabase/server";
-import { isValidRegistryCode } from "../../../../lib/domain/registry";
+import { createClient } from "@/lib/supabase/server";
+import { isValidRegistryCode } from "@/lib/domain/registry";
 import {
   buildVerificationView,
   NOT_FOUND_DISCLAIMER,
   AUTHENTICITY_DISCLAIMER,
-} from "../../../../lib/domain/verificar";
+} from "@/lib/domain/verificar";
 
 export const dynamic = "force-dynamic";
 export const runtime = "nodejs";
