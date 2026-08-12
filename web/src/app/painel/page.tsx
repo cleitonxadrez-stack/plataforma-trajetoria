@@ -263,6 +263,12 @@ export default async function PainelPage() {
         <div className="card">
           <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1">Próximos passos</p>
           <div className="flex flex-col gap-1">
+            <Link href="/documentos/enviar" className="text-sm underline" style={{ color: "#0d6b52" }}>
+              Enviar documento
+            </Link>
+            <Link href="/documentos" className="text-sm underline" style={{ color: "#0d6b52" }}>
+              Meu cofre
+            </Link>
             <Link href="/importar" className="text-sm underline" style={{ color: "#0d6b52" }}>
               Importar Lattes
             </Link>
