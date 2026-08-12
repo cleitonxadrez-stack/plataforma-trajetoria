@@ -40,8 +40,18 @@ export type JobName =
   | "recovery-build"
   | "follow-up-requests";
 
+// pg-boss v10 exige criar a fila ANTES de send/work/schedule (versões antigas
+// criavam sob demanda). createQueue é idempotente aqui via cache + try/catch.
+const _ensured = new Set<string>();
+async function ensureQueue(b: PgBoss, name: string): Promise<void> {
+  if (_ensured.has(name)) return;
+  try { await b.createQueue(name); } catch { /* fila já existe */ }
+  _ensured.add(name);
+}
+
 export async function enqueue(name: JobName, data: Record<string, unknown>): Promise<string | null> {
   const b = await boss();
+  await ensureQueue(b, name);
   return b.send(name, data);
 }
 
@@ -50,6 +60,7 @@ export async function work<T extends Record<string, unknown>>(
   handler: (data: T) => Promise<void>,
 ): Promise<void> {
   const b = await boss();
+  await ensureQueue(b, name);
   await b.work(name, async ([job]) => {
     try {
       await handler(job.data as T);
@@ -65,6 +76,7 @@ export async function work<T extends Record<string, unknown>>(
 
 export async function scheduleDaily(name: JobName, cronTime: string): Promise<void> {
   const b = await boss();
+  await ensureQueue(b, name);
   await b.schedule(name, cronTime);
 }
 

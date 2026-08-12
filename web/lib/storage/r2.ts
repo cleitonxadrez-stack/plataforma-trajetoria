@@ -96,6 +96,21 @@ export async function putObject(opts: {
   }));
 }
 
+/** Baixa um objeto do R2 como Buffer. Usado pelo worker de extração. */
+export async function getObject(opts: {
+  bucket: "frio" | "quente";
+  key: string;
+}): Promise<Buffer> {
+  const cfg = getR2Config();
+  const res = await client().send(new GetObjectCommand({
+    Bucket: opts.bucket === "frio" ? cfg.bucketFrio : cfg.bucketQuente,
+    Key: opts.key,
+  }));
+  if (!res.Body) throw new Error(`R2 getObject: corpo vazio para ${opts.key}`);
+  const bytes = await res.Body.transformToByteArray();
+  return Buffer.from(bytes);
+}
+
 /** URL assinada e expirável — nunca link público direto (CLAUDE.md). */
 export async function presignedUrl(opts: {
   bucket: "frio" | "quente";

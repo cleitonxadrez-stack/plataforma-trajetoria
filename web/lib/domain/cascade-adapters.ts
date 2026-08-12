@@ -95,11 +95,15 @@ export const pdfParse: Adapter = async (input) => {
     return { step: 1, source: "pdf-parse", succeeded: false, reason: "not-pdf" };
   }
   try {
-    const mod = await import("pdf-parse" as string).catch(() => null) as { default?: (b: Buffer) => Promise<{ text?: string }> } | null;
-    if (!mod?.default) {
+    // pdf-parse v2: classe `PDFParse` (named export), API `.getText()`.
+    const mod = await import("pdf-parse" as string).catch(() => null) as {
+      PDFParse?: new (opts: { data: Uint8Array }) => { getText: () => Promise<{ text?: string }> };
+    } | null;
+    if (!mod?.PDFParse) {
       return { step: 1, source: "pdf-parse", succeeded: false, reason: "dependency-missing" };
     }
-    const parsed = await mod.default(input.buffer);
+    const parser = new mod.PDFParse({ data: input.buffer });
+    const parsed = await parser.getText();
     const text = (parsed.text ?? "").trim();
     if (!text) {
       return { step: 1, source: "pdf-parse", succeeded: false, reason: "no-text-layer" };
@@ -111,8 +115,9 @@ export const pdfParse: Adapter = async (input) => {
     if (id.kind === "isbn") fields.isbn = id.value!;
     if (id.kind === "issn") fields.issn = id.value!;
     return { step: 1, source: "pdf-parse", succeeded: true, confidence: 0.90, fields, costCents: 0 };
-  } catch (e) {
-    return { step: 1, source: "pdf-parse", succeeded: false, reason: `error:${(e as Error).message?.slice(0, 40)}` };
+  } catch {
+    // PDF corrompido/ilegível ou sem texto: sem camada aproveitável — segue a cascata.
+    return { step: 1, source: "pdf-parse", succeeded: false, reason: "no-text-layer" };
   }
 };
 
@@ -223,8 +228,15 @@ export const templateMatch: Adapter = async () => ({
 // Passo 5 — OCR local (Tesseract)
 // ─────────────────────────────────────────────────────────────────────────
 export const ocrLocal: Adapter = async (input) => {
-  if (!input.mimeType.startsWith("image/") && !input.mimeType.includes("pdf")) {
+  // OCR só faz sentido em IMAGENS: tesseract não lê PDF direto (e crasharia).
+  if (!input.mimeType.startsWith("image/")) {
     return { step: 5, source: "ocr-tesseract", succeeded: false, reason: "no-image-content" };
+  }
+  // Gate: o worker do tesseract.js emite erros assíncronos NÃO capturáveis por
+  // try/catch que derrubam o processo inteiro. Só habilite (OCR_ENABLED=true)
+  // com setup isolado (ex.: subprocess/serviço dedicado).
+  if (process.env.OCR_ENABLED !== "true") {
+    return { step: 5, source: "ocr-tesseract", succeeded: false, reason: "dependency-missing" };
   }
   try {
     const mod = await import("tesseract.js" as string).catch(() => null) as { createWorker?: (lang?: string) => Promise<{ recognize: (b: Buffer) => Promise<{ data: { text: string } }>; terminate: () => Promise<void> }> } | null;
