@@ -4,32 +4,7 @@
   "installCommand": "npm ci --legacy-peer-deps",
   "framework": "nextjs",
   "regions": ["gru1"],
-  "crons": [
-    {
-      "path": "/api/cron/followup-requests",
-      "schedule": "0 2 * * *"
-    },
-    {
-      "path": "/api/cron/build-recovery",
-      "schedule": "15 2 * * *"
-    },
-    {
-      "path": "/api/cron/compute-indicators",
-      "schedule": "30 2 * * *"
-    },
-    {
-      "path": "/api/cron/detect-duplicates",
-      "schedule": "45 2 * * *"
-    },
-    {
-      "path": "/api/cron/alert-job-failures",
-      "schedule": "0 3 * * *"
-    },
-    {
-      "path": "/api/cron/pdf-regenerate",
-      "schedule": "0 4 * * *"
-    }
-  ],
+  "//crons": "Removidos por ora: o plano Hobby da Vercel limita a 2 cron jobs. O agendamento roda no worker (pg-boss/scheduleDaily). Reative aqui num plano Pro se quiser os crons na Vercel.",
   "headers": [
     {
       "source": "/verificar/(.*)",
