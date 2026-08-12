@@ -90,8 +90,19 @@ export async function uploadDocument(formData: FormData): Promise<UploadResult> 
   });
   await supabase.from("documents").update({ storage_key_original: key }).eq("id", doc.id);
 
-  // ── 7. enfileira cascata — assume-se que passos 1-5 rodem em worker ───
-  await enqueue("extract-cascade", { documentId: doc.id, userId });
+  // ── 7. enfileira cascata (best-effort) ────────────────────────
+  // O documento JÁ está salvo (R2 + linha em `documents`). O enfileiramento
+  // é para o worker de extração — se o pg-boss não estiver disponível (ex.:
+  // pooler sem sessão, worker offline), NÃO derrubamos o upload: o documento
+  // fica em `FILA` e pode ser reprocessado depois. Timeout para nunca pendurar.
+  try {
+    await Promise.race([
+      enqueue("extract-cascade", { documentId: doc.id, userId }),
+      new Promise((_, reject) => setTimeout(() => reject(new Error("enqueue-timeout")), 5000)),
+    ]);
+  } catch (e) {
+    console.warn(`[upload] enqueue falhou (documento ${doc.id} salvo mesmo assim):`, (e as Error).message);
+  }
 
   return { ok: true, documentId: doc.id, registryCode, status: "NOVO", sha256 };
 }
