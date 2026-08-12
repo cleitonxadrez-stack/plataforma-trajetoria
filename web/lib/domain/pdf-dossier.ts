@@ -111,14 +111,17 @@ export async function renderDossier(
   opts: RenderOptions = {},
 ): Promise<RenderOutput> {
   try {
-    const mod = await import("@react-pdf/renderer" as string).catch(() => null) as {
-      Document?: unknown; Page?: unknown; Text?: unknown; View?: unknown; StyleSheet?: { create: (s: unknown) => unknown }; renderToBuffer?: (el: unknown) => Promise<Buffer>;
-    } | null;
-    if (!mod?.Document || !mod?.renderToBuffer) {
+    // @react-pdf expõe os componentes (Document/Page/Text/View) e renderToBuffer
+    // como NAMED exports — NÃO em `default`. E os elementos são criados com o
+    // `createElement` do REACT (o @react-pdf não exporta createElement).
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const R: any = await import("@react-pdf/renderer" as string).catch(() => null);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const react: any = await import("react" as string).catch(() => null);
+    if (!R?.Document || typeof R?.renderToBuffer !== "function" || typeof react?.createElement !== "function") {
       return renderPlaceholder(tree, opts);
     }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const R: any = (mod as any).default ?? mod;
+    const createElement = react.createElement;
     const styles = R.StyleSheet.create({
       page: { padding: 30, fontSize: 10, fontFamily: "Helvetica" },
       h1: { fontSize: 18, marginBottom: 8 },
@@ -131,35 +134,35 @@ export async function renderDossier(
     });
     // Constrói a árvore via createElement para manter o arquivo como .ts puro
     // (sem necessidade de tsx). Mantém ordem/keys idênticas à versão JSX original.
-    const doc = R.createElement(
+    const doc = createElement(
       R.Document,
       null,
-      R.createElement(
+      createElement(
         R.Page,
         { size: "A4", style: styles.page },
-        R.createElement(R.Text, { style: styles.h1 }, tree.meta.title),
-        R.createElement(
+        createElement(R.Text, { style: styles.h1 }, tree.meta.title),
+        createElement(
           R.Text,
           { style: styles.meta },
           `método: ${tree.meta.methodName} (v${tree.meta.methodVersion}) · gerado em ${tree.meta.generatedAt}`,
         ),
         tree.meta.purpose
-          ? R.createElement(
+          ? createElement(
               R.Text,
               { style: styles.meta },
               `finalidade: ${tree.meta.purpose}`,
             )
           : null,
         ...tree.categories.flatMap((cat) => [
-          R.createElement(
+          createElement(
             R.View,
             { key: cat.label },
-            R.createElement(R.Text, { style: styles.h2 }, cat.label),
+            createElement(R.Text, { style: styles.h2 }, cat.label),
             ...cat.items.map((it) =>
-              R.createElement(
+              createElement(
                 R.View,
                 { key: it.id, style: styles.row },
-                R.createElement(
+                createElement(
                   R.Text,
                   { style: it.excluded ? styles.excluded : {} },
                   `${it.title}${it.year ? ` (${it.year})` : ""} — ${it.points} pts` +
@@ -171,12 +174,12 @@ export async function renderDossier(
             ),
           ),
         ]),
-        R.createElement(
+        createElement(
           R.Text,
           { style: styles.footer },
           `total: ${tree.totals.totalPoints} pts · itens: ${tree.totals.itemsCount} · excluídos: ${tree.totals.excludedCount}`,
         ),
-        R.createElement(
+        createElement(
           R.Text,
           { style: styles.notice },
           tree.signature.simulationNotice,
