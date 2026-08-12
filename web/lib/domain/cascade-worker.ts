@@ -14,6 +14,7 @@ import { log } from "../observability/log";
 import { db } from "../../db";
 import { documents } from "../../db/schema";
 import { getObject } from "../storage/r2";
+import { classifyDocumentFields } from "./ai-classify";
 
 export interface ExtractCascadeResult {
   documentId: string;
@@ -55,6 +56,28 @@ export async function processExtractCascade(documentId: string): Promise<Extract
   const okStep = out.steps.find((s) => s.succeeded);
   const status: "OK" | "FAILED" = okStep ? "OK" : "FAILED";
 
+  // ── 3b. classificação por IA (opcional) ───────────────────────
+  // A cascata só extrai TEXTO BRUTO; a IA estrutura em campos (tipo, título,
+  // instituição, ano) — que a tela de revisão pré-preenche. Só roda com texto
+  // + IA_EXTRACTION_API_KEY. A IA apenas SUGERE (o usuário confirma na revisão).
+  const fields: Record<string, unknown> = { ...out.fields };
+  let aiUsed = false;
+  let aiCostCents = 0;
+  const rawText = typeof out.fields.rawText === "string" ? out.fields.rawText : "";
+  if (rawText && process.env.IA_EXTRACTION_API_KEY) {
+    const ai = await classifyDocumentFields(rawText);
+    if (ai.ok) {
+      Object.assign(fields, ai.fields);
+      aiUsed = true;
+      aiCostCents = ai.costCents;
+      log({ level: "info", scope: "cascade", event: "ai-classified", msg: `documentId=${documentId} IA estruturou ${Object.keys(ai.fields).length} campos`, data: { documentId, model: ai.model, costCents: ai.costCents } });
+    } else {
+      log({ level: "warn", scope: "cascade", event: "ai-skip", msg: `documentId=${documentId} IA não classificou: ${ai.reason}`, data: { documentId, reason: ai.reason } });
+    }
+  }
+  const usedAI = out.usedAI || aiUsed;
+  const totalCostCents = out.totalCostCents + aiCostCents;
+
   // ── 4. persiste resultado + move o documento para EM_REVISAO ───
   // A cascata terminou; o documento aguarda a confirmação humana (nunca
   // entra na trajetória sem o clique do usuário). Mesmo quando nenhum passo
@@ -65,8 +88,8 @@ export async function processExtractCascade(documentId: string): Promise<Extract
       processingStatus: "EM_REVISAO",
       ocrStatus: status === "OK" ? "OK" : "FALHOU",
       extractedText: JSON.stringify({
-        ...out.fields,
-        source: out.usedAI ? "ia" : (okStep ? "cascade" : "none"),
+        ...fields,
+        source: aiUsed ? "ia" : (okStep ? "cascade" : "none"),
         step: okStep?.step ?? null,
       }),
     })
@@ -76,13 +99,13 @@ export async function processExtractCascade(documentId: string): Promise<Extract
     level: status === "OK" ? "info" : "warn",
     scope: "cascade",
     event: status === "OK" ? "done" : "all-failed",
-    msg: `documentId=${documentId} ${status} step=${okStep?.step ?? "-"}`,
-    data: { documentId, usedAI: out.usedAI, totalCostCents: out.totalCostCents, status },
+    msg: `documentId=${documentId} ${status} step=${okStep?.step ?? "-"} ia=${aiUsed}`,
+    data: { documentId, usedAI, totalCostCents, status },
   });
 
   return {
-    documentId, fields: out.fields, steps: out.steps,
-    totalCostCents: out.totalCostCents, usedAI: out.usedAI,
+    documentId, fields, steps: out.steps,
+    totalCostCents, usedAI,
     status, reason: status === "FAILED" ? "all-steps-failed" : undefined,
   };
 }
