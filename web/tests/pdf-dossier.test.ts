@@ -42,18 +42,18 @@ describe("buildPdfDocument", () => {
   });
 });
 
-describe("renderDossier (fallback JSON)", () => {
-  it("sem @react-pdf/renderer instalado devolve placeholder JSON válido", async () => {
+describe("renderDossier", () => {
+  it("com @react-pdf/renderer instalado devolve um PDF válido", async () => {
     const t = buildPdfDocument({
       meta: { id: "d1", title: "X", purpose: null, methodName: "V1", methodVersion: 1, generatedAt: "2026-08-10" },
       categories: CAT, ranked: RANKED,
     });
     const out = await renderDossier(t);
     expect(out.ok).toBe(true);
-    expect(out.engine).toBe("json-placeholder");
-    expect(out.mimeType).toMatch(/json/);
+    expect(out.engine).toBe("@react-pdf/renderer");
+    expect(out.mimeType).toBe("application/pdf");
     expect(out.bytes.length).toBeGreaterThan(0);
-    // Conteúdo começa com "# Dossiê (placeholder)" — assinatura.
-    expect(out.bytes.toString("utf8")).toContain("# Dossiê (placeholder)");
+    // Assinatura de arquivo PDF.
+    expect(out.bytes.toString("latin1", 0, 5)).toBe("%PDF-");
   });
 });
