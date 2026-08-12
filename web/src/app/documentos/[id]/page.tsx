@@ -85,7 +85,7 @@ export default async function DocumentoDetalhe({ params }: Props) {
         <ol className="card" style={{ listStyle: "none", padding: 0 }}>
           {view.audit.map((ev, i) => (
             <li key={i}
-                style={{ padding: "12px 22px", borderBottom: i === view.audit.length - 1 ? "none" : "1px solid #e4dfd3" }}>
+                style={{ padding: "12px 22px", borderBottom: i === view.audit.length - 1 ? "none" : "1px solid #cddcec" }}>
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13 }}>
                 <span style={{ fontFamily: "monospace", color: "#205b80" }}>{ev.action}</span>
                 <span style={{ color: "#7a8294" }}>{ev.at}</span>

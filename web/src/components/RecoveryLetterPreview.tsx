@@ -48,7 +48,7 @@ export function RecoveryLetterPreview({ letter, onMarkSent }: RecoveryLetterPrev
         <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: 6 }}>
           <span title={`Consentimento ${letter.consentTextVersion}`} style={{
             padding: "3px 9px", fontSize: 11, letterSpacing: ".06em",
-            textTransform: "uppercase", background: "#e9e6dd",
+            textTransform: "uppercase", background: "#e2ecf7",
             color: "#4a5266", borderRadius: 999,
           }}>
             Termo {letter.consentTextVersion}
@@ -68,8 +68,8 @@ export function RecoveryLetterPreview({ letter, onMarkSent }: RecoveryLetterPrev
           width: "100%",
           fontFamily: '"Source Serif 4", Georgia, serif',
           fontSize: 13,
-          background: "#f7f5f0",
-          border: "1px solid #e4dfd3",
+          background: "#eaf1f7",
+          border: "1px solid #cddcec",
           borderRadius: 8,
           padding: 14,
           marginTop: 14,

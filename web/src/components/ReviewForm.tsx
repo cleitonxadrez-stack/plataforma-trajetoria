@@ -83,7 +83,7 @@ export function ReviewForm(props: ReviewFormProps) {
 
   return (
     <form className="space-y-5" data-testid={`review-form-${props.documentId}`}>
-      <header className="card" style={{ background: "#f7f5f0" }}>
+      <header className="card" style={{ background: "#eaf1f7" }}>
         <p className="text-xs uppercase tracking-[.12em] text-stone-500 mb-1"
            style={{ fontFamily: "monospace" }}>{props.registryCode}</p>
         <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
@@ -223,7 +223,7 @@ export function ReviewForm(props: ReviewFormProps) {
         )}
       </div>
 
-      <p className="text-xs text-stone-500" style={{ background: "#f1ede4", padding: 10, borderRadius: 8 }}>
+      <p className="text-xs text-stone-500" style={{ background: "#dce8f6", padding: 10, borderRadius: 8 }}>
         ⚠ Esta ação é <strong>manual e humana</strong>. A IA apenas sugeriu os campos acima
         (Backlog §2.4 — "Confirme ou edite").
       </p>

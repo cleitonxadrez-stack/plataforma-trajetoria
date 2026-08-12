@@ -225,7 +225,7 @@ export default async function TrajetoriaPage() {
           <header style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 10 }}>
             <h2 className="serif text-2xl text-[#0f2942]">{year}</h2>
             <span className="text-stone-500 text-sm">{items.length} {items.length === 1 ? "item" : "itens"}</span>
-            <span style={{ flex: 1, height: 1, background: "#e4dfd3", display: "inline-block" }} />
+            <span style={{ flex: 1, height: 1, background: "#cddcec", display: "inline-block" }} />
           </header>
           {items.map((it) => <ItemCard key={it.id} item={it} />)}
         </section>

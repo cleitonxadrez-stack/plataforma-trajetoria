@@ -187,7 +187,7 @@ export default async function PendenciasPage() {
                 <span className="text-stone-500 text-sm">
                   {g.itemIds.length} {g.itemIds.length === 1 ? "item" : "itens"}
                 </span>
-                <span style={{ flex: 1, height: 1, background: "#e4dfd3", display: "inline-block" }} />
+                <span style={{ flex: 1, height: 1, background: "#cddcec", display: "inline-block" }} />
                 {g.partialCoverageRatio > 0 && (
                   <span className="text-xs" style={{
                     background: "#f3e3cd", color: "#a15a13",
@@ -203,7 +203,7 @@ export default async function PendenciasPage() {
         })}
       </section>
 
-      <p className="text-xs text-stone-500 mt-12" style={{ background: "#f1ede4", padding: 12, borderRadius: 8 }}>
+      <p className="text-xs text-stone-500 mt-12" style={{ background: "#dce8f6", padding: 12, borderRadius: 8 }}>
         ⓘ Após 30 dias sem resposta, o sistema sugere um follow-up pelo mesmo
         canal. O agendamento é feito pelo job <code style={{ fontFamily: "monospace" }}>follow-up-requests</code>
         (Bloco 7). <strong>O sistema nunca envia e-mail sozinho</strong> — você
@@ -235,7 +235,7 @@ function StatCard({ label, value, accent, muted }: {
 }) {
   return (
     <div className="card" style={{
-      background: accent ? "#f3e3cd" : muted ? "#e9e6dd" : "#fff",
+      background: accent ? "#f3e3cd" : muted ? "#e2ecf7" : "#fff",
     }}>
       <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1">{label}</p>
       <p className="serif text-3xl text-[#0f2942]">{value}</p>

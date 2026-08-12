@@ -53,7 +53,7 @@ export function DocumentCard(props: DocumentCardProps) {
               title={`Confiança da extração (${lowConf ? "BAIXA — revise com atenção" : "OK"})`}
               style={{
                 fontSize: 11, letterSpacing: ".06em", padding: "2px 7px",
-                background: lowConf ? "#f3dfda" : "#e9e6dd",
+                background: lowConf ? "#f3dfda" : "#e2ecf7",
                 color:      lowConf ? "#8a2a1f" : "#4a5266",
                 borderRadius: 6,
               }}

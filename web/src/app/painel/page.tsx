@@ -209,7 +209,7 @@ export default async function PainelPage() {
         />
       </section>
 
-      <section className="card mt-8" style={{ background: "#f7f5f0" }} aria-label="Metadologia do cálculo">
+      <section className="card mt-8" style={{ background: "#eaf1f7" }} aria-label="Metadologia do cálculo">
         <p className="text-xs uppercase tracking-[.12em] text-stone-500 mb-2">
           Como estes números foram calculados
         </p>

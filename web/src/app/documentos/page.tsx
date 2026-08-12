@@ -100,7 +100,7 @@ function SummaryTile({ label, count, emphasis, muted, done, alert }: {
   label: string; count: number;
   emphasis?: boolean; muted?: boolean; done?: boolean; alert?: boolean;
 }) {
-  const bg = emphasis ? "#f3e3cd" : done ? "#d9ece4" : alert && count > 0 ? "#f3dfda" : muted ? "#e9e6dd" : "#fff";
+  const bg = emphasis ? "#f3e3cd" : done ? "#d9ece4" : alert && count > 0 ? "#f3dfda" : muted ? "#e2ecf7" : "#fff";
   return (
     <div className="card" style={{ background: bg }}>
       <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1">{label}</p>
@@ -119,7 +119,7 @@ function QueueSection({ title, docs, keyPrefix, archived, muted }: {
       <header style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 10 }}>
         <h2 className="serif text-2xl text-[#0f2942]">{title}</h2>
         <span style={{ fontSize: 13, color: "#7a8294" }}>{docs.length}</span>
-        <span style={{ flex: 1, height: 1, background: "#e4dfd3", display: "inline-block" }} />
+        <span style={{ flex: 1, height: 1, background: "#cddcec", display: "inline-block" }} />
       </header>
       {docs.map((doc) => (
         <DocumentCard
