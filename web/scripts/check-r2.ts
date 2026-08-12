@@ -44,7 +44,9 @@ async function main() {
   console.log(`[check-r2] OK. Pronto para deploy.`);
 }
 
-main().catch((e) => {
-  console.error("[check-r2] erro inesperado:", e);
-  process.exit(1);
-});
+main()
+  .then(() => process.exit(0)) // encerra já: o S3Client mantém sockets keep-alive vivos
+  .catch((e) => {
+    console.error("[check-r2] erro inesperado:", e);
+    process.exit(1);
+  });
