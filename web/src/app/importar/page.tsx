@@ -6,7 +6,6 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { LattesImporter } from "@/components/LattesImporter";
-import { planLattesImport } from "@/lib/domain/lattes-import";
 
 export const metadata = { title: "Importar Lattes — Trajetória360" };
 export const dynamic = "force-dynamic";
@@ -73,10 +72,7 @@ export default async function ImportarPage() {
 
       <section className="card mb-6">
         <h2 className="serif text-lg text-[#0f2942] mb-2">Upload do XML</h2>
-        <LattesImporter
-          endpoint="/api/lattes/import"
-          planLattesImport={planLattesImport}
-        />
+        <LattesImporter endpoint="/api/lattes/import" />
       </section>
 
       {existingList.length > 0 && (

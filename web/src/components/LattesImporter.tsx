@@ -6,13 +6,13 @@
 // Resumo do parser puro é exibido ANTES do upload (simulação local).
 
 import { useState } from "react";
-import type { ParsedLattesImport } from "../../lib/domain/lattes-import";
-
-type PlanFn = (xml: string, userId: string) => ParsedLattesImport;
+// O parser é PURO (regex, sem deps de servidor) → roda no client para a
+// pré-visualização. NÃO pode ser passado como prop (função não serializável
+// de Server → Client Component; era a causa do "Application error").
+import { planLattesImport, type ParsedLattesImport } from "../../lib/domain/lattes-import";
 
 export interface LattesImporterProps {
   endpoint: string;
-  planLattesImport: PlanFn;
 }
 
 type Status =
@@ -22,7 +22,7 @@ type Status =
   | { kind: "done"; imported: number; deduped: number; sensitiveIgnored: number; jobId: string | null }
   | { kind: "error"; message: string };
 
-export function LattesImporter({ endpoint, planLattesImport }: LattesImporterProps) {
+export function LattesImporter({ endpoint }: LattesImporterProps) {
   const [status, setStatus] = useState<Status>({ kind: "idle" });
 
   async function onFile(file: File) {
