@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
+import { Logo } from "@/components/Logo";
 
 export default async function HomePage() {
   // Sessão resolvida no servidor (cookies SSR-aware).
@@ -13,13 +14,8 @@ export default async function HomePage() {
       {/* ───────── Header fixo com o botão Entrar no topo ───────── */}
       <header className="sticky top-0 z-30 border-b border-[#cddcec]/80 bg-bg/85 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link href="/" className="flex items-center gap-2.5">
-            <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary text-[15px] font-semibold text-white shadow-sm">
-              T
-            </span>
-            <span className="serif text-lg font-semibold text-primary">
-              Trajetória360
-            </span>
+          <Link href="/" aria-label="Trajetória360 — início">
+            <Logo size={36} />
           </Link>
 
           <nav className="hidden items-center gap-8 text-sm text-muted md:flex">
@@ -287,12 +283,7 @@ export default async function HomePage() {
       {/* ───────── Rodapé ───────── */}
       <footer className="border-t border-[#cddcec] bg-bgstrip">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-soft sm:flex-row">
-          <div className="flex items-center gap-2">
-            <span className="grid h-6 w-6 place-items-center rounded-md bg-primary text-[11px] font-semibold text-white">
-              T
-            </span>
-            <span className="serif font-semibold text-primary">Trajetória360</span>
-          </div>
+          <Logo size={26} />
           <p>Trajetória acadêmica documentada e verificável.</p>
           <div className="flex gap-5">
             <Link href="/entrar" className="hover:text-primary">Entrar</Link>
