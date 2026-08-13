@@ -2,7 +2,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Plataforma Trajetória — Trajetória acadêmica documentada e verificável",
+  title: "Trajetória360 — Trajetória acadêmica documentada e verificável",
   description:
     "SaaS que transforma o currículo acadêmico de declaração em trajetória documentada e verificável.",
 };

@@ -7,7 +7,7 @@ import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { UploadForm } from "@/components/UploadForm";
 
-export const metadata = { title: "Enviar documento — Plataforma Trajetória" };
+export const metadata = { title: "Enviar documento — Trajetória360" };
 export const dynamic = "force-dynamic";
 
 export default async function EnviarDocumentoPage() {

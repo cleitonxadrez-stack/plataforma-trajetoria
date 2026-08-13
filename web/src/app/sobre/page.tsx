@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { Metadata } from "next";
 
-export const metadata: Metadata = { title: "Sobre — Plataforma Trajetória" };
+export const metadata: Metadata = { title: "Sobre — Trajetória360" };
 
 const PRINCIPIOS = [
   {
@@ -32,7 +32,7 @@ export default function SobrePage() {
             <span className="grid h-8 w-8 place-items-center rounded-lg bg-primary text-[15px] font-semibold text-white shadow-sm">
               T
             </span>
-            <span className="serif text-lg font-semibold text-primary">Plataforma Trajetória</span>
+            <span className="serif text-lg font-semibold text-primary">Trajetória360</span>
           </Link>
           <div className="flex items-center gap-2">
             <Link
@@ -58,7 +58,7 @@ export default function SobrePage() {
           Sua trajetória acadêmica merece mais que uma pasta de PDFs
         </h1>
         <p className="mt-6 text-lg leading-relaxed text-muted">
-          A <strong className="text-primary">Plataforma Trajetória</strong> transforma o currículo
+          A <strong className="text-primary">Trajetória360</strong> transforma o currículo
           acadêmico de uma declaração em uma trajetória <em>documentada e verificável</em>. Reúna
           certificados, diplomas e declarações espalhados, organize-os em uma cadeia documental
           única, planeje seus próximos passos e gere dossiês prontos para editais e concursos.
@@ -105,7 +105,7 @@ export default function SobrePage() {
             <span className="grid h-6 w-6 place-items-center rounded-md bg-primary text-[11px] font-semibold text-white">
               T
             </span>
-            <span className="serif font-semibold text-primary">Plataforma Trajetória</span>
+            <span className="serif font-semibold text-primary">Trajetória360</span>
           </div>
           <div className="flex gap-5">
             <Link href="/" className="hover:text-primary">Início</Link>

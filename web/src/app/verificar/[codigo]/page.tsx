@@ -11,7 +11,7 @@ import { buildVerificationView, NOT_FOUND_DISCLAIMER, type VerificationSource } 
 import { isValidRegistryCode } from "../../../../lib/domain/registry";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Verificar documento — Plataforma Trajetória" };
+export const metadata = { title: "Verificar documento — Trajetória360" };
 
 interface RowFound {
   registry_code: string;

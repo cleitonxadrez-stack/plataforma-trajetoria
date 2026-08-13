@@ -18,7 +18,7 @@ export default async function HomePage() {
               T
             </span>
             <span className="serif text-lg font-semibold text-primary">
-              Plataforma Trajetória
+              Trajetória360
             </span>
           </Link>
 
@@ -197,7 +197,7 @@ export default async function HomePage() {
               Um currículo que orienta suas decisões
             </h2>
             <p className="mt-4 text-lg text-muted">
-              Mais do que guardar papéis: a Plataforma Trajetória lê sua produção e
+              Mais do que guardar papéis: a Trajetória360 lê sua produção e
               revela indicadores, pontos fortes e onde investir a seguir — para
               progressões, editais e concursos.
             </p>
@@ -291,7 +291,7 @@ export default async function HomePage() {
             <span className="grid h-6 w-6 place-items-center rounded-md bg-primary text-[11px] font-semibold text-white">
               T
             </span>
-            <span className="serif font-semibold text-primary">Plataforma Trajetória</span>
+            <span className="serif font-semibold text-primary">Trajetória360</span>
           </div>
           <p>Trajetória acadêmica documentada e verificável.</p>
           <div className="flex gap-5">

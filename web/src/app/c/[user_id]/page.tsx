@@ -16,7 +16,7 @@ import {
 import { PUBLIC_DISCLAIMER } from "@/lib/domain/registry";
 
 export const dynamic = "force-dynamic";
-export const metadata = { title: "Perfil público — Plataforma Trajetória" };
+export const metadata = { title: "Perfil público — Trajetória360" };
 
 interface UserRow {
   id: string;

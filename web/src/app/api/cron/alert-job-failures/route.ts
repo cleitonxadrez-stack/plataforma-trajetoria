@@ -28,7 +28,7 @@ import { cronAuthGuard } from "@/lib/queue/cron-auth";
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
-const ALERT_SUBJECT_PREFIX = "[Plataforma Trajetória · ALERTA]";
+const ALERT_SUBJECT_PREFIX = "[Trajetória360 · ALERTA]";
 
 // Auth consolidada em lib/queue/cron-auth.ts (fail-closed).
 

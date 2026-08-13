@@ -15,7 +15,7 @@ import { MOCK_ITEMS } from "@/mocks/extraction-fixtures";
 import { SeloComprovacao } from "@/components/SeloComprovacao";
 import { chooseDataSource, FALLBACK_BADGE } from "@/lib/ui/data-source";
 
-export const metadata = { title: "Trajetória — Plataforma Trajetória" };
+export const metadata = { title: "Trajetória — Trajetória360" };
 export const dynamic = "force-dynamic";
 
 interface RawItemRow {

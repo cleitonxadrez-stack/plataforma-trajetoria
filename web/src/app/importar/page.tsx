@@ -8,7 +8,7 @@ import Link from "next/link";
 import { LattesImporter } from "@/components/LattesImporter";
 import { planLattesImport } from "@/lib/domain/lattes-import";
 
-export const metadata = { title: "Importar Lattes — Plataforma Trajetória" };
+export const metadata = { title: "Importar Lattes — Trajetória360" };
 export const dynamic = "force-dynamic";
 
 interface MealItemLite {

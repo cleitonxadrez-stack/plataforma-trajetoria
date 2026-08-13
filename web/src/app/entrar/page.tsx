@@ -2,7 +2,7 @@ import Link from "next/link";
 import { EntrarForm } from "@/components/EntrarForm";
 import { Suspense } from "react";
 
-export const metadata = { title: "Entrar — Plataforma Trajetória" };
+export const metadata = { title: "Entrar — Trajetória360" };
 
 export default function EntrarPage() {
   return (
