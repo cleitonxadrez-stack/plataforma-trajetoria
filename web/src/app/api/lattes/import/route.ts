@@ -20,6 +20,7 @@ import {
   planLattesImport,
 } from "@/lib/domain/lattes-import";
 import { sha256OfBuffer } from "@/lib/domain/registry";
+import { decodeXmlBytes } from "@/lib/lattes/decode";
 import { enqueue } from "@/lib/queue/jobs";
 
 export const runtime = "nodejs";
@@ -89,7 +90,7 @@ export async function POST(req: Request): Promise<NextResponse<ImportResult>> {
   }
 
   const buf = Buffer.from(await file.arrayBuffer());
-  const text = buf.toString("utf8");
+  const text = decodeXmlBytes(buf); // Lattes é ISO-8859-1; UTF-8 corromperia acentos
   if (!isProbablyLattesXml(text)) {
     return NextResponse.json(
       { ok: false, imported: 0, deduped: 0, sensitiveIgnored: 0, categoryFallbackCount: 0,

@@ -119,7 +119,7 @@ export function planLattesImport(xml: string, userId: string): ParsedLattesImpor
     parsed = parseLattesXml(redacted.clean);
   } catch {
     // Sem categoria inválida — retorna console vazio mas mantém ignored.
-    parsed = { fullName: null, lattesId: null, items: [], sensitiveIgnored: redacted.ignored };
+    parsed = { fullName: null, lattesId: null, resumo: null, items: [], sensitiveIgnored: redacted.ignored };
   }
 
   const rows = parsed.items.map((d) => toAcademicItemRow({ draft: d, userId }));

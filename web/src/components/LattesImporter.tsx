@@ -10,6 +10,7 @@ import { useState } from "react";
 // pré-visualização. NÃO pode ser passado como prop (função não serializável
 // de Server → Client Component; era a causa do "Application error").
 import { planLattesImport, type ParsedLattesImport } from "../../lib/domain/lattes-import";
+import { decodeXmlBytes } from "../../lib/lattes/decode";
 
 export interface LattesImporterProps {
   endpoint: string;
@@ -28,9 +29,10 @@ export function LattesImporter({ endpoint }: LattesImporterProps) {
   async function onFile(file: File) {
     setStatus({ kind: "uploading", filename: file.name });
 
-    // Preview local ANTES do upload — lê como text (XML é texto, não binário).
+    // Preview local ANTES do upload — decodifica respeitando o encoding do
+    // XML (Lattes é ISO-8859-1; file.text() usaria UTF-8 e corromperia acentos).
     try {
-      const text = await file.text();
+      const text = decodeXmlBytes(await file.arrayBuffer());
 
       // Mock userId localmente — o `plan` é determinístico e a planilha
       // pura não usa o id. O id real é o do servidor, injetado pela API.

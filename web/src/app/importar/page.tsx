@@ -62,12 +62,19 @@ export default async function ImportarPage() {
         <h2 className="serif text-lg text-[#0f2942] mb-2">Como obter seu XML</h2>
         <ol className="text-sm text-stone-700 space-y-2 list-decimal list-inside">
           <li>
-            Acesse <a className="underline text-[#0f2942]" href="https://www.lattes.cnpq.br" target="_blank" rel="noopener noreferrer">lattes.cnpq.br</a>
-            <code className="ml-1 font-mono text-xs text-stone-600"> → Currículo → Exportar → XML completo</code>.
+            Abra seu currículo em <a className="underline text-[#0f2942]" href="https://www.lattes.cnpq.br" target="_blank" rel="noopener noreferrer">lattes.cnpq.br</a> e
+            clique no botão <strong>Exportar</strong> (ícone no topo).
           </li>
-          <li>O arquivo termina em <code className="font-mono">.xml</code> e tem ≤ 10 MB.</li>
-          <li>Faça login aqui e suba o arquivo abaixo.</li>
+          <li>
+            Na janela <em>“Exportar currículo para RTF ou XML”</em>, escolha
+            <strong className="text-[#0f2942]"> XML</strong> (⚠️ <strong>não</strong> RTF) e confirme.
+          </li>
+          <li>Descompacte o ZIP baixado e suba o arquivo <code className="font-mono">.xml</code> aqui (≤ 10 MB).</li>
         </ol>
+        <p className="text-xs text-stone-500 mt-3">
+          Por que XML? Ele é estruturado — importamos cada artigo, livro, curso e formação
+          com título, ano e DOI. O RTF é só para impressão.
+        </p>
       </section>
 
       <section className="card mb-6">
