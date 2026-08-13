@@ -22,7 +22,7 @@
     "@aws-sdk/client-s3": "^3.682.0",
     "@aws-sdk/s3-request-presigner": "^3.682.0",
     "@react-pdf/renderer": "^4.6.0",
-    "@supabase/ssr": "^0.5.2",
+    "@supabase/ssr": "^0.12.4",
     "@supabase/supabase-js": "^2.45.4",
     "drizzle-orm": "^0.36.4",
     "jsqr": "^1.4.0",
