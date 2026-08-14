@@ -1,5 +1,6 @@
 import "./globals.css";
 import type { Metadata } from "next";
+import { NavHeader } from "@/components/NavHeader";
 
 export const metadata: Metadata = {
   title: "Trajetória360 — Trajetória acadêmica documentada e verificável",
@@ -12,7 +13,11 @@ export default function RootLayout({
 }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
-      <body>{children}</body>
+      <body>
+        {/* @ts-expect-error Async Server Component */}
+        <NavHeader />
+        {children}
+      </body>
     </html>
   );
 }

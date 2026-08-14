@@ -12,6 +12,7 @@
 export interface LattesItemDraft {
   lattesId: string;
   itemType: string; // natureza bruta (chave do XSD_MAP em lattes-import.ts)
+  natureza: string; // rótulo canônico legível (vira academic_items.natureza)
   title: string;
   year: number;
   doi: string | null;
@@ -65,18 +66,29 @@ interface Extractor {
   doi?: string;
   isbn?: string;
   nature: string;    // vira itemType (mapeado por mapXsdToItemType)
+  natureza: string;  // rótulo legível (academic_items.natureza + roteia seção do CV)
 }
 
 const EXTRACTORS: Extractor[] = [
-  { el: "DADOS-BASICOS-DO-ARTIGO", title: "TITULO-DO-ARTIGO", years: ["ANO-DO-ARTIGO"], doi: "DOI", nature: "ARTIGO-PUBLICADO" },
-  { el: "DADOS-BASICOS-DO-CAPITULO", title: "TITULO-DO-CAPITULO-DO-LIVRO", years: ["ANO"], nature: "CAPITULO-LIVRO" },
-  { el: "DADOS-BASICOS-DO-LIVRO", title: "TITULO-DO-LIVRO", years: ["ANO"], doi: "DOI", nature: "LIVRO" },
-  { el: "DADOS-BASICOS-DO-TRABALHO", title: "TITULO-DO-TRABALHO", years: ["ANO-DO-TRABALHO"], doi: "DOI", nature: "TRABALHO-COMPLETO" },
-  { el: "DADOS-BASICOS-DA-APRESENTACAO-DE-TRABALHO", title: "TITULO", years: ["ANO"], nature: "CURSO" },
-  { el: "GRADUACAO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "GRADUACAO" },
-  { el: "ESPECIALIZACAO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "ESPECIALIZACAO" },
-  { el: "MESTRADO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "MESTRADO" },
-  { el: "DOUTORADO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "DOUTORADO" },
+  // Produção bibliográfica
+  { el: "DADOS-BASICOS-DO-ARTIGO", title: "TITULO-DO-ARTIGO", years: ["ANO-DO-ARTIGO"], doi: "DOI", nature: "ARTIGO-PERIODICO", natureza: "Artigo completo em periódico" },
+  { el: "DADOS-BASICOS-DO-CAPITULO", title: "TITULO-DO-CAPITULO-DO-LIVRO", years: ["ANO"], nature: "CAPITULO-LIVRO", natureza: "Capítulo de livro publicado" },
+  { el: "DADOS-BASICOS-DO-LIVRO", title: "TITULO-DO-LIVRO", years: ["ANO"], nature: "LIVRO", natureza: "Livro publicado" },
+  { el: "DADOS-BASICOS-DO-TRABALHO", title: "TITULO-DO-TRABALHO", years: ["ANO-DO-TRABALHO"], nature: "TRABALHO-EVENTO", natureza: "Trabalho publicado em anais de evento" },
+  // Formação
+  { el: "GRADUACAO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "GRADUACAO", natureza: "Graduação" },
+  { el: "ESPECIALIZACAO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "ESPECIALIZACAO", natureza: "Especialização (Lato Sensu)" },
+  { el: "MESTRADO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "MESTRADO", natureza: "Mestrado" },
+  { el: "DOUTORADO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "DOUTORADO", natureza: "Doutorado" },
+  { el: "FORMACAO-COMPLEMENTAR-CURSO-DE-CURTA-DURACAO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "FORMACAO-COMPLEMENTAR", natureza: "Formação complementar (curso)" },
+  // Orientações e bancas
+  { el: "DADOS-BASICOS-DE-OUTRAS-ORIENTACOES-CONCLUIDAS", title: "TITULO", years: ["ANO"], nature: "ORIENTACAO-CONCLUIDA", natureza: "Orientação de trabalho concluída" },
+  { el: "DADOS-BASICOS-DA-PARTICIPACAO-EM-BANCA-DE-GRADUACAO", title: "TITULO", years: ["ANO"], nature: "BANCA-GRADUACAO", natureza: "Participação em banca de TCC (graduação)" },
+  // Produção técnica / prêmios / projetos / eventos
+  { el: "DADOS-BASICOS-DE-CURSOS-CURTA-DURACAO-MINISTRADO", title: "TITULO", years: ["ANO"], nature: "CURSO-MINISTRADO", natureza: "Curso de curta duração ministrado (produção técnica)" },
+  { el: "PREMIO-TITULO", title: "NOME-DO-PREMIO-OU-TITULO", years: ["ANO-DA-PREMIACAO"], nature: "PREMIO", natureza: "Prêmio ou título" },
+  { el: "PROJETO-DE-PESQUISA", title: "NOME-DO-PROJETO", years: ["ANO-INICIO"], nature: "PROJETO", natureza: "Projeto de pesquisa" },
+  { el: "DADOS-BASICOS-DA-ORGANIZACAO-DE-EVENTO", title: "TITULO", years: ["ANO"], nature: "ORGANIZACAO-EVENTO", natureza: "Organização de evento (produção técnica)" },
 ];
 
 /** Também aceita o formato de teste antigo: `TITULO-DO-TRABALHO=` em qualquer tag. */
@@ -92,13 +104,14 @@ export function parseLattesXml(xml: string): ParsedLattes {
   const seen = new Set<string>();
   const items: LattesItemDraft[] = [];
 
-  const push = (nature: string, title: string, year: number, doi: string | null, isbn: string | null, flag: boolean) => {
+  const push = (nature: string, natureza: string, title: string, year: number, doi: string | null, isbn: string | null, flag: boolean) => {
     const dedupe = `${nature}|${title.toLowerCase()}|${year}|${doi ?? ""}`;
     if (seen.has(dedupe)) return;
     seen.add(dedupe);
     items.push({
       lattesId: `${nature}-${seen.size}`,
       itemType: nature,
+      natureza,
       title, year, doi, issn: null, isbn,
       authors: [],
       flaggedInnovation: flag,
@@ -118,7 +131,7 @@ export function parseLattesXml(xml: string): ParsedLattes {
       const doi = ex.doi ? (attr(attrs, ex.doi) || null) : null;
       const isbn = ex.isbn ? (attr(attrs, ex.isbn) || null) : null;
       const flag = /\bFLAG-RELEVANCIA="SIM"/i.test(attrs) || /\bFLAG-POTENCIAL-INOVACAO="SIM"/i.test(attrs);
-      push(ex.nature, title, year, doi, isbn, flag);
+      push(ex.nature, ex.natureza, title, year, doi, isbn, flag);
     }
   }
 
@@ -135,7 +148,7 @@ export function parseLattesXml(xml: string): ParsedLattes {
     const doi = attr(attrs, "DOI");
     const isbn = attr(attrs, "ISBN");
     const flag = /\bFLAG-POTENCIAL-INOVACAO="SIM"/i.test(attrs);
-    push(tag, title, Number(yearStr), doi && /^10\./.test(doi) ? doi : null, isbn, flag);
+    push(tag, "Trabalho publicado em anais de evento", title, Number(yearStr), doi && /^10\./.test(doi) ? doi : null, isbn, flag);
   }
 
   return { fullName, lattesId, resumo, items, sensitiveIgnored: ignored };

@@ -17,25 +17,35 @@ import type { ItemType } from "./items";
 const XSD_MAP: Record<string, ItemType> = {
   // Produção bibliográfica
   "ARTIGO-PUBLICADO": "ARTIGO",
+  "ARTIGO-PERIODICO": "ARTIGO",
   "ARTIGO-ACEITO": "ARTIGO",
   "ARTIGO": "ARTIGO",
   "CAPITULO-LIVRO": "CAPITULO",
   "LIVRO": "CAPITULO",
-  "TRABALHO-RESUMO": "ARTIGO",
-  "TRABALHO-COMPLETO": "ARTIGO",
-  // Educação
-  "ORIENTACAO-MESTRADO": "CERTIFICADO",
-  "ORIENTACAO-DOUTORADO": "CERTIFICADO",
-  "ORIENTACAO-INICIACAO-CIENTIFICA": "CERTIFICADO",
-  "PARTICIPACAO-BANCA": "CERTIFICADO",
-  "CURSO": "CERTIFICADO",
-  "ESPECIALIZACAO": "CERTIFICADO",
-  "EXTENSAO": "CERTIFICADO",
+  "TRABALHO-RESUMO": "OUTROS",
+  "TRABALHO-COMPLETO": "OUTROS",
+  "TRABALHO-EVENTO": "OUTROS",
+  // Educação / formação
+  "ESPECIALIZACAO": "DIPLOMA",
   "FORMACAO": "DIPLOMA",
   "MESTRADO": "DIPLOMA",
   "DOUTORADO": "DIPLOMA",
   "POS-DOUTORADO": "DIPLOMA",
   "GRADUACAO": "DIPLOMA",
+  "FORMACAO-COMPLEMENTAR": "OUTROS",
+  // Orientações, bancas, produção técnica, prêmios, projetos, eventos
+  "ORIENTACAO-CONCLUIDA": "OUTROS",
+  "ORIENTACAO-MESTRADO": "OUTROS",
+  "ORIENTACAO-DOUTORADO": "OUTROS",
+  "ORIENTACAO-INICIACAO-CIENTIFICA": "OUTROS",
+  "BANCA-GRADUACAO": "OUTROS",
+  "PARTICIPACAO-BANCA": "OUTROS",
+  "CURSO-MINISTRADO": "OUTROS",
+  "CURSO": "OUTROS",
+  "EXTENSAO": "OUTROS",
+  "PREMIO": "OUTROS",
+  "PROJETO": "OUTROS",
+  "ORGANIZACAO-EVENTO": "OUTROS",
 };
 
 export function mapXsdToItemType(xsd: string): ItemType {
@@ -54,6 +64,7 @@ export interface AcademicItemRow {
   lattes_dedupe_key: string;
   user_id: string;
   item_type: ItemType;
+  natureza: string | null;
   title: string;
   title_en: string | null;
   year: number;
@@ -94,6 +105,7 @@ export function toAcademicItemRow(opts: {
     }),
     user_id: userId,
     item_type: itemType,
+    natureza: draft.natureza ?? null,
     title: draft.title,
     title_en: null,
     year: draft.year,
