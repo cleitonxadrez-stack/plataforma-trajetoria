@@ -1,13 +1,12 @@
 // src/app/exportar/curriculo/page.tsx
-// Currículo ABERTO estilo Lattes — puxa academic_items da plataforma, agrupa
-// área por área e mostra a descrição de cada item com marcadores R (registro)
-// e P (publicação) ao lado. Imprimível como PDF (window.print()).
+// Currículo — visualização de PLATAFORMA (moderna/interativa, via CurriculoView)
+// + versão impressa/A4 (controlada por @media print). Puxa academic_items,
+// comprovantes (evidences→documents) e dados pessoais.
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import Link from "next/link";
-import { PrintButton } from "@/components/PrintButton";
-import { groupIntoCvSections, cvMarkers, type CvItem } from "@/lib/domain/cv-sections";
+import { CurriculoView, type CvViewSection, type CvProfile, type CvStats } from "@/components/CurriculoView";
+import { groupIntoCvSections, cvSeal, cvMarkers, type CvItem } from "@/lib/domain/cv-sections";
 
 export const metadata = { title: "Currículo — Trajetória360" };
 export const dynamic = "force-dynamic";
@@ -15,7 +14,13 @@ export const dynamic = "force-dynamic";
 interface Row {
   id: string; title: string; year: number | null; item_type: string;
   natureza: string | null; origin: string; verification_level: string;
-  doi: string | null; isbn: string | null; issn: string | null;
+  evidence_status: string; doi: string | null; isbn: string | null; issn: string | null;
+}
+
+function normLangs(v: unknown): { lang: string; detail: string }[] {
+  if (Array.isArray(v)) return v as { lang: string; detail: string }[];
+  if (typeof v === "string") { try { const a = JSON.parse(v); return Array.isArray(a) ? a : []; } catch { return []; } }
+  return [];
 }
 
 export default async function CurriculoPage() {
@@ -23,127 +28,81 @@ export default async function CurriculoPage() {
   const { data: u } = await sb.auth.getUser();
   if (!u.user) redirect("/entrar?redirect=/exportar/curriculo");
 
-  const { data: pdata } = await sb
-    .from("personal_data")
-    .select("full_name,citation_name,birth_date,birth_place,lattes_id,orcid,email,phone,address,address_prof,languages")
-    .eq("user_id", u.user.id)
-    .maybeSingle<{
-      full_name: string | null; citation_name: string | null; birth_date: string | null;
-      birth_place: string | null; lattes_id: string | null; orcid: string | null;
-      email: string | null; phone: string | null; address: string | null;
-      address_prof: string | null; languages: { lang: string; detail: string }[] | null;
-    }>();
-
-  const { data: rows } = await sb
-    .from("academic_items")
-    .select("id,title,year,item_type,natureza,origin,verification_level,doi,isbn,issn")
-    .eq("user_id", u.user.id)
-    .is("deleted_at", null)
-    .order("year", { ascending: false });
+  const [{ data: pdata }, { data: rows }] = await Promise.all([
+    sb.from("personal_data")
+      .select("full_name,citation_name,birth_date,birth_place,lattes_id,orcid,email,phone,address,address_prof,languages")
+      .eq("user_id", u.user.id).maybeSingle(),
+    sb.from("academic_items")
+      .select("id,title,year,item_type,natureza,origin,verification_level,evidence_status,doi,isbn,issn")
+      .eq("user_id", u.user.id).is("deleted_at", null).order("year", { ascending: false }),
+  ]);
 
   const list = (rows ?? []) as Row[];
 
-  // contagem de evidências por item (coluna correta: item_id)
-  const ids = list.map((r) => r.id);
+  // evidências → documento principal por item (RLS já limita ao usuário; sem
+  // `.in(ids)` para não estourar o tamanho da URL do PostgREST com 400+ ids).
+  const docByItem = new Map<string, string>();
   const evCount = new Map<string, number>();
-  if (ids.length) {
-    const { data: evs } = await sb
-      .from("evidences").select("item_id").in("item_id", ids).is("deleted_at", null);
-    for (const e of (evs ?? []) as { item_id: string }[])
-      evCount.set(e.item_id, (evCount.get(e.item_id) ?? 0) + 1);
+  const { data: evs } = await sb
+    .from("evidences").select("item_id, document_id").is("deleted_at", null);
+  for (const e of (evs ?? []) as { item_id: string; document_id: string }[]) {
+    evCount.set(e.item_id, (evCount.get(e.item_id) ?? 0) + 1);
+    if (!docByItem.has(e.item_id)) docByItem.set(e.item_id, e.document_id);
   }
 
   const items: CvItem[] = list.map((r) => ({
-    id: r.id, title: r.title, year: r.year, itemType: r.item_type,
-    natureza: r.natureza, origin: r.origin, verificationLevel: r.verification_level,
-    evidenceCount: evCount.get(r.id) ?? 0,
-    doi: r.doi, isbn: r.isbn, issn: r.issn,
+    id: r.id, title: r.title, year: r.year, itemType: r.item_type, natureza: r.natureza,
+    origin: r.origin, verificationLevel: r.verification_level, evidenceStatus: r.evidence_status,
+    evidenceCount: evCount.get(r.id) ?? 0, doi: r.doi, isbn: r.isbn, issn: r.issn,
+    docId: docByItem.get(r.id) ?? null, docName: null,
   }));
 
-  const sections = groupIntoCvSections(items);
-  const total = items.length;
-  const comprovados = items.filter((i) => cvMarkers(i).some((m) => m.code === "R")).length;
-  const nome =
-    pdata?.full_name ??
-    (u.user.user_metadata?.full_name as string | undefined) ??
-    (u.user.email ?? "").split("@")[0];
-  const nascimento = [pdata?.birth_date, pdata?.birth_place].filter(Boolean).join(" — ");
-  const cvLangs: { lang: string; detail: string }[] = Array.isArray(pdata?.languages)
-    ? pdata!.languages
-    : typeof pdata?.languages === "string"
-      ? (() => { try { const a = JSON.parse(pdata!.languages as unknown as string); return Array.isArray(a) ? a : []; } catch { return []; } })()
-      : [];
+  const grouped = groupIntoCvSections(items); // já aplica a dedup geral do site
+  const deduped = grouped.flatMap((s) => s.items);
 
-  return (
-    <main className="mx-auto max-w-4xl px-6 py-8">
-      {/* Barra de ações — não sai na impressão */}
-      <div className="no-print flex items-center justify-between mb-6 flex-wrap gap-3">
-        <Link href="/exportar" className="back-link">← Voltar para Exportar</Link>
-        <div className="flex gap-2">
-          <a href="/api/curriculo/documentos" className="btn-secondary" target="_blank" rel="noopener noreferrer">
-            📎 PDF com todos os documentos
-          </a>
-          <PrintButton />
-        </div>
-      </div>
+  const sections: CvViewSection[] = grouped.map((s) => ({
+    key: s.key, label: s.label,
+    items: s.items.map((it) => {
+      const seal = cvSeal(it);
+      return {
+        id: it.id, year: it.year, title: it.title, natureza: it.natureza,
+        sealLabel: seal.label, sealTone: seal.tone,
+        docId: it.docId,
+        isPublication: cvMarkers(it).some((m) => m.code === "P"),
+      };
+    }),
+  }));
 
-      {/* Documento do currículo */}
-      <article className="cv-paper card">
-        <header className="cv-head">
-          <h1 className="serif" style={{ fontSize: 28, color: "#0f2942" }}>{nome}</h1>
-          <p className="text-sm text-stone-600">Currículo acadêmico — gerado pelo Trajetória360</p>
-          <div className="cv-id">
-            {nascimento && <div className="cv-id-row"><b>Nascimento:</b> {nascimento}</div>}
-            {pdata?.citation_name && <div className="cv-id-row"><b>Citações:</b> {pdata.citation_name}</div>}
-            {pdata?.lattes_id && <div className="cv-id-row"><b>Lattes:</b> {pdata.lattes_id}</div>}
-            {pdata?.orcid && <div className="cv-id-row"><b>ORCID:</b> {pdata.orcid.replace("https://orcid.org/", "")}</div>}
-            {pdata?.email && <div className="cv-id-row"><b>E-mail:</b> {pdata.email}</div>}
-            {pdata?.phone && <div className="cv-id-row"><b>Telefone:</b> {pdata.phone}</div>}
-            {pdata?.address && <div className="cv-id-row"><b>Endereço:</b> {pdata.address}</div>}
-            {cvLangs.length > 0 && (
-              <div className="cv-id-row"><b>Idiomas:</b> {cvLangs.map((l) => l.lang).join(", ")}</div>
-            )}
-          </div>
-          <p className="text-xs text-stone-500 mt-3">
-            {total} itens · {comprovados} com registro/comprovante
-          </p>
-          <p className="cv-legend text-xs text-stone-500 mt-2">
-            Legenda: <strong>R</strong> = há registro/comprovante anexado (documento, ISBN…) ·{" "}
-            <strong>P</strong> = publicação
-          </p>
-        </header>
+  // estatísticas
+  const years = deduped.map((i) => i.year).filter((y): y is number => !!y);
+  const stats: CvStats = {
+    total: deduped.length,
+    comprovados: deduped.filter((i) => ["comprovado", "validado"].includes(cvSeal(i).tone)).length,
+    anos: years.length ? Math.max(...years) - Math.min(...years) : 0,
+    formacoes: grouped.find((s) => s.key === "FORMACAO")?.items.length ?? 0,
+  };
 
-        {sections.length === 0 && (
-          <p className="text-stone-600 mt-6">
-            Nenhum item ainda. <Link href="/importar" className="underline text-[#0d6b52]">Importe seu Lattes</Link> ou envie documentos.
-          </p>
-        )}
+  // áreas de atuação (a partir dos itens)
+  const areas = Array.from(new Set(
+    items.filter((i) => (i.natureza ?? "").toLowerCase().includes("área de atua")).map((i) => i.title),
+  )).slice(0, 6);
 
-        {sections.map((sec) => (
-          <section key={sec.key} className="cv-section">
-            <h2 className="cv-section-title serif">{sec.label} <span className="cv-count">({sec.items.length})</span></h2>
-            <ul className="cv-list">
-              {sec.items.map((it) => {
-                const marks = cvMarkers(it);
-                return (
-                  <li key={it.id} className="cv-item">
-                    <span className="cv-year">{it.year || "—"}</span>
-                    <span className="cv-desc">
-                      {it.title}
-                      {it.natureza && <span className="cv-nature"> · {it.natureza}</span>}
-                    </span>
-                    <span className="cv-marks">
-                      {marks.map((m) => (
-                        <span key={m.code} className={`cv-mark cv-mark-${m.code}`} title={m.title}>{m.code}</span>
-                      ))}
-                    </span>
-                  </li>
-                );
-              })}
-            </ul>
-          </section>
-        ))}
-      </article>
-    </main>
-  );
+  const p = pdata as Record<string, unknown> | null;
+  const profile: CvProfile = {
+    name: (p?.full_name as string) ?? (u.user.email ?? "").split("@")[0],
+    title: "Professor · Pesquisador · Gestor Público",
+    location: "Cuiabá — Mato Grosso, Brasil",
+    citation: (p?.citation_name as string) ?? null,
+    lattes: (p?.lattes_id as string) ?? null,
+    orcid: (p?.orcid as string) ?? null,
+    email: (p?.email as string) ?? null,
+    institution: "SECITECI — Ciência, Tecnologia e Inovação (MT)",
+    areas,
+    languages: normLangs(p?.languages),
+    birth: [p?.birth_date, p?.birth_place].filter(Boolean).join(" — ") || null,
+    phone: (p?.phone as string) ?? null,
+    address: (p?.address as string) ?? null,
+  };
+
+  return <CurriculoView profile={profile} sections={sections} stats={stats} />;
 }

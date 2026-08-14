@@ -1,24 +1,14 @@
 // src/app/exportar/dados/page.tsx
-// Dados pessoais — base para cadastros. Cada campo tem botão de copiar.
-// Futuro: anexar RG, CPF, comprovante de endereço, título de eleitor (cofre pessoal).
+// Dados pessoais — cofre para cadastros. Cada BLOCO tem um botão que copia a
+// seção inteira. Futuro: anexar RG, CPF, comprovante de endereço, título…
 
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { CopyField } from "@/components/CopyField";
+import { CopyBlock } from "@/components/CopyBlock";
 
 export const metadata = { title: "Dados pessoais — Trajetória360" };
 export const dynamic = "force-dynamic";
-
-interface PData {
-  full_name: string | null; citation_name: string | null; birth_date: string | null;
-  birth_place: string | null; lattes_id: string | null; orcid: string | null;
-  cpf: string | null; rg: string | null; voter_id: string | null;
-  email: string | null; email_alt: string | null; phone: string | null;
-  address: string | null; address_prof: string | null;
-  facebook: string | null; linkedin: string | null;
-  languages: { lang: string; detail: string }[] | null;
-}
 
 function normLangs(v: unknown): { lang: string; detail: string }[] {
   if (Array.isArray(v)) return v as { lang: string; detail: string }[];
@@ -31,14 +21,18 @@ export default async function DadosPage() {
   const { data: u } = await sb.auth.getUser();
   if (!u.user) redirect("/entrar?redirect=/exportar/dados");
 
-  const { data } = await sb
-    .from("personal_data")
-    .select("*")
-    .eq("user_id", u.user.id)
-    .maybeSingle<PData>();
+  const { data } = await sb.from("personal_data").select("*").eq("user_id", u.user.id).maybeSingle();
+  const p = (data ?? {}) as Record<string, string | null>;
+  const langs = normLangs(p.languages);
 
-  const p = data;
-  const langs = normLangs(p?.languages);
+  const { data: pdocs } = await sb
+    .from("personal_documents").select("id, category, label, document_id").order("category");
+  const docs = (pdocs ?? []) as { id: string; category: string; label: string; document_id: string }[];
+  const DOC_GROUPS: { key: string; title: string }[] = [
+    { key: "IDENTIDADE", title: "Documentos de identidade" },
+    { key: "IMPOSTO_RENDA", title: "Imposto de Renda" },
+    { key: "ARMAS", title: "Documentos de armas (CR)" },
+  ];
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-10">
@@ -46,56 +40,103 @@ export default async function DadosPage() {
       <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-1">Dados pessoais</p>
       <h1 className="serif text-4xl text-[#0f2942] mb-2">Seus dados para cadastros</h1>
       <p className="text-stone-600 max-w-2xl mb-6">
-        Salvos uma vez, prontos para copiar sempre que um edital ou cadastro pedir. Clique em <strong>Copiar</strong> em cada campo.
+        Salvos uma vez, prontos para reutilizar. Cada bloco tem um botão <strong>Copiar bloco</strong> que
+        copia a seção inteira de uma vez.
       </p>
 
-      {!p ? (
-        <section className="card">
-          <p className="text-stone-700">Ainda não há dados cadastrados.</p>
-        </section>
+      {!data ? (
+        <section className="pd-block"><p className="text-stone-700">Ainda não há dados cadastrados.</p></section>
       ) : (
-        <>
-          <section className="card mb-4">
-            <h2 className="serif text-lg text-[#0f2942] mb-3">Identificação</h2>
-            <CopyField label="Nome completo" value={p.full_name} />
-            <CopyField label="Nome em citações" value={p.citation_name} />
-            <CopyField label="Nascimento" value={[p.birth_date, p.birth_place].filter(Boolean).join(" — ") || null} />
-            <CopyField label="CPF" value={p.cpf} />
-            <CopyField label="RG" value={p.rg} />
-            <CopyField label="Título de eleitor" value={p.voter_id} />
-            <CopyField label="Lattes ID" value={p.lattes_id} />
-            <CopyField label="ORCID" value={p.orcid} />
-          </section>
+        <div className="space-y-4">
+          <CopyBlock title="Identificação" fields={[
+            { label: "Nome completo", value: p.full_name },
+            { label: "Nome em citações", value: p.citation_name },
+            { label: "Nascimento", value: [p.birth_date, p.birth_place].filter(Boolean).join(" — ") },
+            { label: "Sexo", value: p.gender },
+            { label: "Estado civil", value: p.marital_status },
+            { label: "Escolaridade", value: p.education },
+            { label: "Matrícula", value: p.matricula },
+          ]} />
 
-          <section className="card mb-4">
-            <h2 className="serif text-lg text-[#0f2942] mb-3">Contato</h2>
-            <CopyField label="E-mail" value={p.email} />
-            <CopyField label="E-mail alternativo" value={p.email_alt} />
-            <CopyField label="Telefone / Celular" value={p.phone} />
-            <CopyField label="Endereço residencial" value={p.address} />
-            <CopyField label="Endereço profissional" value={p.address_prof} />
-            <CopyField label="Facebook" value={p.facebook} />
-            <CopyField label="LinkedIn" value={p.linkedin} />
-          </section>
+          <CopyBlock title="Filiação" fields={[
+            { label: "Nome do pai", value: p.father_name },
+            { label: "Nome da mãe", value: p.mother_name },
+          ]} />
+
+          <CopyBlock title="Documentos" fields={[
+            { label: "CPF", value: p.cpf },
+            { label: "RG", value: p.rg },
+            { label: "Título de eleitor", value: p.voter_id },
+            { label: "CNH", value: p.cnh },
+            { label: "Documento militar", value: p.military_doc },
+            { label: "Lattes ID", value: p.lattes_id },
+            { label: "ORCID", value: p.orcid },
+          ]} />
+
+          <CopyBlock title="Contato" fields={[
+            { label: "E-mail", value: p.email },
+            { label: "E-mail alternativo", value: p.email_alt },
+            { label: "Telefone / Celular", value: p.phone },
+            { label: "Ramal", value: p.ramal },
+          ]} />
+
+          <CopyBlock title="Endereço" fields={[
+            { label: "Endereço residencial", value: p.address },
+            { label: "Endereço profissional", value: p.address_prof },
+          ]} />
+
+          <CopyBlock title="Dados sociais e bancários" fields={[
+            { label: "PIS/PASEP", value: p.pis },
+            { label: "Dados bancários", value: p.bank },
+          ]} />
 
           {langs.length > 0 && (
-            <section className="card mb-4">
-              <h2 className="serif text-lg text-[#0f2942] mb-3">Idiomas</h2>
-              {langs.map((l) => (
-                <CopyField key={l.lang} label={l.lang} value={l.detail} />
-              ))}
-            </section>
+            <CopyBlock title="Idiomas" fields={langs.map((l) => ({ label: l.lang, value: l.detail }))} />
           )}
-        </>
+        </div>
       )}
 
-      <section className="card bg-stone-50">
-        <h2 className="serif text-lg text-[#0f2942] mb-1">Em breve</h2>
-        <p className="text-sm text-stone-600">
-          Anexar os documentos (RG, CPF, comprovante de endereço, título de eleitor) e editar os campos por aqui —
-          virando o cofre único dos seus documentos pessoais.
-        </p>
-      </section>
+      {/* Documentos anexados — com link de download ao lado de cada um */}
+      <h2 className="serif text-2xl text-[#0f2942] mt-10 mb-3">Documentos anexados</h2>
+      <div className="space-y-4">
+        {DOC_GROUPS.map((g) => {
+          const items = docs.filter((d) => d.category === g.key);
+          if (!items.length) return null;
+          return (
+            <section key={g.key} className="pd-block">
+              <h3 className="serif text-lg text-[#0f2942] mb-2">{g.title}</h3>
+              {items.map((d) => (
+                <div key={d.id} className="pd-doc-row">
+                  <span className="pd-doc-name">{d.label}</span>
+                  <a className="pd-doc-link" href={`/api/documentos/${d.document_id}`} target="_blank" rel="noopener noreferrer">
+                    Ver / baixar →
+                  </a>
+                </div>
+              ))}
+            </section>
+          );
+        })}
+      </div>
+
+      {/* Espaços para anexar/atualizar */}
+      <h2 className="serif text-2xl text-[#0f2942] mt-10 mb-3">Anexar / atualizar</h2>
+      <div className="pd-uploads">
+        {[
+          { icon: "🪪", t: "Foto de perfil", d: "Atualize a foto que aparece no seu perfil e currículo." },
+          { icon: "✍️", t: "Assinatura", d: "Salve o modelo da sua assinatura para usar quando precisar assinar." },
+          { icon: "🧾", t: "Imposto de Renda", d: "Adicione novas declarações e recibos por ano." },
+          { icon: "🔫", t: "Documentos de armas", d: "CR, guias de tráfego, SINAR e notas fiscais." },
+        ].map((s) => (
+          <div key={s.t} className="pd-upload-card">
+            <div className="pd-upload-icon">{s.icon}</div>
+            <div>
+              <p className="pd-upload-title">{s.t}</p>
+              <p className="pd-upload-desc">{s.d}</p>
+            </div>
+            <span className="pd-upload-soon">em breve</span>
+          </div>
+        ))}
+      </div>
     </main>
   );
 }

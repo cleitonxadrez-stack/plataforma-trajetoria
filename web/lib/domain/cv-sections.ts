@@ -2,6 +2,8 @@
 // Classifica cada academic_item numa seção estilo Lattes, para exportar
 // currículo apenas com o que já foi coletado na plataforma.
 
+import { dedupeItems } from "./dedupe";
+
 export type CvSectionKey =
   | "FORMACAO" | "COMPLEMENTAR" | "ATUACAO" | "LINHAS" | "AREAS"
   | "ARTIGOS" | "LIVROS" | "EVENTOS" | "PROJETOS" | "ORIENTACOES"
@@ -15,10 +17,26 @@ export interface CvItem {
   natureza: string | null;
   origin: string;
   verificationLevel: string;
+  evidenceStatus: string;
   evidenceCount: number;
   doi: string | null;
   isbn: string | null;
   issn: string | null;
+  /** documento comprobatório principal (para link de download), se houver */
+  docId: string | null;
+  docName: string | null;
+}
+
+export type SealTone = "comprovado" | "parcial" | "validado" | "sem" | "publicacao";
+export interface CvSeal { label: string; tone: SealTone }
+
+/** Selo humano de comprovação (substitui o "R"). */
+export function cvSeal(it: Pick<CvItem, "verificationLevel" | "evidenceStatus" | "docId" | "isbn">): CvSeal {
+  if (it.verificationLevel === "VALIDADO") return { label: "Validado", tone: "validado" };
+  if (it.verificationLevel === "DOCUMENTADO" || it.evidenceStatus === "COMPROVADO" || it.docId || it.isbn)
+    return { label: "Comprovado", tone: "comprovado" };
+  if (it.evidenceStatus === "COM_COMPROVANTE_PARCIAL") return { label: "Comprovante parcial", tone: "parcial" };
+  return { label: "Sem comprovante", tone: "sem" };
 }
 
 /**
@@ -93,10 +111,18 @@ export function classifyCv(it: Pick<CvItem, "title" | "itemType" | "natureza">):
   return "OUTROS";
 }
 
-/** Agrupa itens por seção, na ordem canônica, cada seção ordenada por ano desc. */
+/** Agrupa itens por seção, na ordem canônica, cada seção ordenada por ano desc.
+ *  Aplica a regra geral de deduplicação (lib/domain/dedupe) — a versão com
+ *  comprovante (R) sempre vence a autodeclarada. */
 export function groupIntoCvSections(items: CvItem[]): { key: CvSectionKey; label: string; items: CvItem[] }[] {
+  const deduped = dedupeItems(items, (it) => ({
+    title: it.title,
+    bucket: classifyCv(it),
+    // prioriza: com comprovante (R) > título mais descritivo > empate estável
+    score: (cvMarkers(it).some((m) => m.code === "R") ? 1_000_000 : 0) + it.title.length,
+  }));
   const byKey = new Map<CvSectionKey, CvItem[]>();
-  for (const it of items) {
+  for (const it of deduped) {
     const k = classifyCv(it);
     if (!byKey.has(k)) byKey.set(k, []);
     byKey.get(k)!.push(it);

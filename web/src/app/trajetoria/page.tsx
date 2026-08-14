@@ -14,6 +14,7 @@ import { countByState, groupByYear, reconcile, type ItemView, type ItemType, typ
 import { MOCK_ITEMS } from "@/mocks/extraction-fixtures";
 import { SeloComprovacao } from "@/components/SeloComprovacao";
 import { chooseDataSource, FALLBACK_BADGE } from "@/lib/ui/data-source";
+import { dedupeItems } from "@/lib/domain/dedupe";
 
 export const metadata = { title: "Trajetória — Trajetória360" };
 export const dynamic = "force-dynamic";
@@ -183,7 +184,12 @@ export default async function TrajetoriaPage() {
       items: process.env.NODE_ENV !== "production" ? MOCK_ITEMS : [],
     },
   });
-  const items = decision.data.items;
+  // Regra geral do site: remove duplicatas (a versão comprovada prevalece).
+  const items = dedupeItems(decision.data.items, (it) => ({
+    title: it.title,
+    bucket: it.itemType,
+    score: (it.evidenceStatus === "COMPROVADO" ? 1_000_000 : 0) + it.title.length,
+  }));
 
   // PRODUÇÃO sem dados.
   if (decision.isEmpty) {
