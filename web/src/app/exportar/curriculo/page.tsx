@@ -29,9 +29,7 @@ export default async function CurriculoPage() {
   if (!u.user) redirect("/entrar?redirect=/exportar/curriculo");
 
   const [{ data: pdata }, { data: rows }] = await Promise.all([
-    sb.from("personal_data")
-      .select("full_name,citation_name,birth_date,birth_place,lattes_id,orcid,email,phone,address,address_prof,languages")
-      .eq("user_id", u.user.id).maybeSingle(),
+    sb.from("personal_data").select("*").eq("user_id", u.user.id).maybeSingle(),
     sb.from("academic_items")
       .select("id,title,year,item_type,natureza,origin,verification_level,evidence_status,doi,isbn,issn")
       .eq("user_id", u.user.id).is("deleted_at", null).order("year", { ascending: false }),
@@ -59,9 +57,11 @@ export default async function CurriculoPage() {
 
   const grouped = groupIntoCvSections(items); // já aplica a dedup geral do site
   const deduped = grouped.flatMap((s) => s.items);
+  const isDoc = (it: CvItem) => ["comprovado", "validado"].includes(cvSeal(it).tone);
 
   const sections: CvViewSection[] = grouped.map((s) => ({
     key: s.key, label: s.label,
+    documented: s.items.filter(isDoc).length,
     items: s.items.map((it) => {
       const seal = cvSeal(it);
       return {
@@ -87,18 +87,36 @@ export default async function CurriculoPage() {
     items.filter((i) => (i.natureza ?? "").toLowerCase().includes("área de atua")).map((i) => i.title),
   )).slice(0, 6);
 
+  // foto de perfil (documento pessoal categoria FOTO)
+  const { data: fotoRow } = await sb
+    .from("personal_documents").select("document_id").eq("category", "FOTO").limit(1).maybeSingle<{ document_id: string }>();
+  const photoUrl = fotoRow?.document_id ? `/api/documentos/${fotoRow.document_id}` : null;
+
+  // tratamento pela maior titulação (Escolaridade)
+  const edu = ((pdata as Record<string, string | null> | null)?.education ?? "").toLowerCase();
+  const treatment = /doutor/.test(edu) ? "Dr." : /mestr/.test(edu) ? "Mestre" : /especial/.test(edu) ? "Esp." : "Prof.";
+
   const p = pdata as Record<string, unknown> | null;
+  const fullName = (p?.full_name as string) ?? (u.user.email ?? "").split("@")[0];
   const profile: CvProfile = {
-    name: (p?.full_name as string) ?? (u.user.email ?? "").split("@")[0],
+    name: fullName,
+    firstName: fullName.split(/\s+/)[0] ?? fullName,
+    treatment,
+    role: (p?.job_title as string) ?? null,
     title: "Professor · Pesquisador · Gestor Público",
     location: "Cuiabá — Mato Grosso, Brasil",
     citation: (p?.citation_name as string) ?? null,
     lattes: (p?.lattes_id as string) ?? null,
     orcid: (p?.orcid as string) ?? null,
     email: (p?.email as string) ?? null,
+    emailProf: (p?.email_prof as string) ?? null,
+    website: (p?.website as string) ?? null,
+    linkedin: (p?.linkedin as string) ?? null,
+    instagram: (p?.instagram as string) ?? null,
     institution: "SECITECI — Ciência, Tecnologia e Inovação (MT)",
     areas,
     languages: normLangs(p?.languages),
+    photoUrl,
     birth: [p?.birth_date, p?.birth_place].filter(Boolean).join(" — ") || null,
     phone: (p?.phone as string) ?? null,
     address: (p?.address as string) ?? null,
