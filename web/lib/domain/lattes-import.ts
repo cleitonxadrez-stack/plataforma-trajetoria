@@ -46,6 +46,9 @@ const XSD_MAP: Record<string, ItemType> = {
   "PREMIO": "OUTROS",
   "PROJETO": "OUTROS",
   "ORGANIZACAO-EVENTO": "OUTROS",
+  "ATUACAO": "OUTROS",
+  "LINHA-PESQUISA": "OUTROS",
+  "AREA-ATUACAO": "OUTROS",
 };
 
 export function mapXsdToItemType(xsd: string): ItemType {

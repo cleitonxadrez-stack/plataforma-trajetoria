@@ -89,6 +89,9 @@ const EXTRACTORS: Extractor[] = [
   { el: "PREMIO-TITULO", title: "NOME-DO-PREMIO-OU-TITULO", years: ["ANO-DA-PREMIACAO"], nature: "PREMIO", natureza: "Prêmio ou título" },
   { el: "PROJETO-DE-PESQUISA", title: "NOME-DO-PROJETO", years: ["ANO-INICIO"], nature: "PROJETO", natureza: "Projeto de pesquisa" },
   { el: "DADOS-BASICOS-DA-ORGANIZACAO-DE-EVENTO", title: "TITULO", years: ["ANO"], nature: "ORGANIZACAO-EVENTO", natureza: "Organização de evento (produção técnica)" },
+  // Linhas de pesquisa e áreas de atuação (sem ano).
+  { el: "LINHA-DE-PESQUISA", title: "TITULO-DA-LINHA-DE-PESQUISA", years: [], nature: "LINHA-PESQUISA", natureza: "Linha de pesquisa" },
+  { el: "AREA-DO-CONHECIMENTO-1", title: "NOME-DA-AREA-DO-CONHECIMENTO", years: [], nature: "AREA-ATUACAO", natureza: "Área de atuação" },
 ];
 
 /** Também aceita o formato de teste antigo: `TITULO-DO-TRABALHO=` em qualquer tag. */
@@ -133,6 +136,33 @@ export function parseLattesXml(xml: string): ParsedLattes {
       const flag = /\bFLAG-RELEVANCIA="SIM"/i.test(attrs) || /\bFLAG-POTENCIAL-INOVACAO="SIM"/i.test(attrs);
       push(ex.nature, ex.natureza, title, year, doi, isbn, flag);
     }
+  }
+
+  // Atuação profissional — bloco aninhado: uma instituição com 1+ vínculos.
+  const atRe = /<ATUACAO-PROFISSIONAL\b([^>]*)>([\s\S]*?)<\/ATUACAO-PROFISSIONAL>/g;
+  let am: RegExpExecArray | null;
+  while ((am = atRe.exec(clean)) !== null) {
+    const inst = attr(am[1]!, "NOME-INSTITUICAO");
+    if (!inst) continue;
+    const block = am[2]!;
+    const vRe = /<VINCULOS\b([^>]*)>/g;
+    let vm: RegExpExecArray | null;
+    let any = false;
+    while ((vm = vRe.exec(block)) !== null) {
+      const va = vm[1]!;
+      const enq = attr(va, "OUTRO-ENQUADRAMENTO-FUNCIONAL-INFORMADO")
+        || attr(va, "ENQUADRAMENTO-FUNCIONAL")
+        || attr(va, "TIPO-DE-VINCULO") || "";
+      const yi = attr(va, "ANO-INICIO");
+      const yf = attr(va, "ANO-FIM");
+      const year = yi && /^\d{4}$/.test(yi) ? Number(yi) : 0;
+      const period = yi ? `${yi}–${yf || "atual"}` : "";
+      const title = enq ? `${inst} — ${enq}` : inst;
+      const natureza = period ? `Atuação profissional (${period})` : "Atuação profissional";
+      push("ATUACAO", natureza, title, year, null, null, false);
+      any = true;
+    }
+    if (!any) push("ATUACAO", "Atuação profissional", inst, 0, null, null, false);
   }
 
   // Compat: formato de teste simplificado (TITULO-DO-TRABALHO em qualquer tag).

@@ -3,8 +3,9 @@
 // currículo apenas com o que já foi coletado na plataforma.
 
 export type CvSectionKey =
-  | "FORMACAO" | "COMPLEMENTAR" | "ARTIGOS" | "LIVROS" | "EVENTOS"
-  | "PROJETOS" | "ORIENTACOES" | "BANCAS" | "PREMIOS" | "OUTROS";
+  | "FORMACAO" | "COMPLEMENTAR" | "ATUACAO" | "LINHAS" | "AREAS"
+  | "ARTIGOS" | "LIVROS" | "EVENTOS" | "PROJETOS" | "ORIENTACOES"
+  | "BANCAS" | "PREMIOS" | "OUTROS";
 
 export interface CvItem {
   id: string;
@@ -58,6 +59,9 @@ export function cvMarkers(it: CvItem): { code: "R" | "P"; title: string }[] {
 export const CV_SECTIONS: { key: CvSectionKey; label: string }[] = [
   { key: "FORMACAO", label: "Formação acadêmica / titulação" },
   { key: "COMPLEMENTAR", label: "Formação complementar" },
+  { key: "ATUACAO", label: "Atuação profissional" },
+  { key: "LINHAS", label: "Linhas de pesquisa" },
+  { key: "AREAS", label: "Áreas de atuação" },
   { key: "ARTIGOS", label: "Artigos completos publicados em periódicos" },
   { key: "LIVROS", label: "Livros e capítulos publicados" },
   { key: "EVENTOS", label: "Trabalhos publicados em anais de eventos" },
@@ -76,6 +80,9 @@ export function classifyCv(it: Pick<CvItem, "title" | "itemType" | "natureza">):
   if (/pr[êe]mio|\bt[íi]tulo\b/.test(nat)) return "PREMIOS";
   if (/\bbanca/.test(s)) return "BANCAS";
   if (/orienta[çc]|supervis/.test(s)) return "ORIENTACOES";
+  if (/atua[çc][ãa]o profissional|v[íi]nculo funcional|retrato funcional|experi[êe]ncia profissional/.test(s)) return "ATUACAO";
+  if (/linha de pesquisa/.test(nat)) return "LINHAS";
+  if (/[áa]rea de atua[çc]/.test(nat)) return "AREAS";
   // Produção técnica (curso ministrado, organização de evento) → Outras.
   if (/ministrad|organiza[çc][ãa]o de evento/.test(s)) return "OUTROS";
   if (/forma[çc][ãa]o complementar|profici[êe]ncia|extens[ãa]o universit|capacita[çc][ãa]o de professores/.test(s)) return "COMPLEMENTAR";
