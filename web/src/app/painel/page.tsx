@@ -159,7 +159,7 @@ export default async function PainelPage() {
   return (
     <main className="max-w-5xl mx-auto px-6 py-12">
       <p className="text-xs uppercase tracking-[.12em] text-stone-500 mb-2">Painel</p>
-      <h1 className="serif text-4xl text-[#0f2942] mb-1">
+      <h1 className="serif text-4xl text-[#102A43] mb-1">
         {profile?.full_name ?? sess.user.email}
       </h1>
       {profile?.citation_name && (
@@ -250,29 +250,29 @@ export default async function PainelPage() {
       <section className="grid md:grid-cols-3 gap-4 mt-8">
         <div className="card">
           <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1">Plano</p>
-          <p className="serif text-2xl text-[#0f2942]">{profile?.plan_tier ?? "FREE"}</p>
+          <p className="serif text-2xl text-[#102A43]">{profile?.plan_tier ?? "FREE"}</p>
           <p className="text-xs text-stone-500 mt-1">
             {profile?.doc_quota_used ?? 0} / {profile?.doc_quota_limit ?? 500} documentos
           </p>
         </div>
         <div className="card">
           <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1">Sessão</p>
-          <p className="text-sm font-mono text-[#0f2942]">{profile?.email ?? sess.user.email}</p>
+          <p className="text-sm font-mono text-[#102A43]">{profile?.email ?? sess.user.email}</p>
           <p className="text-xs text-stone-500 mt-1">ID: {sess.user.id.slice(0, 8)}…</p>
         </div>
         <div className="card">
           <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1">Próximos passos</p>
           <div className="flex flex-col gap-1">
-            <Link href="/documentos/enviar" className="text-sm underline" style={{ color: "#0d6b52" }}>
+            <Link href="/documentos/enviar" className="text-sm underline" style={{ color: "#15803D" }}>
               Enviar documento
             </Link>
-            <Link href="/documentos" className="text-sm underline" style={{ color: "#0d6b52" }}>
+            <Link href="/documentos" className="text-sm underline" style={{ color: "#15803D" }}>
               Meu cofre
             </Link>
-            <Link href="/importar" className="text-sm underline" style={{ color: "#0d6b52" }}>
+            <Link href="/importar" className="text-sm underline" style={{ color: "#15803D" }}>
               Importar Lattes
             </Link>
-            <Link href="/trajetoria" className="text-sm underline" style={{ color: "#0d6b52" }}>
+            <Link href="/trajetoria" className="text-sm underline" style={{ color: "#15803D" }}>
               Ver trajetória
             </Link>
             <Link href="/auth/signout" className="text-sm underline" style={{ color: "#8a2a1f" }}>
@@ -289,7 +289,7 @@ function EmptyPainel() {
   return (
     <main className="max-w-3xl mx-auto px-6 py-16">
       <p className="text-xs uppercase tracking-[.12em] text-stone-500 mb-2">Painel</p>
-      <h1 className="serif text-4xl text-[#0f2942] mb-3">Sem dados ainda</h1>
+      <h1 className="serif text-4xl text-[#102A43] mb-3">Sem dados ainda</h1>
       <p className="text-stone-700 max-w-2xl">
         Não encontramos itens na sua trajetória. Comece importando seu
         currículo Lattes — leva menos de 2 minutos e seus indicadores

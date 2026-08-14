@@ -27,7 +27,7 @@ export default function SobrePage() {
   return (
     <div className="min-h-screen bg-bg text-ink">
       {/* Header com Entrar no topo */}
-      <header className="sticky top-0 z-30 border-b border-[#cddcec]/80 bg-bg/85 backdrop-blur">
+      <header className="sticky top-0 z-30 border-b border-[#E2E8F0]/80 bg-bg/85 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/" aria-label="Trajetória360 — início">
             <Logo size={36} />
@@ -64,7 +64,7 @@ export default function SobrePage() {
       </section>
 
       {/* Princípios */}
-      <section className="border-y border-[#cddcec] bg-bgstrip">
+      <section className="border-y border-[#E2E8F0] bg-bgstrip">
         <div className="mx-auto max-w-5xl px-6 py-16 md:py-20">
           <h2 className="serif text-2xl font-semibold text-primary sm:text-3xl">
             Princípios de produto
@@ -97,7 +97,7 @@ export default function SobrePage() {
       </section>
 
       {/* Rodapé */}
-      <footer className="border-t border-[#cddcec] bg-bgstrip">
+      <footer className="border-t border-[#E2E8F0] bg-bgstrip">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-soft sm:flex-row">
           <Logo size={26} />
           <div className="flex gap-5">

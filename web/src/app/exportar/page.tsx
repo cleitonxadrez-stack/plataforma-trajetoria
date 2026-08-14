@@ -25,7 +25,7 @@ export default async function ExportarPage() {
     <main className="mx-auto max-w-4xl px-6 py-10">
       <Link href="/trajetoria" className="back-link">← Voltar para a Trajetória</Link>
       <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-1">Exportar</p>
-      <h1 className="serif text-4xl text-[#0f2942] mb-2">Gerar currículo e documentos</h1>
+      <h1 className="serif text-4xl text-[#102A43] mb-2">Gerar currículo e documentos</h1>
       <p className="text-stone-600 max-w-2xl">
         Puxe tudo o que já está organizado aqui — {itens ?? 0} itens e {docs ?? 0} documentos —
         e exporte no formato que precisar.
@@ -34,7 +34,7 @@ export default async function ExportarPage() {
       <section className="grid sm:grid-cols-2 gap-4 mt-8">
         <Link href="/exportar/curriculo" className="card block hover:shadow-md transition">
           <div className="text-2xl mb-2">📄</div>
-          <h2 className="serif text-xl text-[#0f2942] mb-1">Currículo (estilo Lattes)</h2>
+          <h2 className="serif text-xl text-[#102A43] mb-1">Currículo (estilo Lattes)</h2>
           <p className="text-sm text-stone-600">
             Currículo aberto, área por área, com a descrição de cada item e marcadores
             <strong> R</strong> (registro/comprovante) e <strong>P</strong> (publicação). Imprima ou salve em PDF.
@@ -44,7 +44,7 @@ export default async function ExportarPage() {
         <a href="/api/curriculo/documentos" target="_blank" rel="noopener noreferrer"
            className="card block hover:shadow-md transition">
           <div className="text-2xl mb-2">📎</div>
-          <h2 className="serif text-xl text-[#0f2942] mb-1">PDF com todos os documentos</h2>
+          <h2 className="serif text-xl text-[#102A43] mb-1">PDF com todos os documentos</h2>
           <p className="text-sm text-stone-600">
             Junta todos os {docs ?? 0} comprovantes anexados num único PDF, com capa — pronto para anexar em editais.
           </p>
@@ -52,7 +52,7 @@ export default async function ExportarPage() {
 
         <Link href="/exportar/dados" className="card block hover:shadow-md transition">
           <div className="text-2xl mb-2">🪪</div>
-          <h2 className="serif text-xl text-[#0f2942] mb-1">Dados pessoais</h2>
+          <h2 className="serif text-xl text-[#102A43] mb-1">Dados pessoais</h2>
           <p className="text-sm text-stone-600">
             Nome, CPF, RG, endereço, título de eleitor… salvos uma vez e com botão de <strong>copiar</strong> para
             preencher cadastros rapidinho.
@@ -61,7 +61,7 @@ export default async function ExportarPage() {
 
         <Link href="/dossies" className="card block hover:shadow-md transition">
           <div className="text-2xl mb-2">🗂️</div>
-          <h2 className="serif text-xl text-[#0f2942] mb-1">Dossiê por edital (pontuado)</h2>
+          <h2 className="serif text-xl text-[#102A43] mb-1">Dossiê por edital (pontuado)</h2>
           <p className="text-sm text-stone-600">
             Monta um dossiê selecionando itens e pontuando pela metodologia — para editais com barema.
           </p>

@@ -100,23 +100,23 @@ export default async function DossierDetail(props: { params: Promise<{ id: strin
     <main className="mx-auto max-w-4xl px-6 py-10" data-testid="dossier-detail">
       <header className="mb-6 flex items-center justify-between">
         <div>
-          <p className="text-xs uppercase tracking-widest text-[#0f2942]/70">Dossiê</p>
+          <p className="text-xs uppercase tracking-widest text-[#102A43]/70">Dossiê</p>
           <h1 className="serif text-3xl">{d.title}</h1>
-          {d.purpose && <p className="text-sm text-[#0f2942]/70 mt-1">{d.purpose}</p>}
+          {d.purpose && <p className="text-sm text-[#102A43]/70 mt-1">{d.purpose}</p>}
         </div>
         <Link href={`/dossies/${d.id}/pdf`} className="btn-primary">Gerar PDF</Link>
       </header>
 
       <section className="card mb-6 flex items-baseline gap-6">
         <div>
-          <p className="text-xs uppercase tracking-widest text-[#0f2942]/70">Total</p>
+          <p className="text-xs uppercase tracking-widest text-[#102A43]/70">Total</p>
           <p className="serif text-5xl" data-testid="dossier-total">{result.total}</p>
-          <p className="text-xs text-[#0f2942]/70">pontos</p>
+          <p className="text-xs text-[#102A43]/70">pontos</p>
         </div>
         <div className="text-sm space-y-1">
           <p>{result.items.length} itens contados</p>
           <p className="text-[#8a2a1f]">{result.excluded.length} itens excluídos</p>
-          <p className="text-[#0f2942]/70">
+          <p className="text-[#102A43]/70">
             Janela: {method.windowYears === null ? "vida inteira" : `${method.windowYears} anos`} ·
             Tetos: {method.applyCaps ? "aplicados" : "não"}
           </p>
@@ -128,8 +128,8 @@ export default async function DossierDetail(props: { params: Promise<{ id: strin
           <h2 className="serif text-xl mb-2">Excluídos</h2>
           <ul className="text-sm space-y-1">
             {result.excluded.slice(0, 30).map((e, i) => (
-              <li key={i} className="border-b border-[#0f2942]/10 py-1">
-                <span className="font-mono text-xs text-[#0f2942]/60">{e.itemId.slice(0, 8)}</span>
+              <li key={i} className="border-b border-[#102A43]/10 py-1">
+                <span className="font-mono text-xs text-[#102A43]/60">{e.itemId.slice(0, 8)}</span>
                 <span className="ml-2">{e.reason}</span>
               </li>
             ))}
@@ -146,9 +146,9 @@ export default async function DossierDetail(props: { params: Promise<{ id: strin
             </header>
             <ol className="text-sm space-y-1">
               {cat.items.map((it) => (
-                <li key={it.itemId} className="flex justify-between border-b border-[#0f2942]/10 py-1">
+                <li key={it.itemId} className="flex justify-between border-b border-[#102A43]/10 py-1">
                   <span>
-                    <span className="font-mono text-xs text-[#0f2942]/60 mr-2">#{it.orderIndex}</span>
+                    <span className="font-mono text-xs text-[#102A43]/60 mr-2">#{it.orderIndex}</span>
                     {it.itemId.slice(0, 8)}
                   </span>
                   <span className="font-mono">{it.pointsAwarded} pts</span>
@@ -161,7 +161,7 @@ export default async function DossierDetail(props: { params: Promise<{ id: strin
 
       <details className="mt-8">
         <summary className="cursor-pointer text-sm font-medium">Balancete auditável</summary>
-        <pre className="text-xs font-mono whitespace-pre-wrap bg-[#f3f0eb] p-3 rounded mt-2">{audit}</pre>
+        <pre className="text-xs font-mono whitespace-pre-wrap bg-[#F1F5F9] p-3 rounded mt-2">{audit}</pre>
       </details>
 
       <p className="mt-10 text-xs text-[#a15a13] bg-[#f3e3cd] border border-[#a15a13]/40 rounded p-3">

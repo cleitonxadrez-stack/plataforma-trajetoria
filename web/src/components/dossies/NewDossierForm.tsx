@@ -98,7 +98,7 @@ export function NewDossierForm() {
           value={title}
           onChange={(e) => setTitle(e.currentTarget.value)}
           placeholder="Progressão UFMT 2026"
-          className="mt-1 block w-full border border-[#0f2942]/20 rounded p-2"
+          className="mt-1 block w-full border border-[#102A43]/20 rounded p-2"
         />
       </label>
 
@@ -109,7 +109,7 @@ export function NewDossierForm() {
           value={purpose}
           onChange={(e) => setPurpose(e.currentTarget.value)}
           placeholder="Ex.: progressão de classe"
-          className="mt-1 block w-full border border-[#0f2942]/20 rounded p-2"
+          className="mt-1 block w-full border border-[#102A43]/20 rounded p-2"
         />
       </label>
 
@@ -129,8 +129,8 @@ export function NewDossierForm() {
 
       {parsed && (
         <section className="mt-6 space-y-4" data-testid="edital-preview">
-          <div className="border-l-4 border-[#0f2942] pl-3">
-            <p className="text-xs uppercase tracking-widest text-[#0f2942]/70">Prévia</p>
+          <div className="border-l-4 border-[#102A43] pl-3">
+            <p className="text-xs uppercase tracking-widest text-[#102A43]/70">Prévia</p>
             <h3 className="serif text-xl">Identificamos estas regras. Confirme ou edite.</h3>
           </div>
 
@@ -141,7 +141,7 @@ export function NewDossierForm() {
             <Field label="Status" value={parsed.status} />
           </dl>
 
-          <details className="bg-[#f3f0eb] rounded p-3">
+          <details className="bg-[#F1F5F9] rounded p-3">
             <summary className="cursor-pointer text-sm font-medium">Diagnóstico ({parsed.diagnostics.length})</summary>
             <ul className="text-xs space-y-1 mt-2 font-mono">
               {parsed.diagnostics.map((d, i) => <li key={i}>· {d}</li>)}
@@ -149,8 +149,8 @@ export function NewDossierForm() {
           </details>
 
           {parsed.rules.length > 0 ? (
-            <table className="w-full text-sm border-collapse border border-[#0f2942]/15">
-              <thead className="bg-[#f3f0eb] text-left">
+            <table className="w-full text-sm border-collapse border border-[#102A43]/15">
+              <thead className="bg-[#F1F5F9] text-left">
                 <tr>
                   <th className="p-2">Tipo</th>
                   <th className="p-2">Qualis</th>
@@ -161,12 +161,12 @@ export function NewDossierForm() {
               </thead>
               <tbody>
                 {parsed.rules.map((r, i) => (
-                  <tr key={i} className="border-t border-[#0f2942]/10">
+                  <tr key={i} className="border-t border-[#102A43]/10">
                     <td className="p-2 font-mono">{r.itemType}</td>
                     <td className="p-2 font-mono">{r.qualisStratum ?? "—"}</td>
                     <td className="p-2">{r.categoryLabel}</td>
                     <td className="p-2 font-medium">{r.points}</td>
-                    <td className="p-2 text-xs text-[#0f2942]/70">
+                    <td className="p-2 text-xs text-[#102A43]/70">
                       {r.capPerYear ? `${r.capPerYear}/ano` : ""}
                       {r.capPerCategory ? `, ${r.capPerCategory}/cat` : ""}
                       {r.capTotal ? `, total ${r.capTotal}` : ""}
@@ -197,8 +197,8 @@ export function NewDossierForm() {
 
 function Field({ label, value }: { label: string; value: string }) {
   return (
-    <div className="border border-[#0f2942]/10 rounded p-2">
-      <dt className="text-xs text-[#0f2942]/70">{label}</dt>
+    <div className="border border-[#102A43]/10 rounded p-2">
+      <dt className="text-xs text-[#102A43]/70">{label}</dt>
       <dd className="font-medium">{value}</dd>
     </div>
   );

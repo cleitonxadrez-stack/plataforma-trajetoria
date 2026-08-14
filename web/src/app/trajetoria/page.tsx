@@ -74,7 +74,7 @@ function ItemCard({ item }: { item: ItemView }) {
   const r = reconcile({ state: item.state, evidenceCount: item.evidenceCount });
   const doiBadge = item.doi ? (
     <span title={item.doi}
-          style={{ fontFamily: "monospace", fontSize: 12, color: "#205b80" }}>
+          style={{ fontFamily: "monospace", fontSize: 12, color: "#2563EB" }}>
       DOI · {item.doi.length > 24 ? item.doi.slice(0, 24) + "…" : item.doi}
     </span>
   ) : null;
@@ -86,7 +86,7 @@ function ItemCard({ item }: { item: ItemView }) {
           <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1">
             {item.itemType} · {item.year}
           </p>
-          <h3 className="serif text-[22px] text-[#0f2942] leading-snug">{item.title}</h3>
+          <h3 className="serif text-[22px] text-[#102A43] leading-snug">{item.title}</h3>
           {item.titleEn && (
             <p className="text-sm italic text-stone-600 mt-1">{item.titleEn}</p>
           )}
@@ -103,7 +103,7 @@ function ItemCard({ item }: { item: ItemView }) {
           <span title="FLAG-POTENCIAL-INOVACAO=SIM (Lattes)"
             style={{
               padding: "2px 8px", fontSize: 11, letterSpacing: ".08em",
-              textTransform: "uppercase", color: "#0d6b52",
+              textTransform: "uppercase", color: "#15803D",
               background: "#e3efe9", borderRadius: 6,
             }}>
             Inovação
@@ -113,7 +113,7 @@ function ItemCard({ item }: { item: ItemView }) {
           <span title="Importado do XML Lattes"
             style={{
               padding: "2px 8px", fontSize: 11, letterSpacing: ".08em",
-              textTransform: "uppercase", color: "#205b80",
+              textTransform: "uppercase", color: "#2563EB",
               background: "#e1ecf5", borderRadius: 6,
             }}>
             Lattes
@@ -202,7 +202,7 @@ export default async function TrajetoriaPage() {
   return (
     <main className="max-w-5xl mx-auto px-6 py-12">
       <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-2">Trajetória</p>
-      <h1 className="serif text-4xl text-[#0f2942] mb-1">Sua linha do tempo intelectual</h1>
+      <h1 className="serif text-4xl text-[#102A43] mb-1">Sua linha do tempo intelectual</h1>
       <p className="text-stone-600 max-w-2xl mt-2">
         Cada item começa como <strong>autodeclarado</strong> e só passa a <strong>validado</strong> depois que
         você confirma e vincula um documento. Sem gamificação, sem ranking.
@@ -221,7 +221,7 @@ export default async function TrajetoriaPage() {
         {(["AUTODECLARADO", "CONFIRMADO", "DOCUMENTADO", "VALIDADO"] as const).map((s) => (
           <div key={s} className="card">
             <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1">{STATE_LABEL[s]}</p>
-            <p className="serif text-3xl text-[#0f2942]">{totals[s]}</p>
+            <p className="serif text-3xl text-[#102A43]">{totals[s]}</p>
           </div>
         ))}
       </section>
@@ -229,9 +229,9 @@ export default async function TrajetoriaPage() {
       {groups.map(({ year, items }) => (
         <section key={year} style={{ marginTop: 36 }}>
           <header style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 10 }}>
-            <h2 className="serif text-2xl text-[#0f2942]">{year}</h2>
+            <h2 className="serif text-2xl text-[#102A43]">{year}</h2>
             <span className="text-stone-500 text-sm">{items.length} {items.length === 1 ? "item" : "itens"}</span>
-            <span style={{ flex: 1, height: 1, background: "#cddcec", display: "inline-block" }} />
+            <span style={{ flex: 1, height: 1, background: "#E2E8F0", display: "inline-block" }} />
           </header>
           {items.map((it) => <ItemCard key={it.id} item={it} />)}
         </section>
@@ -240,9 +240,9 @@ export default async function TrajetoriaPage() {
       <footer className="card mt-10 bg-stone-50">
         <p className="text-sm text-stone-700">
           <strong>Próximo passo:</strong> adicione itens via{" "}
-          <Link href="/importar" className="text-[#0d6b52] underline">/importar</Link>{" "}
+          <Link href="/importar" className="text-[#15803D] underline">/importar</Link>{" "}
           (Lattes) ou{" "}
-          <Link href="/trajetoria/novo" className="text-[#0d6b52] underline">/trajetoria/novo</Link>
+          <Link href="/trajetoria/novo" className="text-[#15803D] underline">/trajetoria/novo</Link>
           (manual). Cada item entra como <em>AUTODECLARADO</em> até você confirmar.
         </p>
       </footer>
@@ -254,7 +254,7 @@ function EmptyTrajetoria() {
   return (
     <main className="max-w-3xl mx-auto px-6 py-16">
       <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-2">Trajetória</p>
-      <h1 className="serif text-4xl text-[#0f2942] mb-3">Sua linha do tempo está vazia</h1>
+      <h1 className="serif text-4xl text-[#102A43] mb-3">Sua linha do tempo está vazia</h1>
       <p className="text-stone-700 max-w-2xl">
         Importe seu currículo Lattes e seus indicadores pessoais aparecem aqui
         imediatamente, organizados por ano. Cada item começa como

@@ -52,7 +52,7 @@ export default async function DocumentoDetalhe({ params }: Props) {
       <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-2">
         <Link href="/documentos" className="hover:underline">← Cofre</Link>
       </p>
-      <h1 className="serif text-3xl text-[#0f2942] mb-1" style={{ wordBreak: "break-word" }}>
+      <h1 className="serif text-3xl text-[#102A43] mb-1" style={{ wordBreak: "break-word" }}>
         {row.original_filename}
       </h1>
       <p className="text-xs text-stone-500 mb-6" style={{ fontFamily: "monospace" }}>
@@ -81,13 +81,13 @@ export default async function DocumentoDetalhe({ params }: Props) {
       </section>
 
       <section style={{ marginTop: 24 }}>
-        <h2 className="serif text-xl text-[#0f2942] mb-2">Histórico (audit)</h2>
+        <h2 className="serif text-xl text-[#102A43] mb-2">Histórico (audit)</h2>
         <ol className="card" style={{ listStyle: "none", padding: 0 }}>
           {view.audit.map((ev, i) => (
             <li key={i}
-                style={{ padding: "12px 22px", borderBottom: i === view.audit.length - 1 ? "none" : "1px solid #cddcec" }}>
+                style={{ padding: "12px 22px", borderBottom: i === view.audit.length - 1 ? "none" : "1px solid #E2E8F0" }}>
               <div style={{ display: "flex", justifyContent: "space-between", fontSize: 13 }}>
-                <span style={{ fontFamily: "monospace", color: "#205b80" }}>{ev.action}</span>
+                <span style={{ fontFamily: "monospace", color: "#2563EB" }}>{ev.action}</span>
                 <span style={{ color: "#7a8294" }}>{ev.at}</span>
               </div>
               <div style={{ fontSize: 12, color: "#4a5266", marginTop: 4 }}>

@@ -39,7 +39,7 @@ export function RecoveryLetterPreview({ letter, onMarkSent }: RecoveryLetterPrev
       <header style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 12 }}>
         <div>
           <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1">Destinatário</p>
-          <h3 className="serif text-xl text-[#0f2942] leading-snug">{letter.institutionName}</h3>
+          <h3 className="serif text-xl text-[#102A43] leading-snug">{letter.institutionName}</h3>
           <p className="text-xs text-stone-500 mt-1">
             {letter.itemCount} {letter.itemCount === 1 ? "item" : "itens"} agrupados ·
             canal: <code style={{ fontFamily: "monospace" }}>{letter.preferredChannel}</code>
@@ -69,7 +69,7 @@ export function RecoveryLetterPreview({ letter, onMarkSent }: RecoveryLetterPrev
           fontFamily: '"Source Serif 4", Georgia, serif',
           fontSize: 13,
           background: "#eaf1f7",
-          border: "1px solid #cddcec",
+          border: "1px solid #E2E8F0",
           borderRadius: 8,
           padding: 14,
           marginTop: 14,
@@ -109,7 +109,7 @@ export function RecoveryLetterPreview({ letter, onMarkSent }: RecoveryLetterPrev
               "Solicitação de documentos comprobatórios — " + letter.institutionName
             )}`}
             className="text-xs underline"
-            style={{ color: "#205b80" }}
+            style={{ color: "#2563EB" }}
           >
             ou abrir e-mail pré-preenchido →
           </a>

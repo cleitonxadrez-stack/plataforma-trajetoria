@@ -50,7 +50,7 @@ export function UploadForm() {
             ? "Detectamos que este arquivo já foi enviado antes (mesmo conteúdo)."
             : "Salvo com segurança. A extração vai rodar em segundo plano."}
         </p>
-        <div className="rounded-lg border border-[#cddcec] bg-white px-4 py-3">
+        <div className="rounded-lg border border-[#E2E8F0] bg-white px-4 py-3">
           <p className="text-xs uppercase tracking-[.12em] text-soft mb-1">Código de verificação</p>
           <p className="font-mono text-lg text-primary">{result.registryCode}</p>
         </div>
@@ -72,7 +72,7 @@ export function UploadForm() {
   return (
     <form action={onSubmit} className="space-y-5">
       <label
-        className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#c4d6ea] bg-white px-6 py-12 text-center transition-colors hover:border-info hover:bg-[#f2f7fc]"
+        className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#E2E8F0] bg-white px-6 py-12 text-center transition-colors hover:border-info hover:bg-[#f2f7fc]"
       >
         <span className="mb-2 grid h-12 w-12 place-items-center rounded-full bg-[#eaf1f7] text-info">
           ↑

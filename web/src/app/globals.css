@@ -168,6 +168,7 @@ body {
 .pd-upload-title { font-weight: 600; color: #102A43; margin: 0; }
 .pd-upload-desc { font-size: 12.5px; color: #64748B; margin: 2px 0 0; }
 .pd-upload-soon { margin-left: auto; font-size: 11px; color: #64748B; background: #F1F5F9; border-radius: 99px; padding: 2px 9px; flex: 0 0 auto; }
+.pd-upload-preview { width: 44px; height: 44px; object-fit: cover; border-radius: 8px; border: 1px solid #E2E8F0; flex: 0 0 auto; background: #fff; }
 @media (max-width: 640px) { .pd-uploads { grid-template-columns: 1fr; } }
 
 /* ══════════════════════════════════════════════════════════════

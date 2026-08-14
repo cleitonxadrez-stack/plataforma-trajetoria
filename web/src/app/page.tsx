@@ -12,7 +12,7 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen bg-bg text-ink">
       {/* ───────── Header fixo com o botão Entrar no topo ───────── */}
-      <header className="sticky top-0 z-30 border-b border-[#cddcec]/80 bg-bg/85 backdrop-blur">
+      <header className="sticky top-0 z-30 border-b border-[#E2E8F0]/80 bg-bg/85 backdrop-blur">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <Link href="/" aria-label="Trajetória360 — início">
             <Logo size={36} />
@@ -42,7 +42,7 @@ export default async function HomePage() {
       </header>
 
       {/* ───────── Hero azul acadêmico ───────── */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#0b2035] via-[#0f2942] to-[#1a4870] text-white">
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#0b2035] via-[#102A43] to-[#1a4870] text-white">
         {/* grade sutil de "organização" ao fundo */}
         <div
           aria-hidden
@@ -170,7 +170,7 @@ export default async function HomePage() {
           ].map((c) => (
             <div
               key={c.n}
-              className="card group transition-shadow hover:shadow-lg hover:shadow-[#0f2942]/5"
+              className="card group transition-shadow hover:shadow-lg hover:shadow-[#102A43]/5"
             >
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-[#eaf1f7] text-sm font-semibold text-info">
                 {c.n}
@@ -183,7 +183,7 @@ export default async function HomePage() {
       </section>
 
       {/* ───────── Planejamento ───────── */}
-      <section id="planejar" className="border-y border-[#cddcec] bg-bgstrip">
+      <section id="planejar" className="border-y border-[#E2E8F0] bg-bgstrip">
         <div className="mx-auto grid max-w-6xl gap-12 px-6 py-20 md:grid-cols-2 md:py-24">
           <div>
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.14em] text-info">
@@ -224,7 +224,7 @@ export default async function HomePage() {
                 { k: "Comprovados", v: "97%" },
                 { k: "Anos cobertos", v: "12" },
               ].map((s) => (
-                <div key={s.k} className="rounded-xl border border-[#cddcec] bg-bg py-4">
+                <div key={s.k} className="rounded-xl border border-[#E2E8F0] bg-bg py-4">
                   <div className="serif text-2xl font-semibold text-primary">{s.v}</div>
                   <div className="mt-1 text-[11px] uppercase tracking-wide text-soft">{s.k}</div>
                 </div>
@@ -241,7 +241,7 @@ export default async function HomePage() {
                     <span>{b.label}</span>
                     <span>{b.pct}%</span>
                   </div>
-                  <div className="h-2 overflow-hidden rounded-full bg-[#cddcec]">
+                  <div className="h-2 overflow-hidden rounded-full bg-[#E2E8F0]">
                     <div
                       className="h-full rounded-full bg-gradient-to-r from-info to-primary"
                       style={{ width: `${b.pct}%` }}
@@ -281,7 +281,7 @@ export default async function HomePage() {
       </section>
 
       {/* ───────── Rodapé ───────── */}
-      <footer className="border-t border-[#cddcec] bg-bgstrip">
+      <footer className="border-t border-[#E2E8F0] bg-bgstrip">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-soft sm:flex-row">
           <Logo size={26} />
           <p>Trajetória acadêmica documentada e verificável.</p>

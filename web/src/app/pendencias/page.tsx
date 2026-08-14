@@ -143,7 +143,7 @@ export default async function PendenciasPage() {
   return (
     <main className="max-w-5xl mx-auto px-6 py-12">
       <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-2">Recuperação assistida</p>
-      <h1 className="serif text-4xl text-[#0f2942] mb-1">Pendências por instituição</h1>
+      <h1 className="serif text-4xl text-[#102A43] mb-1">Pendências por instituição</h1>
       <p className="text-stone-600 max-w-2xl mt-2">
         Itens sem comprovante (ou com evidência parcial), agrupados por instituição.
         Clique numa instituição para gerar a carta pronta para enviar pelo canal sugerido.
@@ -163,7 +163,7 @@ export default async function PendenciasPage() {
 
       <section style={{ marginTop: 32 }}>
         {plan.groups.length === 0 && (
-          <p className="card" style={{ background: "#d9ece4", color: "#0d6b52" }}>
+          <p className="card" style={{ background: "#d9ece4", color: "#15803D" }}>
             <strong>Nada para solicitar.</strong> Todos os itens já têm evidência
             útil ou foram confirmados via outra via.
           </p>
@@ -183,11 +183,11 @@ export default async function PendenciasPage() {
           return (
             <section key={g.institutionId} style={{ marginBottom: 24 }}>
               <header style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 6 }}>
-                <h2 className="serif text-2xl text-[#0f2942]">{g.institutionName}</h2>
+                <h2 className="serif text-2xl text-[#102A43]">{g.institutionName}</h2>
                 <span className="text-stone-500 text-sm">
                   {g.itemIds.length} {g.itemIds.length === 1 ? "item" : "itens"}
                 </span>
-                <span style={{ flex: 1, height: 1, background: "#cddcec", display: "inline-block" }} />
+                <span style={{ flex: 1, height: 1, background: "#E2E8F0", display: "inline-block" }} />
                 {g.partialCoverageRatio > 0 && (
                   <span className="text-xs" style={{
                     background: "#f3e3cd", color: "#a15a13",
@@ -217,7 +217,7 @@ function EmptyPendencias() {
   return (
     <main className="max-w-3xl mx-auto px-6 py-16">
       <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-2">Recuperação assistida</p>
-      <h1 className="serif text-4xl text-[#0f2942] mb-3">Nenhuma pendência por enquanto</h1>
+      <h1 className="serif text-4xl text-[#102A43] mb-3">Nenhuma pendência por enquanto</h1>
       <p className="text-stone-700 max-w-2xl">
         Você ainda não tem itens marcados como sem evidência. Importe seu
         currículo Lattes para popular sua trajetória — o painel listará aqui as
@@ -238,7 +238,7 @@ function StatCard({ label, value, accent, muted }: {
       background: accent ? "#f3e3cd" : muted ? "#e2ecf7" : "#fff",
     }}>
       <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1">{label}</p>
-      <p className="serif text-3xl text-[#0f2942]">{value}</p>
+      <p className="serif text-3xl text-[#102A43]">{value}</p>
     </div>
   );
 }

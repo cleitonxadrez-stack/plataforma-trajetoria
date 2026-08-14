@@ -6,6 +6,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { CopyBlock } from "@/components/CopyBlock";
+import { PersonalUpload } from "@/components/PersonalUpload";
 
 export const metadata = { title: "Dados pessoais — Trajetória360" };
 export const dynamic = "force-dynamic";
@@ -33,12 +34,14 @@ export default async function DadosPage() {
     { key: "IMPOSTO_RENDA", title: "Imposto de Renda" },
     { key: "ARMAS", title: "Documentos de armas (CR)" },
   ];
+  const fotoDoc = docs.find((d) => d.category === "FOTO");
+  const assinaturaDoc = docs.find((d) => d.category === "ASSINATURA");
 
   return (
     <main className="mx-auto max-w-3xl px-6 py-10">
       <Link href="/exportar" className="back-link">← Voltar para Exportar</Link>
       <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-1">Dados pessoais</p>
-      <h1 className="serif text-4xl text-[#0f2942] mb-2">Seus dados para cadastros</h1>
+      <h1 className="serif text-4xl text-[#102A43] mb-2">Seus dados para cadastros</h1>
       <p className="text-stone-600 max-w-2xl mb-6">
         Salvos uma vez, prontos para reutilizar. Cada bloco tem um botão <strong>Copiar bloco</strong> que
         copia a seção inteira de uma vez.
@@ -97,14 +100,14 @@ export default async function DadosPage() {
       )}
 
       {/* Documentos anexados — com link de download ao lado de cada um */}
-      <h2 className="serif text-2xl text-[#0f2942] mt-10 mb-3">Documentos anexados</h2>
+      <h2 className="serif text-2xl text-[#102A43] mt-10 mb-3">Documentos anexados</h2>
       <div className="space-y-4">
         {DOC_GROUPS.map((g) => {
           const items = docs.filter((d) => d.category === g.key);
           if (!items.length) return null;
           return (
             <section key={g.key} className="pd-block">
-              <h3 className="serif text-lg text-[#0f2942] mb-2">{g.title}</h3>
+              <h3 className="serif text-lg text-[#102A43] mb-2">{g.title}</h3>
               {items.map((d) => (
                 <div key={d.id} className="pd-doc-row">
                   <span className="pd-doc-name">{d.label}</span>
@@ -118,24 +121,21 @@ export default async function DadosPage() {
         })}
       </div>
 
-      {/* Espaços para anexar/atualizar */}
-      <h2 className="serif text-2xl text-[#0f2942] mt-10 mb-3">Anexar / atualizar</h2>
+      {/* Espaços para anexar/atualizar (upload real) */}
+      <h2 className="serif text-2xl text-[#102A43] mt-10 mb-3">Anexar / atualizar</h2>
       <div className="pd-uploads">
-        {[
-          { icon: "🪪", t: "Foto de perfil", d: "Atualize a foto que aparece no seu perfil e currículo." },
-          { icon: "✍️", t: "Assinatura", d: "Salve o modelo da sua assinatura para usar quando precisar assinar." },
-          { icon: "🧾", t: "Imposto de Renda", d: "Adicione novas declarações e recibos por ano." },
-          { icon: "🔫", t: "Documentos de armas", d: "CR, guias de tráfego, SINAR e notas fiscais." },
-        ].map((s) => (
-          <div key={s.t} className="pd-upload-card">
-            <div className="pd-upload-icon">{s.icon}</div>
-            <div>
-              <p className="pd-upload-title">{s.t}</p>
-              <p className="pd-upload-desc">{s.d}</p>
-            </div>
-            <span className="pd-upload-soon">em breve</span>
-          </div>
-        ))}
+        <PersonalUpload category="FOTO" title="Foto de perfil" icon="🪪"
+          desc="Aparece no seu perfil e currículo." accept="image/*"
+          preview={fotoDoc ? `/api/documentos/${fotoDoc.document_id}` : null} />
+        <PersonalUpload category="ASSINATURA" title="Assinatura" icon="✍️"
+          desc="Modelo da sua assinatura para reutilizar." accept="image/*,.pdf"
+          preview={assinaturaDoc ? `/api/documentos/${assinaturaDoc.document_id}` : null} />
+        <PersonalUpload category="IMPOSTO_RENDA" title="Imposto de Renda" icon="🧾"
+          desc="Novas declarações e recibos (PDF)." />
+        <PersonalUpload category="ARMAS" title="Documentos de armas" icon="🔫"
+          desc="CR, guias, SINAR e notas fiscais (PDF)." />
+        <PersonalUpload category="IDENTIDADE" title="Documento de identidade" icon="🪪"
+          desc="RG, CNH, certidões, comprovantes (PDF/imagem)." />
       </div>
     </main>
   );

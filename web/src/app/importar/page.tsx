@@ -46,11 +46,11 @@ export default async function ImportarPage() {
 
   return (
     <main className="max-w-3xl mx-auto px-6 py-10">
-      <p className="text-xs uppercase tracking-[.14em] text-[#0f2942]/70 mb-2">
+      <p className="text-xs uppercase tracking-[.14em] text-[#102A43]/70 mb-2">
         Trajetória
       </p>
       <header className="mb-6">
-        <h1 className="serif text-3xl text-[#0f2942]">Importar currículo Lattes</h1>
+        <h1 className="serif text-3xl text-[#102A43]">Importar currículo Lattes</h1>
         <p className="text-sm text-stone-600 mt-2">
           Faça upload do XML gerado pela Plataforma Lattes (CNPq). Os itens serão
           registrados como <strong>autodeclarados</strong>; você adiciona evidências
@@ -59,15 +59,15 @@ export default async function ImportarPage() {
       </header>
 
       <section className="card mb-6">
-        <h2 className="serif text-lg text-[#0f2942] mb-2">Como obter seu XML</h2>
+        <h2 className="serif text-lg text-[#102A43] mb-2">Como obter seu XML</h2>
         <ol className="text-sm text-stone-700 space-y-2 list-decimal list-inside">
           <li>
-            Abra seu currículo em <a className="underline text-[#0f2942]" href="https://www.lattes.cnpq.br" target="_blank" rel="noopener noreferrer">lattes.cnpq.br</a> e
+            Abra seu currículo em <a className="underline text-[#102A43]" href="https://www.lattes.cnpq.br" target="_blank" rel="noopener noreferrer">lattes.cnpq.br</a> e
             clique no botão <strong>Exportar</strong> (ícone no topo).
           </li>
           <li>
             Na janela <em>“Exportar currículo para RTF ou XML”</em>, escolha
-            <strong className="text-[#0f2942]"> XML</strong> (⚠️ <strong>não</strong> RTF) e confirme.
+            <strong className="text-[#102A43]"> XML</strong> (⚠️ <strong>não</strong> RTF) e confirme.
           </li>
           <li>Descompacte o ZIP baixado e suba o arquivo <code className="font-mono">.xml</code> aqui (≤ 10 MB).</li>
         </ol>
@@ -78,19 +78,19 @@ export default async function ImportarPage() {
       </section>
 
       <section className="card mb-6">
-        <h2 className="serif text-lg text-[#0f2942] mb-2">Upload do XML</h2>
+        <h2 className="serif text-lg text-[#102A43] mb-2">Upload do XML</h2>
         <LattesImporter endpoint="/api/lattes/import" />
       </section>
 
       {existingList.length > 0 && (
         <section className="card">
-          <h2 className="serif text-lg text-[#0f2942] mb-2">
+          <h2 className="serif text-lg text-[#102A43] mb-2">
             Já importados ({existingList.length} de até 50 mais recentes)
           </h2>
           <ul className="space-y-1">
             {existingList.map((it) => (
               <li key={it.id} className="text-sm flex justify-between">
-                <span className="text-[#0f2942] truncate">{it.title}</span>
+                <span className="text-[#102A43] truncate">{it.title}</span>
                 <span className="text-stone-500 text-xs whitespace-nowrap ml-3">
                   {it.item_type} · {it.year}
                   {it.flagged_innovation && <span className="ml-2 text-[#a15a13]">inovação</span>}
@@ -99,7 +99,7 @@ export default async function ImportarPage() {
             ))}
           </ul>
           <p className="mt-4">
-            <Link href="/trajetoria" className="text-sm text-[#0f2942] underline">
+            <Link href="/trajetoria" className="text-sm text-[#102A43] underline">
               Ver trajetória completa →
             </Link>
           </p>

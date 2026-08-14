@@ -64,18 +64,18 @@ export default async function ItemDetailPage(
       <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-2">
         <Link href="/trajetoria" className="hover:underline">← Trajetória</Link>
       </p>
-      <h1 className="serif text-3xl text-[#0f2942] leading-tight mb-2">{r_row.title}</h1>
+      <h1 className="serif text-3xl text-[#102A43] leading-tight mb-2">{r_row.title}</h1>
       {r_row.title_en && <p className="italic text-stone-600 mb-4">{r_row.title_en}</p>}
 
       <div className="flex flex-wrap gap-3 mb-6">
         <SeloComprovacao status={r.evidenceStatus} />
         <span className="text-xs text-stone-500">{r_row.item_type} · {r_row.year}</span>
-        {r_row.doi && <span className="font-mono text-xs text-[#205b80]">DOI: {r_row.doi}</span>}
+        {r_row.doi && <span className="font-mono text-xs text-[#2563EB]">DOI: {r_row.doi}</span>}
         {r_row.flagged_lattes && (
-          <span className="text-xs text-[#205b80] bg-[#e1ecf5] rounded px-2 py-1">Lattes</span>
+          <span className="text-xs text-[#2563EB] bg-[#e1ecf5] rounded px-2 py-1">Lattes</span>
         )}
         {r_row.flagged_innovation && (
-          <span className="text-xs text-[#0d6b52] bg-[#e3efe9] rounded px-2 py-1">Inovação</span>
+          <span className="text-xs text-[#15803D] bg-[#e3efe9] rounded px-2 py-1">Inovação</span>
         )}
       </div>
 

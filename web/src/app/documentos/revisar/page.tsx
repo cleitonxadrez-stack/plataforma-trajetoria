@@ -77,7 +77,7 @@ export default async function RevisarPage({ searchParams }: Props) {
       <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-2">
         <Link href="/documentos" className="hover:underline">← Cofre</Link> · Revisão
       </p>
-      <h1 className="serif text-3xl text-[#0f2942] mb-1">Confirme ou edite</h1>
+      <h1 className="serif text-3xl text-[#102A43] mb-1">Confirme ou edite</h1>
       <p className="text-stone-600 max-w-2xl mt-2 mb-8">
         A cascata extraiu estes campos. <strong>Sua confirmação</strong> é o que
         os transforma em um item verificável da sua trajetória.

@@ -12,7 +12,7 @@ interface LogoProps {
   className?: string;
 }
 
-const NAVY = "#0f2942";
+const NAVY = "#102A43";
 const BLUE = "#1f9be6";
 const TEAL = "#17b0c4";
 
