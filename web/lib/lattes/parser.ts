@@ -67,6 +67,7 @@ interface Extractor {
   isbn?: string;
   nature: string;    // vira itemType (mapeado por mapXsdToItemType)
   natureza: string;  // rótulo legível (academic_items.natureza + roteia seção do CV)
+  statusAttr?: string; // se presente, anexa "(em andamento)"/"(concluído)" à natureza
 }
 
 const EXTRACTORS: Extractor[] = [
@@ -76,10 +77,10 @@ const EXTRACTORS: Extractor[] = [
   { el: "DADOS-BASICOS-DO-LIVRO", title: "TITULO-DO-LIVRO", years: ["ANO"], nature: "LIVRO", natureza: "Livro publicado" },
   { el: "DADOS-BASICOS-DO-TRABALHO", title: "TITULO-DO-TRABALHO", years: ["ANO-DO-TRABALHO"], nature: "TRABALHO-EVENTO", natureza: "Trabalho publicado em anais de evento" },
   // Formação
-  { el: "GRADUACAO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "GRADUACAO", natureza: "Graduação" },
-  { el: "ESPECIALIZACAO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "ESPECIALIZACAO", natureza: "Especialização (Lato Sensu)" },
-  { el: "MESTRADO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "MESTRADO", natureza: "Mestrado" },
-  { el: "DOUTORADO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "DOUTORADO", natureza: "Doutorado" },
+  { el: "GRADUACAO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "GRADUACAO", natureza: "Graduação", statusAttr: "STATUS-DO-CURSO" },
+  { el: "ESPECIALIZACAO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "ESPECIALIZACAO", natureza: "Especialização (Lato Sensu)", statusAttr: "STATUS-DO-CURSO" },
+  { el: "MESTRADO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "MESTRADO", natureza: "Mestrado", statusAttr: "STATUS-DO-CURSO" },
+  { el: "DOUTORADO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "DOUTORADO", natureza: "Doutorado", statusAttr: "STATUS-DO-CURSO" },
   { el: "FORMACAO-COMPLEMENTAR-CURSO-DE-CURTA-DURACAO", title: "NOME-CURSO", years: ["ANO-DE-CONCLUSAO", "ANO-DE-INICIO"], nature: "FORMACAO-COMPLEMENTAR", natureza: "Formação complementar (curso)" },
   // Orientações e bancas
   { el: "DADOS-BASICOS-DE-OUTRAS-ORIENTACOES-CONCLUIDAS", title: "TITULO", years: ["ANO"], nature: "ORIENTACAO-CONCLUIDA", natureza: "Orientação de trabalho concluída" },
@@ -134,7 +135,13 @@ export function parseLattesXml(xml: string): ParsedLattes {
       const doi = ex.doi ? (attr(attrs, ex.doi) || null) : null;
       const isbn = ex.isbn ? (attr(attrs, ex.isbn) || null) : null;
       const flag = /\bFLAG-RELEVANCIA="SIM"/i.test(attrs) || /\bFLAG-POTENCIAL-INOVACAO="SIM"/i.test(attrs);
-      push(ex.nature, ex.natureza, title, year, doi, isbn, flag);
+      let natureza = ex.natureza;
+      if (ex.statusAttr) {
+        const st = (attr(attrs, ex.statusAttr) ?? "").toUpperCase();
+        if (st === "EM_ANDAMENTO") natureza += " (em andamento)";
+        else if (st === "CONCLUIDO") natureza += " (concluído)";
+      }
+      push(ex.nature, natureza, title, year, doi, isbn, flag);
     }
   }
 
