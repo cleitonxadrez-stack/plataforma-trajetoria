@@ -135,7 +135,7 @@ export function CurriculoView({ profile, sections, stats }: { profile: CvProfile
       {/* Resumo em dois blocos */}
       <div className="cv2-summary">
         <section className="cv2-panel">
-          <p className="cv2-panel-title">Dados gerais</p>
+          <p className="cv2-panel-title">Registros atuais</p>
           <div className="cv2-stats">
             <div><span className="cv2-stat-n">{stats.total}</span><span className="cv2-stat-l">registros</span></div>
             <div><span className="cv2-stat-n cv2-green">{stats.comprovados}</span><span className="cv2-stat-l">comprovados</span></div>

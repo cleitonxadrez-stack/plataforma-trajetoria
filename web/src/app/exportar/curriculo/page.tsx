@@ -92,9 +92,15 @@ export default async function CurriculoPage() {
     .from("personal_documents").select("document_id").eq("category", "FOTO").limit(1).maybeSingle<{ document_id: string }>();
   const photoUrl = fotoRow?.document_id ? `/api/documentos/${fotoRow.document_id}` : null;
 
-  // tratamento pela maior titulação (Escolaridade)
-  const edu = ((pdata as Record<string, string | null> | null)?.education ?? "").toLowerCase();
-  const treatment = /doutor/.test(edu) ? "Dr." : /mestr/.test(edu) ? "Mestre" : /especial/.test(edu) ? "Esp." : "Prof.";
+  // tratamento pela MAIOR titulação, considerando o status (em andamento/concluído)
+  const formacaoNats = items.filter((i) => i.itemType === "DIPLOMA").map((i) => (i.natureza ?? "").toLowerCase());
+  const hasNat = (re: RegExp) => formacaoNats.some((n) => re.test(n));
+  const treatment =
+    hasNat(/doutorado.*andamento/) ? "Doutorando" :
+    hasNat(/doutorado/) ? "Dr." :
+    hasNat(/mestrado.*andamento/) ? "Mestrando" :
+    hasNat(/mestrado/) ? "Mestre" :
+    hasNat(/especializ/) ? "Esp." : "Prof.";
 
   const p = pdata as Record<string, unknown> | null;
   const fullName = (p?.full_name as string) ?? (u.user.email ?? "").split("@")[0];
