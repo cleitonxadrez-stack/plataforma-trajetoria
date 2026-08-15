@@ -1,6 +1,7 @@
 import "./globals.css";
 import type { Metadata } from "next";
 import { NavHeader } from "@/components/NavHeader";
+import { SiteFooter } from "@/components/SiteFooter";
 
 export const metadata: Metadata = {
   title: "Trajetória360 — Trajetória acadêmica documentada e verificável",
@@ -15,7 +16,8 @@ export default function RootLayout({
     <html lang="pt-BR">
       <body>
         <NavHeader />
-        {children}
+        <div className="site-main">{children}</div>
+        <SiteFooter />
       </body>
     </html>
   );

@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { Logo } from "@/components/Logo";
 
 export default async function HomePage() {
   // Sessão resolvida no servidor (cookies SSR-aware).
@@ -10,37 +9,7 @@ export default async function HomePage() {
   if (data.user) redirect("/painel");
 
   return (
-    <div className="min-h-screen bg-bg text-ink">
-      {/* ───────── Header fixo com o botão Entrar no topo ───────── */}
-      <header className="sticky top-0 z-30 border-b border-[#E2E8F0]/80 bg-bg/85 backdrop-blur">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
-          <Link href="/" aria-label="Trajetória360 — início">
-            <Logo size={36} />
-          </Link>
-
-          <nav className="hidden items-center gap-8 text-sm text-muted md:flex">
-            <a href="#organizar" className="transition-colors hover:text-primary">Organização</a>
-            <a href="#planejar" className="transition-colors hover:text-primary">Planejamento</a>
-            <a href="#verificar" className="transition-colors hover:text-primary">Verificação</a>
-          </nav>
-
-          <div className="flex items-center gap-2">
-            <Link
-              href="/entrar"
-              className="rounded-lg px-4 py-2 text-sm font-medium text-primary transition-colors hover:bg-[#dbe8f6]"
-            >
-              Entrar
-            </Link>
-            <Link
-              href="/cadastrar"
-              className="hidden rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#1c3d5e] sm:inline-flex"
-            >
-              Criar conta
-            </Link>
-          </div>
-        </div>
-      </header>
-
+    <div className="bg-bg text-ink">
       {/* ───────── Hero azul acadêmico ───────── */}
       <section className="relative overflow-hidden bg-gradient-to-b from-[#0b2035] via-[#0B2341] to-[#1a4870] text-white">
         {/* grade sutil de "organização" ao fundo */}
@@ -280,17 +249,45 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ───────── Rodapé ───────── */}
-      <footer className="border-t border-[#E2E8F0] bg-bgstrip">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 py-8 text-sm text-soft sm:flex-row">
-          <Logo size={26} />
-          <p>Trajetória acadêmica documentada e verificável.</p>
-          <div className="flex gap-5">
-            <Link href="/entrar" className="hover:text-primary">Entrar</Link>
-            <Link href="/cadastrar" className="hover:text-primary">Criar conta</Link>
+      {/* ───────── Chamada final ───────── */}
+      <section className="relative overflow-hidden bg-gradient-to-br from-[#0B2341] to-[#16386a] text-white">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.12]"
+          style={{
+            backgroundImage:
+              "linear-gradient(#ffffff 1px, transparent 1px), linear-gradient(90deg, #ffffff 1px, transparent 1px)",
+            backgroundSize: "56px 56px",
+            maskImage: "radial-gradient(ellipse 70% 80% at 50% 50%, #000 40%, transparent 100%)",
+          }}
+        />
+        <div className="relative mx-auto max-w-3xl px-6 py-20 text-center md:py-24">
+          <h2 className="serif text-3xl font-semibold sm:text-4xl">
+            Comece a documentar sua trajetória hoje
+          </h2>
+          <p className="mx-auto mt-4 max-w-xl text-lg leading-relaxed text-slate-200/90">
+            Importe seu Lattes em minutos e veja sua carreira organizada, comprovada e
+            pronta para o próximo edital.
+          </p>
+          <div className="mt-9 flex flex-wrap justify-center gap-3">
+            <Link
+              href="/cadastrar"
+              className="inline-flex items-center gap-2 rounded-lg bg-white px-6 py-3 text-sm font-semibold text-primary shadow-sm transition-transform hover:-translate-y-0.5"
+            >
+              Começar gratuitamente <span aria-hidden>→</span>
+            </Link>
+            <Link
+              href="/entrar"
+              className="inline-flex items-center rounded-lg border border-white/25 px-6 py-3 text-sm font-medium text-white transition-colors hover:bg-white/10"
+            >
+              Já tenho conta
+            </Link>
           </div>
+          <p className="mt-6 text-sm text-slate-300/80">
+            Sem cartão · 500 documentos no plano inicial · Exporte tudo quando quiser
+          </p>
         </div>
-      </footer>
+      </section>
     </div>
   );
 }

@@ -46,6 +46,7 @@ export default async function ImportarPage() {
 
   return (
     <main className="max-w-3xl mx-auto px-6 py-10">
+      <Link href="/trajetoria" className="back-link">← Voltar para a trajetória</Link>
       <p className="text-xs uppercase tracking-[.14em] text-[#0B2341]/70 mb-2">
         Trajetória
       </p>

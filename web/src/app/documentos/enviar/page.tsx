@@ -16,7 +16,8 @@ export default async function EnviarDocumentoPage() {
   if (error || !sess.user) redirect("/entrar?redirect=/documentos/enviar");
 
   return (
-    <main className="mx-auto max-w-2xl px-6 py-12">
+    <main className="mx-auto max-w-2xl px-6 py-10">
+      <Link href="/documentos" className="back-link">← Voltar para o Cofre</Link>
       <p className="mb-2 text-xs uppercase tracking-[.14em] text-soft">Cofre</p>
       <h1 className="serif text-4xl text-primary">Enviar documento</h1>
       <p className="mt-2 max-w-xl text-muted">
