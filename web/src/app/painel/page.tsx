@@ -71,7 +71,9 @@ async function fetchDashboardData(supabase: Awaited<ReturnType<typeof createClie
   const profile: ProfileRow | null = profileRes.data ?? null;
   const items: IndicatorInputItem[] = (itemsRes.data ?? []).map((r: ItemsRow) => ({
     itemType: (ALLOWED_ITEM_TYPES.includes(r.item_type) ? r.item_type : "OUTROS") as IndicatorInputItem["itemType"],
-    year: r.year ?? NaN, // ano ausente NÃO define span/continuidade (filtrado por Number.isFinite)
+    // Ano inválido (null OU 0/negativo, sentinela de "sem ano") NÃO define
+    // span/continuidade — é filtrado por Number.isFinite lá no cálculo.
+    year: typeof r.year === "number" && r.year > 0 ? r.year : NaN,
     state: (ALLOWED_STATES.includes(r.verification_level) ? r.verification_level : "AUTODECLARADO") as IndicatorInputItem["state"],
     evidenceStatus: (ALLOWED_EVIDENCE.includes(r.evidence_status) ? r.evidence_status : "SEM_COMPROVANTE") as IndicatorInputItem["evidenceStatus"],
   }));
