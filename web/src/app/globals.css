@@ -421,6 +421,28 @@ a.cv2-chip:hover { background: #E2E8F0; }
 .cofre-tile-alert.on .cofre-tile-icon { background: #FBE7E7; color: #B4413C; }
 @media (max-width: 720px) { .cofre-tiles { grid-template-columns: repeat(2, 1fr); } .cofre-actions { width: 100%; } }
 
+/* ─── Dossiês ─── */
+.dos-empty { text-align: center; background: #fff; border: 1px solid #E2E8F0; border-radius: 20px; padding: 44px 28px; margin-top: 28px; box-shadow: 0 1px 2px rgba(16,42,67,.04); }
+.dos-empty-art { width: 200px; height: 150px; margin: 0 auto 8px; display: block; }
+.dos-steps { display: inline-flex; flex-direction: column; gap: 10px; text-align: left; margin: 4px auto 24px; }
+.dos-steps li { display: flex; align-items: center; gap: 12px; color: #10233F; font-size: 14.5px; }
+.dos-step-n { display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: #EAF2FF; color: #1F5EFF; font-weight: 700; font-size: 13px; flex: 0 0 auto; }
+.dos-list { display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
+.dos-card { display: block; background: #fff; border: 1px solid #E2E8F0; border-radius: 16px; padding: 18px 20px; box-shadow: 0 1px 2px rgba(16,42,67,.04); transition: box-shadow .15s, border-color .15s; }
+.dos-card:hover { box-shadow: 0 6px 18px rgba(16,42,67,.08); border-color: #C7D7F5; }
+.dos-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.dos-card-purpose { font-size: 13.5px; color: #64748B; margin-top: 4px; }
+.dos-card-stats { display: flex; gap: 20px; margin-top: 12px; font-size: 12.5px; color: #64748B; }
+.dos-card-stats strong { color: #0B2341; font-weight: 700; }
+.dos-excl strong { color: #B4413C; }
+.dos-pts strong { color: #1F5EFF; }
+.dos-badge { font-size: 11.5px; font-weight: 700; padding: 4px 10px; border-radius: 999px; white-space: nowrap; }
+.dos-badge-ok { background: #E7F7EF; color: #168553; }
+.dos-badge-draft { background: #EEF2F8; color: #64748B; }
+.dos-note { display: flex; align-items: center; gap: 12px; background: #F6F8FC; border: 1px solid #E2E8F0; border-radius: 14px; padding: 14px 18px; margin-top: 28px; }
+.dos-note-icon { display: inline-flex; align-items: center; justify-content: center; width: 34px; height: 34px; border-radius: 9px; background: #FCF3E1; color: #B7791F; flex: 0 0 auto; }
+.dos-note p { font-size: 13px; color: #64748B; margin: 0; }
+
 .tl-years { display: flex; flex-direction: column; gap: 10px; }
 .tl-year { background: #fff; border: 1px solid #E2E8F0; border-radius: 14px; overflow: hidden; box-shadow: 0 1px 2px rgba(16,42,67,.04); }
 .tl-year-head { display: flex; align-items: center; gap: 12px; width: 100%; background: transparent; border: 0; cursor: pointer; padding: 14px 20px; text-align: left; }

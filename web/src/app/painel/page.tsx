@@ -167,8 +167,8 @@ export default async function PainelPage() {
       )}
 
       {decision.usingMock && (
-        <p className="mt-4 text-xs text-[#a15a13] bg-[#f3e3cd] border border-[#a15a13]/40 rounded p-2">
-          ⚠ {FALLBACK_BADGE}
+        <p className="mt-4 text-xs text-[#B7791F] bg-[#FCF3E1] border border-[#EAD9AE] rounded-lg px-3 py-2">
+          {FALLBACK_BADGE}
         </p>
       )}
 
@@ -209,7 +209,7 @@ export default async function PainelPage() {
         />
       </section>
 
-      <section className="card mt-8" style={{ background: "#eaf1f7" }} aria-label="Metadologia do cálculo">
+      <section className="card mt-8" style={{ background: "#F6F8FC" }} aria-label="Metadologia do cálculo">
         <p className="text-xs uppercase tracking-[.12em] text-stone-500 mb-2">
           Como estes números foram calculados
         </p>
@@ -262,20 +262,20 @@ export default async function PainelPage() {
         </div>
         <div className="card">
           <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1">Próximos passos</p>
-          <div className="flex flex-col gap-1">
-            <Link href="/documentos/enviar" className="text-sm underline" style={{ color: "#168553" }}>
+          <div className="flex flex-col gap-1.5">
+            <Link href="/documentos/enviar" className="text-sm font-medium" style={{ color: "#1F5EFF" }}>
               Enviar documento
             </Link>
-            <Link href="/documentos" className="text-sm underline" style={{ color: "#168553" }}>
+            <Link href="/documentos" className="text-sm font-medium" style={{ color: "#1F5EFF" }}>
               Meu cofre
             </Link>
-            <Link href="/importar" className="text-sm underline" style={{ color: "#168553" }}>
+            <Link href="/importar" className="text-sm font-medium" style={{ color: "#1F5EFF" }}>
               Importar Lattes
             </Link>
-            <Link href="/trajetoria" className="text-sm underline" style={{ color: "#168553" }}>
+            <Link href="/trajetoria" className="text-sm font-medium" style={{ color: "#1F5EFF" }}>
               Ver trajetória
             </Link>
-            <Link href="/auth/signout" className="text-sm underline" style={{ color: "#8a2a1f" }}>
+            <Link href="/auth/signout" className="text-sm font-medium" style={{ color: "#B4413C" }}>
               Sair
             </Link>
           </div>

@@ -56,7 +56,8 @@ describe("lattes-import — mapeamento", () => {
     expect(mapXsdToItemType("FORMACAO")).toBe("DIPLOMA");
     expect(mapXsdToItemType("MESTRADO")).toBe("DIPLOMA");
     expect(mapXsdToItemType("DOUTORADO")).toBe("DIPLOMA");
-    expect(mapXsdToItemType("ORIENTACAO-MESTRADO")).toBe("CERTIFICADO");
+    // Orientações não são credenciais próprias do titular → OUTROS (preserva o dado).
+    expect(mapXsdToItemType("ORIENTACAO-MESTRADO")).toBe("OUTROS");
   });
 
   it("mapXsdToItemType desconhecida → 'OUTROS' (regra: nunca perder dado)", () => {
@@ -125,9 +126,11 @@ describe("lattes-import — planLattesImport", () => {
 
 describe("lattes-import — mapXsdToItemType: cobertura educacional", () => {
   it("GRADUACAO/ESPECIALIZACAO/EXTENSAO mapeadas corretamente", () => {
+    // Formação acadêmica (lato/stricto sensu) rende diploma/certificado de conclusão → DIPLOMA.
     expect(mapXsdToItemType("GRADUACAO")).toBe("DIPLOMA");
-    expect(mapXsdToItemType("ESPECIALIZACAO")).toBe("CERTIFICADO");
-    expect(mapXsdToItemType("EXTENSAO")).toBe("CERTIFICADO");
+    expect(mapXsdToItemType("ESPECIALIZACAO")).toBe("DIPLOMA");
+    // Extensão é atividade, não formação titulada → OUTROS (preserva o dado).
+    expect(mapXsdToItemType("EXTENSAO")).toBe("OUTROS");
   });
   it("categoria vazia, contendo só whitespace ou lowercase → 'OUTROS'", () => {
     expect(mapXsdToItemType("")).toBe("OUTROS");
