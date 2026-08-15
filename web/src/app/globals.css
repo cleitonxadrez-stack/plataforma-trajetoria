@@ -324,6 +324,22 @@ a.cv2-chip:hover { background: #E2E8F0; }
 
 /* Capa (só impressão) */
 .cv2-cover { display: none; }
+/* Estilos da capa DESIGNER (renderizados só na impressão) */
+.cv2-cover-designer { position: relative; background: #0e1e33; color: #fff; overflow: hidden; }
+.ccd-logo { display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 700; letter-spacing: .04em; }
+.ccd-logo b { color: #4f8cff; }
+.ccd-logo-mark { display: inline-flex; align-items: center; justify-content: center; width: 30px; height: 30px; border-radius: 8px; background: #2563EB; color: #fff; font-size: 15px; }
+.ccd-const { position: absolute; top: 1.4cm; right: 1.6cm; width: 5.5cm; height: auto; opacity: .9; }
+.ccd-kicker { color: #4f8cff; font-size: 12px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; border-bottom: 3px solid #4f8cff; display: inline-block; padding-bottom: 6px; }
+.ccd-name { font-family: "Source Serif 4", Georgia, serif; font-size: 40px; font-weight: 700; margin: 18px 0 8px; line-height: 1.05; }
+.ccd-sub { color: #a9c2e6; font-size: 15px; font-weight: 500; }
+.ccd-loc { color: #7f93b0; font-size: 12px; margin-top: 6px; }
+.ccd-stats { display: flex; gap: 0; margin-top: 34px; background: rgba(255,255,255,.06); border: 1px solid rgba(255,255,255,.1); border-radius: 12px; overflow: hidden; }
+.ccd-stats > div { flex: 1; padding: 16px 20px; border-right: 1px solid rgba(255,255,255,.1); }
+.ccd-stats > div:last-child { border-right: 0; }
+.ccd-stats b { display: block; font-size: 24px; font-weight: 700; }
+.ccd-stats span { font-size: 10px; letter-spacing: .08em; text-transform: uppercase; color: #7f93b0; }
+.ccd-foot { color: #6b809e; font-size: 9px; letter-spacing: .06em; text-transform: uppercase; border-top: 1px solid rgba(255,255,255,.12); padding-top: 12px; }
 
 @media (max-width: 860px) {
   .cv2-body { grid-template-columns: 1fr; }
@@ -385,10 +401,18 @@ a.cv2-chip:hover { background: #E2E8F0; }
   .cv2-seal { background: none !important; padding: 0; color: #334155 !important; }
   .cv2-seal-comprovado::before { content: "✓ "; }
   .cv2-summary { display: none !important; }
-  /* Capa formal na primeira página */
-  .cv2-cover {
+  @page :first { margin: 0; }
+  /* Capa SIMPLES por padrão; DESIGNER apenas em body.print-designer */
+  .cv2-cover-designer { display: none !important; }
+  .cv2-cover-simple {
     display: flex !important; align-items: center; justify-content: center; text-align: center;
-    min-height: 92vh; page-break-after: always;
+    min-height: 100vh; page-break-after: always; padding: 2cm;
+  }
+  body.print-designer .cv2-cover-simple { display: none !important; }
+  body.print-designer .cv2-cover-designer {
+    display: flex !important; flex-direction: column; justify-content: space-between;
+    width: 100%; min-height: 100vh; box-sizing: border-box; padding: 2.2cm 2cm;
+    page-break-after: always; -webkit-print-color-adjust: exact; print-color-adjust: exact;
   }
   .cv2-cover-kicker { text-transform: uppercase; letter-spacing: .18em; font-size: 12px; color: #64748B; }
   .cv2-cover-name { font-size: 34px; font-weight: 700; color: #102A43; margin: 14px 0 6px; font-family: "Source Serif 4", Georgia, serif; }

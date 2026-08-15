@@ -65,8 +65,18 @@ export function CurriculoView({ profile, sections, stats }: { profile: CvProfile
   function toggle(id: string) {
     setSelected((prev) => { const n = new Set(prev); n.has(id) ? n.delete(id) : n.add(id); return n; });
   }
-  function exportAll() { document.body.classList.remove("print-selected-only"); window.print(); }
+  function exportSimple() {
+    document.body.classList.remove("print-selected-only", "print-designer");
+    window.print();
+  }
+  function exportDesigner() {
+    document.body.classList.remove("print-selected-only");
+    document.body.classList.add("print-designer");
+    window.print();
+    setTimeout(() => document.body.classList.remove("print-designer"), 500);
+  }
   function exportSelected() {
+    document.body.classList.remove("print-designer");
     if (!selected.size) return;
     document.body.classList.add("print-selected-only");
     window.print();
@@ -88,14 +98,35 @@ export function CurriculoView({ profile, sections, stats }: { profile: CvProfile
 
   return (
     <div className={`cv2 ${selectMode ? "cv2-selmode" : ""}`}>
-      {/* Capa (só impressão) */}
-      <div className="cv2-cover"><div>
+      {/* Capa SIMPLES (impressão padrão) */}
+      <div className="cv2-cover cv2-cover-simple"><div>
         <p className="cv2-cover-kicker">Currículo acadêmico</p>
         <h1 className="cv2-cover-name">{profile.name}</h1>
         <p className="cv2-cover-title">{profile.title}</p>
         {profile.location && <p className="cv2-cover-loc">{profile.location}</p>}
         <p className="cv2-cover-foot">Trajetória360 · {stats.total} registros · {stats.comprovados} comprovados</p>
       </div></div>
+
+      {/* Capa DESIGNER (impressão em modo designer) */}
+      <div className="cv2-cover cv2-cover-designer">
+        <div className="ccd-logo"><span className="ccd-logo-mark">✦</span><span>TRAJETÓRIA<b>360</b></span></div>
+        <svg className="ccd-const" viewBox="0 0 180 140" aria-hidden="true">
+          <polyline points="20,80 60,40 95,70 130,30 160,60 110,95" fill="none" stroke="#3b5a8a" strokeWidth="1" />
+          {[[20,80],[60,40],[95,70],[130,30],[160,60],[110,95]].map(([x,y],i)=>(<circle key={i} cx={x} cy={y} r="3" fill="#4f8cff" />))}
+        </svg>
+        <div className="ccd-mid">
+          <p className="ccd-kicker">Currículo acadêmico</p>
+          <h1 className="ccd-name">{profile.name}</h1>
+          <p className="ccd-sub">{profile.title}</p>
+          {profile.location && <p className="ccd-loc">{profile.location}</p>}
+          <div className="ccd-stats">
+            <div><b>{stats.total}</b><span>Registros</span></div>
+            <div><b>{stats.comprovados}</b><span>Comprovados</span></div>
+            <div><b>{pct}%</b><span>Documentados</span></div>
+          </div>
+        </div>
+        <p className="ccd-foot">Documento gerado pela plataforma Trajetória360</p>
+      </div>
 
       {/* Boas-vindas */}
       <div className="cv2-welcome no-print">
@@ -158,7 +189,8 @@ export function CurriculoView({ profile, sections, stats }: { profile: CvProfile
           <input value={q} onChange={(e) => setQ(e.target.value)} placeholder="Pesquisar na trajetória…" aria-label="Pesquisar" />
         </div>
         <label className="cv2-toggle"><input type="checkbox" checked={onlyProven} onChange={(e) => setOnlyProven(e.target.checked)} /> Só comprovados</label>
-        <button className="cv2-btn cv2-btn-primary" onClick={exportAll}><Icon name="pdf" /> Exportar PDF</button>
+        <button className="cv2-btn cv2-btn-ghost" onClick={exportSimple}><Icon name="pdf" /> PDF simples</button>
+        <button className="cv2-btn cv2-btn-primary" onClick={exportDesigner}><Icon name="pdf" /> PDF designer</button>
         <button className={`cv2-btn ${selectMode ? "cv2-btn-primary" : "cv2-btn-ghost"}`} onClick={() => { setSelectMode(!selectMode); setSelected(new Set()); }}>
           <Icon name="select" /> {selectMode ? "Cancelar seleção" : "Selecionar"}
         </button>
