@@ -50,19 +50,24 @@ export function TrajetoriaTimeline({ stats, years }: { stats: TlStats; years: Tl
   function toggleAll() { setOpen(allOpen ? new Set() : new Set(view.map((y) => y.year))); }
 
   const STATS = [
-    { k: "autodeclarado", label: "Autodeclarado", v: stats.autodeclarado, cls: "" },
-    { k: "confirmado", label: "Confirmado", v: stats.confirmado, cls: "" },
-    { k: "documentado", label: "Documentado", v: stats.documentado, cls: "tl-green" },
-    { k: "validado", label: "Validado", v: stats.validado, cls: "tl-blue" },
+    { k: "autodeclarado", label: "Autodeclarado", v: stats.autodeclarado, tone: "", icon: "M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" },
+    { k: "confirmado", label: "Confirmado", v: stats.confirmado, tone: "warn", icon: "M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3Z" },
+    { k: "documentado", label: "Documentado", v: stats.documentado, tone: "green", icon: "M7 3h7l5 5v13H7zM14 3v5h5M9 13h6M9 17h4" },
+    { k: "validado", label: "Validado", v: stats.validado, tone: "blue", icon: "M12 15a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM8.5 13.5 7 21l5-3 5 3-1.5-7.5" },
   ];
 
   return (
     <div className="tl">
       <section className="tl-stats">
         {STATS.map((s) => (
-          <div key={s.k} className="tl-stat">
-            <span className={`tl-stat-n ${s.cls}`}>{s.v}</span>
-            <span className="tl-stat-l">{s.label}</span>
+          <div key={s.k} className={`tl-stat tl-stat-${s.tone || "default"}`}>
+            <span className="tl-stat-ic" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round"><path d={s.icon} /></svg>
+            </span>
+            <span className="tl-stat-txt">
+              <span className="tl-stat-n">{s.v}</span>
+              <span className="tl-stat-l">{s.label}</span>
+            </span>
           </div>
         ))}
       </section>
@@ -96,6 +101,7 @@ export function TrajetoriaTimeline({ stats, years }: { stats: TlStats; years: Tl
           const docs = y.items.filter((i) => i.sealTone === "comprovado" || i.sealTone === "validado").length;
           return (
             <section key={y.year} className={`tl-year ${isOpen ? "open" : ""}`}>
+              <span className="tl-year-dot" aria-hidden="true" />
               <button className="tl-year-head" onClick={() => toggle(y.year)} aria-expanded={isOpen}>
                 <Chevron open={isOpen} />
                 <span className="tl-year-num">{y.year}</span>
@@ -110,7 +116,7 @@ export function TrajetoriaTimeline({ stats, years }: { stats: TlStats; years: Tl
                         <p className="tl-item-title">{it.title}</p>
                         <p className="tl-item-meta">
                           <span className="tl-kind">{it.kind}</span>
-                          {it.natureza && <span className="tl-nat"> · {it.natureza}</span>}
+                          {it.natureza && <span className="tl-nat">{it.natureza}</span>}
                           {it.lattes && <span className="tl-lattes">Lattes</span>}
                         </p>
                       </div>

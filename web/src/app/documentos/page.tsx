@@ -9,7 +9,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { DocumentCard } from "@/components/DocumentCard";
+import { CofreList, type CofreDoc } from "@/components/CofreList";
 import {
   bootstrapView, groupByState, needsHumanAction, type DocQueueState, type DocQueueView,
 } from "@/lib/domain/document-queue";
@@ -64,6 +64,20 @@ export default async function CofrePage() {
   const confirmedCount = grouped.CONFIRMADO.length;
   const needAction    = allDocs.filter(needsHumanAction).length;
 
+  const CofreStates: CofreDoc["state"][] = ["PENDENTE", "EM_REVISAO", "CONFIRMADO"];
+  const docsData: CofreDoc[] = allDocs
+    .filter((d): d is DocQueueView & { state: CofreDoc["state"] } =>
+      (CofreStates as string[]).includes(d.state))
+    .map((doc) => ({
+      id: doc.documentId,
+      registryCode: `PLT-2026-${doc.documentId.slice(0, 4).toUpperCase()}-${doc.documentId.slice(4, 8).toUpperCase()}`,
+      filename: `documento-${doc.documentId.slice(0, 8)}.pdf`,
+      state: doc.state,
+      confidence: doc.riskFlags.confidenceLow ? 0.74 : 0.93,
+      sourceLabel: doc.riskFlags.usedAI ? "Cascata usou IA" : "Cascata resolveu sem IA",
+      historyCount: 1,
+    }));
+
   return (
     <main className="max-w-5xl mx-auto px-6 py-10">
       <div className="cofre-head">
@@ -74,8 +88,19 @@ export default async function CofrePage() {
             Cada documento espera uma decisão sua — confirmar, corrigir ou descartar.
           </p>
         </div>
+        <svg className="cofre-hero-art" viewBox="0 0 150 110" fill="none" aria-hidden="true">
+          <path d="M75 16l30 11v22c0 20-13 33-30 40-17-7-30-20-30-40V27z" fill="#EAF2FF" stroke="#1F5EFF" strokeWidth="2" />
+          <rect x="60" y="40" width="30" height="38" rx="4" fill="#fff" stroke="#1F5EFF" strokeWidth="1.6" />
+          <path d="M66 50h18M66 58h12" stroke="#9DBBF5" strokeWidth="1.6" strokeLinecap="round" />
+          <circle cx="88" cy="70" r="9" fill="#fff" stroke="#168553" strokeWidth="1.8" />
+          <path d="M84 70l3 3 5-5" stroke="#168553" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+          <circle cx="120" cy="30" r="2.4" fill="#C8A45A" /><circle cx="34" cy="46" r="2" fill="#9DBBF5" /><circle cx="112" cy="80" r="1.8" fill="#9DBBF5" />
+        </svg>
         <div className="cofre-actions">
-          <Link href="/documentos/enviar" className="btn-primary">Enviar documento</Link>
+          <Link href="/documentos/enviar" className="btn-primary">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 16V4m0 0 4 4m-4-4-4 4M4 20h16" /></svg>
+            Enviar documento
+          </Link>
           <Link href="/trajetoria" className="btn-secondary">Ver trajetória</Link>
         </div>
       </div>
@@ -87,10 +112,7 @@ export default async function CofrePage() {
         <StatusTile label="Requerem ação" count={needAction} tone="alert" icon="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1 1-1 1.7 M12 17h.01" />
       </section>
 
-      {/* FILA — ordem de prioridade: EM_REVISAO, PENDENTE, depois CONFIRMADO */}
-      <QueueSection title="Em revisão" docs={grouped.EM_REVISAO} keyPrefix="rev" />
-      <QueueSection title="Pendente (cascata em andamento)" docs={grouped.PENDENTE} keyPrefix="pend" muted />
-      <QueueSection title="Confirmados" docs={grouped.CONFIRMADO} keyPrefix="ok" archived />
+      <CofreList docs={docsData} />
     </main>
   );
 }
@@ -106,36 +128,6 @@ function StatusTile({ label, count, tone, icon }: { label: string; count: number
         <p className="cofre-tile-label">{label}</p>
       </div>
     </div>
-  );
-}
-
-function QueueSection({ title, docs, keyPrefix, archived, muted }: {
-  title: string; docs: ReadonlyArray<DocQueueView>;
-  keyPrefix: string; archived?: boolean; muted?: boolean;
-}) {
-  if (docs.length === 0) return null;
-  return (
-    <section style={{ marginTop: 36 }}>
-      <header style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 10 }}>
-        <h2 className="serif text-2xl text-[#0B2341]">{title}</h2>
-        <span style={{ fontSize: 13, color: "#7a8294" }}>{docs.length}</span>
-        <span style={{ flex: 1, height: 1, background: "#E2E8F0", display: "inline-block" }} />
-      </header>
-      {docs.map((doc) => (
-        <DocumentCard
-          key={`${keyPrefix}-${doc.documentId}`}
-          doc={doc}
-          registryCode={`PLT-2026-${doc.documentId.slice(0, 4).toUpperCase()}-${doc.documentId.slice(4, 8).toUpperCase()}`}
-          filename={`documento-${doc.documentId.slice(0, 8)}.pdf`}
-          suggestedTitle={null}
-          confidence={doc.riskFlags.confidenceLow ? 0.74 : 0.93}
-          sourceLabel={doc.riskFlags.usedAI ? "Cascata usou IA" : "Cascata resolveu sem IA"}
-          // @ts-expect-error — props adicionais ignoradas no card
-          _archived={archived}
-          _muted={muted}
-        />
-      ))}
-    </section>
   );
 }
 

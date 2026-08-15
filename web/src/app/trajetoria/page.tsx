@@ -71,12 +71,22 @@ export default async function TrajetoriaPage() {
 
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">
-      <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-2">Trajetória</p>
-      <h1 className="serif text-4xl text-[#0B2341] mb-1">Sua linha do tempo intelectual</h1>
-      <p className="text-stone-600 max-w-2xl mt-2 mb-6">
-        Clique num ano para ver os itens daquele período. Cada item começa <strong>autodeclarado</strong> e vira
-        <strong> documentado</strong> quando você anexa um comprovante.
-      </p>
+      <div className="cofre-head">
+        <div>
+          <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-2">Trajetória</p>
+          <h1 className="serif text-4xl text-[#0B2341] mb-1">Sua linha do tempo intelectual</h1>
+          <p className="text-stone-600 max-w-2xl mt-2">
+            Clique num ano para ver os itens daquele período. Cada item começa <strong>autodeclarado</strong> e vira
+            <strong> documentado</strong> quando você anexa um comprovante.
+          </p>
+        </div>
+        <div className="cofre-actions">
+          <Link href="/documentos/enviar" className="btn-primary">
+            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M12 5v14M5 12h14" /></svg>
+            Adicionar documento
+          </Link>
+        </div>
+      </div>
       <TrajetoriaTimeline stats={stats} years={years} />
     </main>
   );
