@@ -531,9 +531,31 @@ a.cv2-chip:hover { background: #E2E8F0; }
 
 /* ─── Painel (layout premium) ─── */
 .pnl { max-width: 1180px; margin: 0 auto; padding: 24px 28px 56px; }
-.pnl-hero { position: relative; overflow: hidden; display: flex; align-items: center; justify-content: space-between; gap: 24px;
+.pnl-hero { position: relative; overflow: hidden; display: flex; align-items: flex-start; gap: 28px;
   background: linear-gradient(135deg, #0B2341 0%, #0f2c53 55%, #16386a 100%);
-  border-radius: 22px; padding: 40px 44px; color: #fff; }
+  border-radius: 22px; padding: 36px 40px; color: #fff; }
+/* Perfil acadêmico no hero */
+.pnl-prof-photo { width: 118px; height: 118px; border-radius: 18px; object-fit: cover; flex: 0 0 auto; border: 3px solid rgba(255,255,255,.18); }
+.pnl-prof-photo-ph { display: inline-flex; align-items: center; justify-content: center; background: rgba(255,255,255,.1); color: #fff; font-size: 34px; font-weight: 700; }
+.pnl-prof { min-width: 0; }
+.pnl-prof .pnl-hero-kicker { margin-bottom: 6px; }
+.pnl-prof-name { font-size: 34px; line-height: 1.1; color: #fff; margin: 0 0 4px; }
+.pnl-prof-title { font-size: 14px; font-weight: 600; color: #C8A45A; margin: 0 0 6px; }
+.pnl-prof-role { font-size: 14px; color: rgba(255,255,255,.9); margin: 0 0 2px; }
+.pnl-prof-loc { font-size: 13px; color: rgba(255,255,255,.65); margin: 0 0 12px; }
+.pnl-prof-links { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.pnl-prof-link { font-size: 12.5px; font-weight: 600; color: #fff; background: rgba(255,255,255,.1); border: 1px solid rgba(255,255,255,.18); border-radius: 999px; padding: 4px 12px; }
+.pnl-prof-link:hover { background: rgba(255,255,255,.2); }
+.pnl-prof-emails { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-bottom: 10px; }
+.pnl-prof-emails a { font-size: 13px; color: rgba(255,255,255,.85); }
+.pnl-prof-emails a:hover { color: #fff; text-decoration: underline; }
+.pnl-prof-meta { font-size: 12.5px; color: rgba(255,255,255,.7); line-height: 1.5; margin: 2px 0 0; }
+.pnl-prof-meta strong { color: rgba(255,255,255,.92); font-weight: 700; }
+/* Barra "Adicionar à sua trajetória" */
+.pnl-quick { display: flex; align-items: center; justify-content: space-between; gap: 20px; flex-wrap: wrap; margin-top: 16px; }
+.pnl-quick-text h2 { font-size: 18px; color: #0B2341; margin: 0 0 2px; }
+.pnl-quick-text p { font-size: 13.5px; color: #64748B; margin: 0; }
+.pnl-quick-actions { display: flex; gap: 10px; flex-wrap: wrap; }
 .pnl-hero-text { position: relative; z-index: 1; max-width: 560px; }
 .pnl-hero-kicker { font-size: 12px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: #C8A45A; margin: 0 0 10px; }
 .pnl-hero-title { font-size: 46px; line-height: 1.05; margin: 0 0 8px; color: #fff; }
@@ -585,12 +607,32 @@ a.cv2-chip:hover { background: #E2E8F0; }
 .pnl-collapse-body li { font-size: 13px; color: #4a5266; line-height: 1.6; }
 .pnl-collapse-body code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 12px; color: #0B2341; background: #F1F5F9; padding: 1px 5px; border-radius: 4px; }
 .pnl-collapse-note { font-size: 12px; color: #64748B; margin-top: 8px; line-height: 1.5; }
+.pnl-collapse-full { margin-top: 16px; }
+/* Plano sutil no topo direito do hero + sair */
+.pnl-hero-plan { position: absolute; top: 16px; right: 20px; z-index: 3; display: flex; align-items: center; gap: 8px;
+  font-size: 12.5px; color: rgba(255,255,255,.72); background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.14);
+  border-radius: 999px; padding: 6px 14px; }
+.pnl-plan-label strong { color: #fff; font-weight: 700; letter-spacing: .02em; }
+.pnl-plan-dot { color: rgba(255,255,255,.4); }
+.pnl-plan-link { color: rgba(255,255,255,.82); font-weight: 600; }
+.pnl-plan-link:hover { color: #fff; text-decoration: underline; }
+/* Gráfico: cabeçalho + explicação */
+.pnl-chart-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; margin-bottom: 8px; }
+.pnl-chart-head .pnl-card-title { margin-bottom: 4px; }
+.pnl-chart-sub { font-size: 13px; color: #64748B; line-height: 1.45; max-width: 620px; }
+.pnl-chart-peak { flex: 0 0 auto; font-size: 12.5px; color: #64748B; background: #EAF2FF; border: 1px solid #D6E3FB; border-radius: 999px; padding: 5px 12px; white-space: nowrap; }
+.pnl-chart-peak strong { color: #1F5EFF; }
+/* Título de seção "Gerar e exportar" */
+.pnl-section-title { font-size: 22px; color: #0B2341; margin: 26px 0 14px; }
+.pnl-exp { margin-top: 0; }
 @media (max-width: 900px) {
   .pnl-metrics { grid-template-columns: repeat(2, 1fr); }
   .pnl-mid, .pnl-foot { grid-template-columns: 1fr; }
   .pnl-hero-art { display: none; }
-  .pnl-hero { padding: 32px 28px; }
+  .pnl-hero { padding: 24px 24px 32px; flex-direction: column; align-items: flex-start; }
   .pnl-hero-title { font-size: 36px; }
+  .pnl-hero-plan { position: static; order: -1; margin-bottom: 16px; align-self: flex-start; }
+  .pnl-chart-head { flex-direction: column; }
 }
 
 .tl-years { position: relative; display: flex; flex-direction: column; gap: 12px; padding-left: 26px; }
