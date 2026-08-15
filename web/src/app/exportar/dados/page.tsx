@@ -5,7 +5,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { CopyBlock } from "@/components/CopyBlock";
+import { DadosVault, type VaultBlock } from "@/components/DadosVault";
 import { PersonalUpload } from "@/components/PersonalUpload";
 
 export const metadata = { title: "Dados pessoais — Trajetória360" };
@@ -37,6 +37,28 @@ export default async function DadosPage() {
   const fotoDoc = docs.find((d) => d.category === "FOTO");
   const assinaturaDoc = docs.find((d) => d.category === "ASSINATURA");
 
+  const F = (label: string, value: string | null | undefined) => ({ label, value: (value ?? "").trim() });
+  const blocks: VaultBlock[] = [
+    { key: "id", title: "Identificação", fields: [
+      F("Nome completo", p.full_name), F("Nome em citações", p.citation_name),
+      F("Nascimento", [p.birth_date, p.birth_place].filter(Boolean).join(" — ")),
+      F("Sexo", p.gender), F("Estado civil", p.marital_status), F("Escolaridade", p.education), F("Matrícula", p.matricula),
+    ] },
+    { key: "fil", title: "Filiação", fields: [F("Nome do pai", p.father_name), F("Nome da mãe", p.mother_name)] },
+    { key: "doc", title: "Documentos", fields: [
+      F("CPF", p.cpf), F("RG", p.rg), F("Título de eleitor", p.voter_id), F("CNH", p.cnh),
+      F("Documento militar", p.military_doc), F("Lattes ID", p.lattes_id), F("ORCID", p.orcid),
+    ] },
+    { key: "con", title: "Contato", fields: [
+      F("E-mail", p.email), F("E-mail profissional", p.email_prof), F("E-mail alternativo", p.email_alt),
+      F("Telefone / Celular", p.phone), F("Ramal", p.ramal),
+      F("Site", p.website), F("LinkedIn", p.linkedin), F("Instagram", p.instagram),
+    ] },
+    { key: "end", title: "Endereço", fields: [F("Endereço residencial", p.address), F("Endereço profissional", p.address_prof)] },
+    { key: "soc", title: "Dados sociais e bancários", fields: [F("PIS/PASEP", p.pis), F("Dados bancários", p.bank)] },
+    { key: "idi", title: "Idiomas", fields: langs.map((l) => F(l.lang, l.detail)) },
+  ].map((b) => ({ ...b, fields: b.fields.filter((f) => f.value) }));
+
   return (
     <main className="mx-auto max-w-3xl px-6 py-10">
       <Link href="/exportar" className="back-link">← Voltar para Exportar</Link>
@@ -47,57 +69,9 @@ export default async function DadosPage() {
         copia a seção inteira de uma vez.
       </p>
 
-      {!data ? (
-        <section className="pd-block"><p className="text-stone-700">Ainda não há dados cadastrados.</p></section>
-      ) : (
-        <div className="space-y-4">
-          <CopyBlock title="Identificação" fields={[
-            { label: "Nome completo", value: p.full_name },
-            { label: "Nome em citações", value: p.citation_name },
-            { label: "Nascimento", value: [p.birth_date, p.birth_place].filter(Boolean).join(" — ") },
-            { label: "Sexo", value: p.gender },
-            { label: "Estado civil", value: p.marital_status },
-            { label: "Escolaridade", value: p.education },
-            { label: "Matrícula", value: p.matricula },
-          ]} />
-
-          <CopyBlock title="Filiação" fields={[
-            { label: "Nome do pai", value: p.father_name },
-            { label: "Nome da mãe", value: p.mother_name },
-          ]} />
-
-          <CopyBlock title="Documentos" fields={[
-            { label: "CPF", value: p.cpf },
-            { label: "RG", value: p.rg },
-            { label: "Título de eleitor", value: p.voter_id },
-            { label: "CNH", value: p.cnh },
-            { label: "Documento militar", value: p.military_doc },
-            { label: "Lattes ID", value: p.lattes_id },
-            { label: "ORCID", value: p.orcid },
-          ]} />
-
-          <CopyBlock title="Contato" fields={[
-            { label: "E-mail", value: p.email },
-            { label: "E-mail alternativo", value: p.email_alt },
-            { label: "Telefone / Celular", value: p.phone },
-            { label: "Ramal", value: p.ramal },
-          ]} />
-
-          <CopyBlock title="Endereço" fields={[
-            { label: "Endereço residencial", value: p.address },
-            { label: "Endereço profissional", value: p.address_prof },
-          ]} />
-
-          <CopyBlock title="Dados sociais e bancários" fields={[
-            { label: "PIS/PASEP", value: p.pis },
-            { label: "Dados bancários", value: p.bank },
-          ]} />
-
-          {langs.length > 0 && (
-            <CopyBlock title="Idiomas" fields={langs.map((l) => ({ label: l.lang, value: l.detail }))} />
-          )}
-        </div>
-      )}
+      {data
+        ? <DadosVault blocks={blocks} />
+        : <section className="pd-block"><p className="text-stone-700">Ainda não há dados cadastrados.</p></section>}
 
       {/* Documentos anexados — com link de download ao lado de cada um */}
       <h2 className="serif text-2xl text-[#102A43] mt-10 mb-3">Documentos anexados</h2>

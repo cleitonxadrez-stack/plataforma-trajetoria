@@ -153,6 +153,12 @@ body {
 .pd-block-head h2 { font-size: 17px; font-weight: 700; color: #102A43; margin: 0; }
 .pd-copy { font-size: 13px; font-weight: 600; color: #2563EB; background: #EFF4FE; border: 1px solid #C7D7F5; border-radius: 8px; padding: 6px 12px; cursor: pointer; }
 .pd-copy:hover { background: #E0EAFD; }
+.pd-copy-active { background: #102A43; color: #fff; border-color: #102A43; }
+.pd-copy-active:hover { background: #1c3d5e; }
+.pd-vault-bar { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; margin-bottom: 14px; }
+.pd-block-title { display: flex; align-items: center; gap: 10px; }
+.pd-block-check { width: 16px; height: 16px; flex: 0 0 auto; }
+.pd-block-sel { outline: 2px solid #2563EB; outline-offset: 2px; }
 .pd-row { display: flex; justify-content: space-between; gap: 16px; padding: 8px 0; border-bottom: 1px solid #F1F5F9; }
 .pd-row:last-child { border-bottom: 0; }
 .pd-label { font-size: 11px; text-transform: uppercase; letter-spacing: .07em; color: #64748B; flex: 0 0 auto; }
@@ -392,5 +398,9 @@ a.cv2-chip:hover { background: #E2E8F0; }
   /* Exportar apenas os selecionados */
   .print-selected-only .unselected { display: none !important; }
   .print-selected-only .cv2-tl-check { display: none !important; }
+  /* Dados pessoais — exportar só os blocos selecionados */
+  body.print-vault .pd-block:not(.vault-print) { display: none !important; }
+  body.print-vault .pd-block-check { display: none !important; }
+  body.print-vault .pd-block-sel { outline: 0; }
   @page { margin: 1.6cm 1.4cm; }
 }
