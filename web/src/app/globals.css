@@ -400,7 +400,26 @@ a.cv2-chip:hover { background: #E2E8F0; }
 .tl-search input { border: 0; outline: none; width: 100%; font-size: 14px; color: #0B2341; background: transparent; }
 .tl-btn { font-size: 13px; font-weight: 600; color: #1F5EFF; background: #EAF2FF; border: 1px solid #C7D7F5; border-radius: 10px; padding: 9px 14px; cursor: pointer; }
 .tl-btn:hover { background: #E0EAFD; }
+.tl-select { font-size: 13px; font-weight: 500; color: #10233F; background: #fff; border: 1px solid #E2E8F0; border-radius: 10px; padding: 9px 12px; cursor: pointer; }
+.tl-select:hover { border-color: #C7D7F5; }
+.tl-link { font-size: 13px; font-weight: 600; color: #1F5EFF; background: transparent; border: 0; cursor: pointer; padding: 9px 6px; }
+.tl-link:hover { text-decoration: underline; }
 .tl-empty { color: #64748B; padding: 24px; text-align: center; }
+
+/* ─── Cofre (documentos) ─── */
+.cofre-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 24px; flex-wrap: wrap; }
+.cofre-actions { display: flex; gap: 10px; flex: 0 0 auto; padding-top: 6px; }
+.cofre-tiles { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 28px; }
+.cofre-tile { display: flex; align-items: center; gap: 14px; background: #fff; border: 1px solid #E2E8F0; border-radius: 16px; padding: 18px 20px; box-shadow: 0 1px 2px rgba(16,42,67,.04); }
+.cofre-tile-icon { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 12px; flex: 0 0 auto; background: #EEF2F8; color: #64748B; }
+.cofre-tile-count { font-family: var(--serif, Georgia, serif); font-size: 30px; line-height: 1; color: #0B2341; }
+.cofre-tile-label { font-size: 12.5px; font-weight: 600; color: #64748B; margin-top: 4px; }
+.cofre-tile-amber .cofre-tile-icon { background: #FCF3E1; color: #B7791F; }
+.cofre-tile-green { border-color: #CBEBD8; background: #F3FBF6; }
+.cofre-tile-green .cofre-tile-icon { background: #E7F7EF; color: #168553; }
+.cofre-tile-alert.on { border-color: #F3D9D9; background: #FDF5F5; }
+.cofre-tile-alert.on .cofre-tile-icon { background: #FBE7E7; color: #B4413C; }
+@media (max-width: 720px) { .cofre-tiles { grid-template-columns: repeat(2, 1fr); } .cofre-actions { width: 100%; } }
 
 .tl-years { display: flex; flex-direction: column; gap: 10px; }
 .tl-year { background: #fff; border: 1px solid #E2E8F0; border-radius: 14px; overflow: hidden; box-shadow: 0 1px 2px rgba(16,42,67,.04); }

@@ -65,27 +65,26 @@ export default async function CofrePage() {
   const needAction    = allDocs.filter(needsHumanAction).length;
 
   return (
-    <main className="max-w-5xl mx-auto px-6 py-12">
-      <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-2">Cofre</p>
-      <h1 className="serif text-4xl text-[#0B2341] mb-1">Fila de confirmação</h1>
-      <p className="text-stone-600 max-w-2xl mt-2">
-        Cada documento espera uma decisão sua — confirmar, corrigir ou descartar.
-        Nada entra na sua trajetória sem o seu clique (mesmo quando a IA sugere).
-      </p>
+    <main className="max-w-5xl mx-auto px-6 py-10">
+      <div className="cofre-head">
+        <div>
+          <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-2">Cofre</p>
+          <h1 className="serif text-4xl text-[#0B2341] mb-1">Fila de confirmação</h1>
+          <p className="text-stone-600 max-w-2xl mt-2">
+            Cada documento espera uma decisão sua — confirmar, corrigir ou descartar.
+          </p>
+        </div>
+        <div className="cofre-actions">
+          <Link href="/documentos/enviar" className="btn-primary">Enviar documento</Link>
+          <Link href="/trajetoria" className="btn-secondary">Ver trajetória</Link>
+        </div>
+      </div>
 
-      <section
-        className="grid sm:grid-cols-4 gap-3 mt-8"
-        aria-label="Resumo do cofre"
-      >
-        <SummaryTile label="Pendente"      count={pendingCount} muted />
-        <SummaryTile label="Em revisão"    count={reviewCount} emphasis />
-        <SummaryTile label="Confirmado"    count={confirmedCount} done />
-        <SummaryTile label="Pedem ação"    count={needAction} alert />
-      </section>
-
-      <section style={{ marginTop: 24, display: "flex", gap: 10 }}>
-        <Link href="/documentos/enviar" className="btn-primary">Enviar documento</Link>
-        <Link href="/trajetoria" className="btn-secondary">Ver trajetória</Link>
+      <section className="cofre-tiles" aria-label="Resumo do cofre">
+        <StatusTile label="Pendente" count={pendingCount} tone="muted" icon="M12 7v5l3 2M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z" />
+        <StatusTile label="Em revisão" count={reviewCount} tone="amber" icon="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12Z M12 9a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z" />
+        <StatusTile label="Confirmado" count={confirmedCount} tone="green" icon="M20 6 9 17l-5-5" />
+        <StatusTile label="Requerem ação" count={needAction} tone="alert" icon="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.8.4-1 1-1 1.7 M12 17h.01" />
       </section>
 
       {/* FILA — ordem de prioridade: EM_REVISAO, PENDENTE, depois CONFIRMADO */}
@@ -96,15 +95,16 @@ export default async function CofrePage() {
   );
 }
 
-function SummaryTile({ label, count, emphasis, muted, done, alert }: {
-  label: string; count: number;
-  emphasis?: boolean; muted?: boolean; done?: boolean; alert?: boolean;
-}) {
-  const bg = emphasis ? "#f3e3cd" : done ? "#d9ece4" : alert && count > 0 ? "#f3dfda" : muted ? "#e2ecf7" : "#fff";
+function StatusTile({ label, count, tone, icon }: { label: string; count: number; tone: string; icon: string }) {
   return (
-    <div className="card" style={{ background: bg }}>
-      <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1">{label}</p>
-      <p className="serif text-3xl text-[#0B2341]">{count}</p>
+    <div className={`cofre-tile cofre-tile-${tone}${count > 0 && tone === "alert" ? " on" : ""}`}>
+      <span className="cofre-tile-icon">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={icon} /></svg>
+      </span>
+      <div>
+        <p className="cofre-tile-count">{count}</p>
+        <p className="cofre-tile-label">{label}</p>
+      </div>
     </div>
   );
 }
