@@ -71,7 +71,7 @@ async function fetchDashboardData(supabase: Awaited<ReturnType<typeof createClie
   const profile: ProfileRow | null = profileRes.data ?? null;
   const items: IndicatorInputItem[] = (itemsRes.data ?? []).map((r: ItemsRow) => ({
     itemType: (ALLOWED_ITEM_TYPES.includes(r.item_type) ? r.item_type : "OUTROS") as IndicatorInputItem["itemType"],
-    year: r.year ?? 0,
+    year: r.year ?? NaN, // ano ausente NÃO define span/continuidade (filtrado por Number.isFinite)
     state: (ALLOWED_STATES.includes(r.verification_level) ? r.verification_level : "AUTODECLARADO") as IndicatorInputItem["state"],
     evidenceStatus: (ALLOWED_EVIDENCE.includes(r.evidence_status) ? r.evidence_status : "SEM_COMPROVANTE") as IndicatorInputItem["evidenceStatus"],
   }));
@@ -180,24 +180,29 @@ export default async function PainelPage() {
           label="Cobertura"
           value={ind.coveragePct.toFixed(1)}
           unit="%"
+          icon="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3ZM9.5 12l2 2 3.5-3.5"
           caption={`${items.length} ${items.length === 1 ? "item" : "itens"} ao todo`}
         />
         <IndicatorCard
           label="Amplitude"
           value={ind.amplitudeYears.toString()}
           unit="anos"
+          icon="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"
           caption={`${ind.amplitudeTypes} ${ind.amplitudeTypes === 1 ? "tipo" : "tipos"} distintos`}
         />
         <IndicatorCard
           label="Continuidade"
           value={ind.continuityYears.toString()}
           unit={ind.continuityYears === 1 ? "ano" : "anos"}
+          icon="M3 12h4l3 8 4-16 3 8h4"
+          tone="positive"
           caption="Com ≥1 item DOCUMENTADO ou VALIDADO"
         />
         <IndicatorCard
           label="Carreira"
           value={ind.careerYearsAdjusted.toFixed(1)}
           unit="anos"
+          icon="M4 8h16v11H4zM9 8V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M4 13h16"
           caption={
             ind.interruptedDays > 0
               ? `${ind.interruptedDays} ${ind.interruptedDays === 1 ? "dia descontado" : "dias descontados"} por interrupção`

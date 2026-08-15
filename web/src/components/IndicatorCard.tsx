@@ -1,9 +1,8 @@
 // src/components/IndicatorCard.tsx
-// Bloco 5 — Card visual para UM indicador pessoal.
+// Bloco 5 — Card visual premium para UM indicador pessoal.
 //
-// Tom sóbrio (CLAUDE.md §"Como deve parecer") — sépia, serif no título,
-// sem emoji. Mostra label, valor principal, sub-métrica e timestamp de
-// cálculo. Suporta estado "desconhecido" via `placeholder`.
+// Layout premium: chip de ícone + label, número serifado grande, legenda e
+// dica. Suporta estado "desconhecido" via `placeholder` e tom de destaque.
 
 export interface IndicatorCardProps {
   label: string;
@@ -14,65 +13,42 @@ export interface IndicatorCardProps {
   placeholder?: string;
   /** Texto auxiliar curto (ex.: "+ 2 anos reais") */
   hint?: string;
-  /** Cor de destaque — padrão sépia, opções: positive/warning/alert. */
+  /** Cor de destaque — padrão azul, opções: positive/warning/alert. */
   tone?: "default" | "positive" | "warning" | "alert";
+  /** Caminho(s) SVG do ícone (24x24, stroke). */
+  icon?: string;
 }
 
-const TONE: Record<NonNullable<IndicatorCardProps["tone"]>, { bg: string; fg: string }> = {
-  default:  { bg: "#fff",    fg: "#0B2341" },
-  positive: { bg: "#E7F7EF", fg: "#168553" },
-  warning:  { bg: "#FCF3E1", fg: "#B7791F" },
-  alert:    { bg: "#FBE7E7", fg: "#B4413C" },
-};
-
 export function IndicatorCard(props: IndicatorCardProps) {
-  const tone = TONE[props.tone ?? "default"];
+  const tone = props.tone ?? "default";
   return (
     <div
-      className="card"
+      className={`ind-card ind-card-${tone}`}
       data-testid={`indicator-${props.label.toLowerCase().replace(/\s+/g, "-")}`}
-      style={{ background: tone.bg }}
     >
-      <p
-        className="text-xs uppercase tracking-[.12em] mb-2"
-        style={{ color: "#7a8294" }}
-      >
-        {props.label}
-      </p>
-      <p
-        className="serif"
-        style={{
-          fontSize: 38,
-          lineHeight: 1.1,
-          color: tone.fg,
-          fontWeight: 500,
-        }}
-      >
-        {props.placeholder ? (
-          <span style={{ color: props.tone === "alert" ? "#B4413C" : "#7a8294" }}>
-            {props.placeholder}
+      <div className="ind-card-head">
+        {props.icon && (
+          <span className="ind-card-icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
+              strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d={props.icon} /></svg>
           </span>
-        ) : (
-          <>
-            {props.value}
-            {props.unit && (
-              <span style={{ fontSize: 16, marginLeft: 4, color: "#4a5266" }}>
-                {props.unit}
-              </span>
-            )}
-          </>
         )}
-      </p>
+        <p className="ind-card-label">{props.label}</p>
+      </div>
+
+      {props.placeholder ? (
+        <p className="ind-card-value ind-card-placeholder serif">{props.placeholder}</p>
+      ) : (
+        <p className="ind-card-value serif">
+          {props.value}
+          {props.unit && <span className="ind-card-unit">{props.unit}</span>}
+        </p>
+      )}
+
       {props.caption && !props.placeholder && (
-        <p className="text-xs" style={{ color: "#4a5266", marginTop: 6 }}>
-          {props.caption}
-        </p>
+        <p className="ind-card-caption">{props.caption}</p>
       )}
-      {props.hint && (
-        <p className="text-xs" style={{ color: "#7a8294", marginTop: 4 }}>
-          {props.hint}
-        </p>
-      )}
+      {props.hint && <p className="ind-card-hint">{props.hint}</p>}
     </div>
   );
 }
