@@ -11,6 +11,7 @@ import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { IndicatorCard } from "@/components/IndicatorCard";
+import { TrajectoryChart } from "@/components/TrajectoryChart";
 import {
   computeAllIndicators,
   type IndicatorInputItem, type IndicatorInputCareerInterruption,
@@ -118,6 +119,13 @@ const MOCK_INTERRUPTIONS: IndicatorInputCareerInterruption[] = [
   { type: "MATERNIDADE", startDate: "2020-01-01", endDate: "2021-01-01" },
 ];
 
+function Ic({ d, size = 20 }: { d: string; size?: number }) {
+  return (
+    <svg viewBox="0 0 24 24" width={size} height={size} fill="none" stroke="currentColor"
+      strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d={d} /></svg>
+  );
+}
+
 export default async function PainelPage() {
   const supabase = await createClient();
   const { data: sess, error } = await supabase.auth.getUser();
@@ -158,53 +166,101 @@ export default async function PainelPage() {
     items,
   });
 
+  // Série acumulada por ano (DADOS REAIS) para o gráfico de evolução.
+  const validYears = items
+    .map((i) => i.year)
+    .filter((y): y is number => Number.isFinite(y) && y > 0);
+  const perYear = new Map<number, number>();
+  for (const yr of validYears) perYear.set(yr, (perYear.get(yr) ?? 0) + 1);
+  const chartPoints: { label: string; value: number }[] = [];
+  if (validYears.length) {
+    const minY = Math.min(...validYears);
+    const maxY = Math.max(...validYears);
+    let cum = 0;
+    for (let yr = minY; yr <= maxY; yr++) {
+      cum += perYear.get(yr) ?? 0;
+      chartPoints.push({ label: String(yr), value: cum });
+    }
+  }
+
+  const firstName = (profile?.full_name ?? "").trim().split(/\s+/)[0] || "você";
+  const quotaUsed = profile?.doc_quota_used ?? 0;
+  const quotaLimit = profile?.doc_quota_limit ?? 500;
+  const quotaPct = quotaLimit > 0 ? Math.min(1, quotaUsed / quotaLimit) : 0;
+
+  // Barras (razões reais, 0–1) — o número exibido continua sendo o valor real.
+  const barCobertura = ind.coveragePct / 100;
+  const barAmplitude = ind.amplitudeTypes / 6; // 6 tipos canônicos
+  const barContinuidade = ind.continuityYears / Math.max(1, ind.amplitudeYears);
+  const barCarreira = ind.careerYearsAdjusted > 0 ? Math.min(1, ind.careerYearsAdjusted / 30) : 0;
+
+  const STEPS = [
+    { href: "/documentos/enviar", icon: "M12 16V4m0 0 4 4m-4-4-4 4M4 20h16", title: "Enviar documento", sub: "Adicione novos comprovantes" },
+    { href: "/documentos", icon: "M5 7h14v13H5zM8 7V5a4 4 0 0 1 8 0v2", title: "Meu cofre", sub: "Acesse seus documentos" },
+    { href: "/importar", icon: "M12 3 2 8l10 5 10-5-10-5ZM6 10.5V16c0 1.5 3 3 6 3s6-1.5 6-3v-5.5", title: "Importar Lattes", sub: "Sincronize sua produção" },
+    { href: "/trajetoria", icon: "M3 12h4l3 8 4-16 3 8h4", title: "Ver trajetória", sub: "Acompanhe sua evolução" },
+  ];
+
   return (
-    <main className="max-w-5xl mx-auto px-6 py-12">
-      <p className="text-xs uppercase tracking-[.12em] text-stone-500 mb-2">Painel</p>
-      <h1 className="serif text-4xl text-[#0B2341] mb-1">
-        {profile?.full_name ?? sess.user.email}
-      </h1>
-      {profile?.citation_name && (
-        <p className="text-stone-600 italic mt-1">{profile.citation_name}</p>
-      )}
+    <main className="pnl">
+      {/* HERO */}
+      <section className="pnl-hero">
+        <div className="pnl-hero-text">
+          <p className="pnl-hero-kicker">Painel acadêmico</p>
+          <h1 className="pnl-hero-title serif">Olá, {firstName}</h1>
+          <p className="pnl-hero-sub">Sua trajetória acadêmica, organizada e verificável.</p>
+          <div className="pnl-hero-actions">
+            <Link href="/documentos/enviar" className="pnl-hero-btn pnl-hero-btn-blue">
+              <Ic d="M12 5v14M5 12h14" size={18} /> Adicionar documento
+            </Link>
+            <Link href="/dossies/novo" className="pnl-hero-btn pnl-hero-btn-ghost">
+              <Ic d="M7 3h7l5 5v13H7zM14 3v5h5M9 13h6M9 17h4" size={18} /> Gerar dossiê
+            </Link>
+          </div>
+        </div>
+        <svg className="pnl-hero-art" viewBox="0 0 420 240" fill="none" aria-hidden="true">
+          <g stroke="rgba(255,255,255,.16)" strokeWidth="1">
+            <path d="M40 60 120 110 90 180M120 110 220 70 320 120 360 62M220 70 250 160 320 120" />
+          </g>
+          <g fill="rgba(255,255,255,.35)">
+            <circle cx="40" cy="60" r="2.2" /><circle cx="120" cy="110" r="2.2" /><circle cx="90" cy="180" r="2.2" />
+            <circle cx="220" cy="70" r="2.2" /><circle cx="320" cy="120" r="2.2" /><circle cx="360" cy="62" r="2.2" /><circle cx="250" cy="160" r="2.2" />
+          </g>
+          <g stroke="rgba(255,255,255,.5)" strokeWidth="1.6" fill="rgba(255,255,255,.05)">
+            <rect x="150" y="66" width="72" height="92" rx="7" />
+            <rect x="252" y="54" width="72" height="92" rx="7" />
+          </g>
+          <g stroke="rgba(255,255,255,.28)" strokeWidth="1.2">
+            <path d="M166 90h40M166 104h30M166 120h40" />
+            <path d="M268 78h40M268 92h30M268 108h40" />
+          </g>
+          <path d="M212 150l26 9v22c0 17-11 28-26 34-15-6-26-17-26-34v-22z" fill="rgba(255,255,255,.10)" stroke="rgba(255,255,255,.6)" strokeWidth="1.8" />
+          <path d="M200 190l8 8 15-16" stroke="#fff" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" />
+        </svg>
+      </section>
 
-      {decision.usingMock && (
-        <p className="mt-4 text-xs text-[#B7791F] bg-[#FCF3E1] border border-[#EAD9AE] rounded-lg px-3 py-2">
-          {FALLBACK_BADGE}
-        </p>
-      )}
+      {decision.usingMock && <p className="pnl-mock">{FALLBACK_BADGE}</p>}
 
-      <section
-        className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 mt-8"
-        aria-label="Indicadores pessoais"
-      >
+      {/* INDICADORES */}
+      <section className="pnl-metrics" aria-label="Indicadores pessoais">
         <IndicatorCard
-          label="Cobertura"
-          value={ind.coveragePct.toFixed(1)}
-          unit="%"
-          icon="M12 3l7 3v5c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6l7-3ZM9.5 12l2 2 3.5-3.5"
+          label="Cobertura" value={ind.coveragePct.toFixed(1).replace(".", ",")} unit="%"
+          icon="M21 12a9 9 0 1 1-9-9v9h9Z" progress={barCobertura}
           caption={`${items.length} ${items.length === 1 ? "item" : "itens"} ao todo`}
         />
         <IndicatorCard
-          label="Amplitude"
-          value={ind.amplitudeYears.toString()}
-          unit="anos"
-          icon="M4 8V4h4M20 8V4h-4M4 16v4h4M20 16v4h-4"
+          label="Amplitude" value={ind.amplitudeYears.toString()} unit="anos"
+          icon="M12 3 3 8l9 5 9-5-9-5ZM3 12l9 5 9-5M3 16l9 5 9-5" progress={barAmplitude}
           caption={`${ind.amplitudeTypes} ${ind.amplitudeTypes === 1 ? "tipo" : "tipos"} distintos`}
         />
         <IndicatorCard
-          label="Continuidade"
-          value={ind.continuityYears.toString()}
-          unit={ind.continuityYears === 1 ? "ano" : "anos"}
-          icon="M3 12h4l3 8 4-16 3 8h4"
-          tone="positive"
-          caption="Com ≥1 item DOCUMENTADO ou VALIDADO"
+          label="Continuidade" value={ind.continuityYears.toString()} unit={ind.continuityYears === 1 ? "ano" : "anos"}
+          icon="M8 2v4M16 2v4M3 9h18M5 5h14a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V6a1 1 0 0 1 1-1Z"
+          tone="positive" progress={barContinuidade} caption="Trajetória documentada"
         />
         <IndicatorCard
-          label="Carreira"
-          value={ind.careerYearsAdjusted.toFixed(1)}
-          unit="anos"
-          icon="M4 8h16v11H4zM9 8V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2M4 13h16"
+          label="Carreira" value={ind.careerYearsAdjusted.toFixed(1).replace(".", ",")} unit="anos"
+          icon="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4 20a8 8 0 0 1 16 0" progress={barCarreira}
           caption={
             ind.interruptedDays > 0
               ? `${ind.interruptedDays} ${ind.interruptedDays === 1 ? "dia descontado" : "dias descontados"} por interrupção`
@@ -216,77 +272,68 @@ export default async function PainelPage() {
         />
       </section>
 
-      <section className="card mt-8" style={{ background: "#F6F8FC" }} aria-label="Metadologia do cálculo">
-        <p className="text-xs uppercase tracking-[.12em] text-stone-500 mb-2">
-          Como estes números foram calculados
-        </p>
-        <ul className="text-sm" style={{ color: "#4a5266", lineHeight: 1.7 }}>
-          <li>
-            <strong>Cobertura:</strong> % de itens com evidência útil
-            (PARCIAL ou COMPROVADO) sobre o total. Estados válidos:
-            <code style={{ fontFamily: "monospace", fontSize: 12 }}> COM_COMPROVANTE_PARCIAL | COMPROVADO</code>.
-          </li>
-          <li>
-            <strong>Amplitude:</strong> ano-span (inclusivo) do mais antigo
-            ao mais recente, sem corte de janela. Tipos = # distintos de
-            <code style={{ fontFamily: "monospace", fontSize: 12 }}> item_type</code>.
-          </li>
-          <li>
-            <strong>Continuidade:</strong> # de anos com pelo menos 1 item em
-            estado <code style={{ fontFamily: "monospace", fontSize: 12 }}>DOCUMENTADO</code> ou
-            <code style={{ fontFamily: "monospace", fontSize: 12 }}> VALIDADO</code>. Itens
-            autodeclarados não contam — eles não provam existência.
-          </li>
-          <li>
-            <strong>Carreira:</strong> anos entre <em>data de início</em> e
-            <em> agora</em>, descontando intervalos coberto por
-            <code style={{ fontFamily: "monospace", fontSize: 12 }}> career_interruptions</code>
-            (maternidade, paternidade, adoção, saúde, outro).
-          </li>
-        </ul>
-        <p className="text-xs text-stone-500 mt-4">
-          <strong>Métrica padrão (§6.6):</strong> vida inteira, sem teto e sem
-          janela. Zero filtros de ranking. Estes indicadores são <em>seus</em> —
-          nunca públicos sem o seu consentimento explícito (Default: <code style={{ fontFamily: "monospace" }}>FORA</code>).
-        </p>
-        <p className="text-xs text-stone-500 mt-2">
-          Última leitura: <code style={{ fontFamily: "monospace" }}>{ind.computedAt}</code>
-        </p>
-      </section>
-
-      <section className="grid md:grid-cols-3 gap-4 mt-8">
-        <div className="card">
-          <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1">Plano</p>
-          <p className="serif text-2xl text-[#0B2341]">{profile?.plan_tier ?? "FREE"}</p>
-          <p className="text-xs text-stone-500 mt-1">
-            {profile?.doc_quota_used ?? 0} / {profile?.doc_quota_limit ?? 500} documentos
-          </p>
+      {/* GRÁFICO + PRÓXIMOS PASSOS */}
+      <section className="pnl-mid">
+        <div className="card pnl-chart">
+          <h2 className="serif pnl-card-title">Evolução da trajetória</h2>
+          <TrajectoryChart points={chartPoints} />
         </div>
-        <div className="card">
-          <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1">Sessão</p>
-          <p className="text-sm font-mono text-[#0B2341]">{profile?.email ?? sess.user.email}</p>
-          <p className="text-xs text-stone-500 mt-1">ID: {sess.user.id.slice(0, 8)}…</p>
-        </div>
-        <div className="card">
-          <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1">Próximos passos</p>
-          <div className="flex flex-col gap-1.5">
-            <Link href="/documentos/enviar" className="text-sm font-medium" style={{ color: "#1F5EFF" }}>
-              Enviar documento
-            </Link>
-            <Link href="/documentos" className="text-sm font-medium" style={{ color: "#1F5EFF" }}>
-              Meu cofre
-            </Link>
-            <Link href="/importar" className="text-sm font-medium" style={{ color: "#1F5EFF" }}>
-              Importar Lattes
-            </Link>
-            <Link href="/trajetoria" className="text-sm font-medium" style={{ color: "#1F5EFF" }}>
-              Ver trajetória
-            </Link>
-            <Link href="/auth/signout" className="text-sm font-medium" style={{ color: "#B4413C" }}>
-              Sair
-            </Link>
+        <div className="card pnl-steps">
+          <h2 className="serif pnl-card-title">Próximos passos</h2>
+          <div className="pnl-steps-list">
+            {STEPS.map((s) => (
+              <Link key={s.href} href={s.href} className="pnl-step">
+                <span className="pnl-step-icon"><Ic d={s.icon} /></span>
+                <span className="pnl-step-body">
+                  <span className="pnl-step-title">{s.title}</span>
+                  <span className="pnl-step-sub">{s.sub}</span>
+                </span>
+                <span className="pnl-step-chev"><Ic d="M9 6l6 6-6 6" size={18} /></span>
+              </Link>
+            ))}
           </div>
         </div>
+      </section>
+
+      {/* RODAPÉ: plano / sessão / metodologia */}
+      <section className="pnl-foot">
+        <div className="card pnl-foot-card">
+          <div className="pnl-foot-head">
+            <span className="pnl-foot-icon pnl-foot-icon-gold"><Ic d="M12 3l3 5 5 .8-3.6 3.6.9 5.1L12 20l-4.5 2.5.9-5.1L4.8 8.8 10 8z" size={18} /></span>
+            <p className="pnl-foot-label">Plano</p>
+          </div>
+          <p className="serif pnl-foot-value">{profile?.plan_tier ?? "FREE"}</p>
+          <div className="ind-card-bar pnl-foot-bar"><span style={{ width: `${Math.round(quotaPct * 100)}%` }} /></div>
+          <p className="pnl-foot-cap">{quotaUsed} / {quotaLimit} documentos</p>
+        </div>
+
+        <div className="card pnl-foot-card">
+          <div className="pnl-foot-head">
+            <span className="pnl-foot-icon"><Ic d="M12 12a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM4 20a8 8 0 0 1 16 0" size={18} /></span>
+            <p className="pnl-foot-label">Sessão</p>
+          </div>
+          <p className="pnl-foot-mono">{profile?.email ?? sess.user.email}</p>
+          <p className="pnl-foot-cap">ID: {sess.user.id.slice(0, 8)}…</p>
+          <Link href="/auth/signout" className="pnl-foot-signout">Sair da conta</Link>
+        </div>
+
+        <details className="card pnl-collapse">
+          <summary className="pnl-collapse-sum">
+            <span className="pnl-foot-icon"><Ic d="M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18ZM12 8h.01M11 12h1v4h1" size={18} /></span>
+            <span className="pnl-collapse-title">Como estes indicadores são calculados</span>
+            <span className="pnl-collapse-chev"><Ic d="M6 9l6 6 6-6" size={18} /></span>
+          </summary>
+          <div className="pnl-collapse-body">
+            <ul>
+              <li><strong>Cobertura:</strong> % de itens com evidência útil (PARCIAL ou COMPROVADO) sobre o total. Estados válidos: <code>COM_COMPROVANTE_PARCIAL | COMPROVADO</code>.</li>
+              <li><strong>Amplitude:</strong> ano-span (inclusivo) do mais antigo ao mais recente, sem corte de janela. Tipos = # distintos de <code>item_type</code>.</li>
+              <li><strong>Continuidade:</strong> # de anos com pelo menos 1 item em estado <code>DOCUMENTADO</code> ou <code>VALIDADO</code>. Itens autodeclarados não contam.</li>
+              <li><strong>Carreira:</strong> anos entre <em>data de início</em> e <em>agora</em>, descontando intervalos de <code>career_interruptions</code> (maternidade, paternidade, adoção, saúde, outro).</li>
+            </ul>
+            <p className="pnl-collapse-note"><strong>Métrica padrão (§6.6):</strong> vida inteira, sem teto e sem janela. Estes indicadores são <em>seus</em> — nunca públicos sem o seu consentimento explícito.</p>
+            <p className="pnl-collapse-note">Última leitura: <code>{ind.computedAt}</code></p>
+          </div>
+        </details>
       </section>
     </main>
   );
