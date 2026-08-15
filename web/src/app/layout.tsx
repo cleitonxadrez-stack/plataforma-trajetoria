@@ -14,7 +14,6 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body>
-        {/* @ts-expect-error Async Server Component */}
         <NavHeader />
         {children}
       </body>
