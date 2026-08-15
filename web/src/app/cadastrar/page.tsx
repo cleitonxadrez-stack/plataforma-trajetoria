@@ -7,7 +7,7 @@ export default function CadastrarPage() {
   return (
     <main className="max-w-md mx-auto px-6 py-16">
       <p className="text-xs uppercase tracking-[.12em] text-stone-500 mb-2">Cadastro</p>
-      <h1 className="serif text-3xl text-[#102A43] mb-2">Criar conta gratuita</h1>
+      <h1 className="serif text-3xl text-[#0B2341] mb-2">Criar conta gratuita</h1>
       <p className="text-sm text-stone-600 mb-6">
         Sem cartão. 500 documentos no plano inicial. Exportar tudo quando quiser.
       </p>
@@ -25,7 +25,7 @@ export default function CadastrarPage() {
       </div>
 
       <p className="text-sm text-center mt-6">
-        Já tem conta? <Link href="/entrar" className="text-[#102A43] hover:underline">Entrar →</Link>
+        Já tem conta? <Link href="/entrar" className="text-[#0B2341] hover:underline">Entrar →</Link>
       </p>
     </main>
   );

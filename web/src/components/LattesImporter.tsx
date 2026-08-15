@@ -84,7 +84,7 @@ export function LattesImporter({ endpoint }: LattesImporterProps) {
 
       {status.kind === "preview" && (
         <section className="bg-[#F1F5F9] border rounded p-4 mt-4">
-          <p className="text-sm text-[#102A43]">
+          <p className="text-sm text-[#0B2341]">
             Pré-visualização: <strong>{status.plan.rows.length}</strong> itens serão inseridos,
             <strong className="ml-1"> {status.plan.sensitiveIgnored}</strong> campos sensíveis foram
             sanitizados, e <strong>{status.plan.categoryFallbackCount}</strong> categorias fora
@@ -99,8 +99,8 @@ export function LattesImporter({ endpoint }: LattesImporterProps) {
       )}
 
       {status.kind === "done" && (
-        <section className="bg-[#e3efe9] border border-[#15803D]/40 rounded p-4 mt-4">
-          <p className="text-sm text-[#15803D]">
+        <section className="bg-[#e3efe9] border border-[#168553]/40 rounded p-4 mt-4">
+          <p className="text-sm text-[#168553]">
             ✓ Importação concluída — <strong>{status.imported}</strong> novos itens,
             <strong className="ml-1"> {status.deduped}</strong> já existentes (dedupe),
             <strong className="ml-1"> {status.sensitiveIgnored}</strong> campos sensíveis

@@ -53,7 +53,7 @@ export function ReviewForm(props: ReviewFormProps) {
       <div className="card" data-testid={`review-done-${done.toLowerCase()}`}
            style={{ background: done === "CONFIRMED" ? "#d9ece4" : "#f3dfda" }}>
         <p className="serif text-lg"
-           style={{ color: done === "CONFIRMED" ? "#15803D" : "#8a2a1f" }}>
+           style={{ color: done === "CONFIRMED" ? "#168553" : "#8a2a1f" }}>
           {done === "CONFIRMED"
             ? "Documento confirmado. Ele aparece agora na sua trajetória."
             : "Documento descartado. O original foi removido (soft-delete)."}
@@ -217,7 +217,7 @@ export function ReviewForm(props: ReviewFormProps) {
         </button>
         <span style={{ flex: 1 }} />
         {editing && fieldsEdited > 0 && (
-          <span style={{ fontSize: 12, color: "#2563EB", alignSelf: "center" }}>
+          <span style={{ fontSize: 12, color: "#1F5EFF", alignSelf: "center" }}>
             {fieldsEdited} campo{fieldsEdited > 1 ? "s" : ""} editado
           </span>
         )}

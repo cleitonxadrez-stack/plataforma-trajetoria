@@ -7,8 +7,8 @@ import type { DocQueueState } from "@/lib/domain/document-queue";
 const VARIANT: Record<DocQueueState, { label: string; bg: string; fg: string }> = {
   PENDENTE:     { label: "Na fila",         bg: "#dce8f6", fg: "#4a5266" },
   EM_REVISAO:   { label: "Em revisão",      bg: "#f3e3cd", fg: "#a15a13" },
-  CONFIRMADO:   { label: "Confirmado",      bg: "#d9ece4", fg: "#15803D" },
-  CORRIGIDO:    { label: "Corrigido",       bg: "#e1ecf5", fg: "#2563EB" },
+  CONFIRMADO:   { label: "Confirmado",      bg: "#d9ece4", fg: "#168553" },
+  CORRIGIDO:    { label: "Corrigido",       bg: "#e1ecf5", fg: "#1F5EFF" },
   REJEITADO:    { label: "Descartado",      bg: "#f3dfda", fg: "#8a2a1f" },
   FALHOU:       { label: "Falhou",          bg: "#f3dfda", fg: "#8a2a1f" },
 };

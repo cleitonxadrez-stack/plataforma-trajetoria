@@ -19,8 +19,8 @@ export interface IndicatorCardProps {
 }
 
 const TONE: Record<NonNullable<IndicatorCardProps["tone"]>, { bg: string; fg: string }> = {
-  default:  { bg: "#fff",    fg: "#102A43" },
-  positive: { bg: "#e3efe9", fg: "#15803D" },
+  default:  { bg: "#fff",    fg: "#0B2341" },
+  positive: { bg: "#e3efe9", fg: "#168553" },
   warning:  { bg: "#f3e3cd", fg: "#a15a13" },
   alert:    { bg: "#f3dfda", fg: "#8a2a1f" },
 };

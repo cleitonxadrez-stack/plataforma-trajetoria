@@ -98,7 +98,7 @@ export function NewDossierForm() {
           value={title}
           onChange={(e) => setTitle(e.currentTarget.value)}
           placeholder="Progressão UFMT 2026"
-          className="mt-1 block w-full border border-[#102A43]/20 rounded p-2"
+          className="mt-1 block w-full border border-[#0B2341]/20 rounded p-2"
         />
       </label>
 
@@ -109,7 +109,7 @@ export function NewDossierForm() {
           value={purpose}
           onChange={(e) => setPurpose(e.currentTarget.value)}
           placeholder="Ex.: progressão de classe"
-          className="mt-1 block w-full border border-[#102A43]/20 rounded p-2"
+          className="mt-1 block w-full border border-[#0B2341]/20 rounded p-2"
         />
       </label>
 
@@ -129,8 +129,8 @@ export function NewDossierForm() {
 
       {parsed && (
         <section className="mt-6 space-y-4" data-testid="edital-preview">
-          <div className="border-l-4 border-[#102A43] pl-3">
-            <p className="text-xs uppercase tracking-widest text-[#102A43]/70">Prévia</p>
+          <div className="border-l-4 border-[#0B2341] pl-3">
+            <p className="text-xs uppercase tracking-widest text-[#0B2341]/70">Prévia</p>
             <h3 className="serif text-xl">Identificamos estas regras. Confirme ou edite.</h3>
           </div>
 
@@ -149,7 +149,7 @@ export function NewDossierForm() {
           </details>
 
           {parsed.rules.length > 0 ? (
-            <table className="w-full text-sm border-collapse border border-[#102A43]/15">
+            <table className="w-full text-sm border-collapse border border-[#0B2341]/15">
               <thead className="bg-[#F1F5F9] text-left">
                 <tr>
                   <th className="p-2">Tipo</th>
@@ -161,12 +161,12 @@ export function NewDossierForm() {
               </thead>
               <tbody>
                 {parsed.rules.map((r, i) => (
-                  <tr key={i} className="border-t border-[#102A43]/10">
+                  <tr key={i} className="border-t border-[#0B2341]/10">
                     <td className="p-2 font-mono">{r.itemType}</td>
                     <td className="p-2 font-mono">{r.qualisStratum ?? "—"}</td>
                     <td className="p-2">{r.categoryLabel}</td>
                     <td className="p-2 font-medium">{r.points}</td>
-                    <td className="p-2 text-xs text-[#102A43]/70">
+                    <td className="p-2 text-xs text-[#0B2341]/70">
                       {r.capPerYear ? `${r.capPerYear}/ano` : ""}
                       {r.capPerCategory ? `, ${r.capPerCategory}/cat` : ""}
                       {r.capTotal ? `, total ${r.capTotal}` : ""}
@@ -197,8 +197,8 @@ export function NewDossierForm() {
 
 function Field({ label, value }: { label: string; value: string }) {
   return (
-    <div className="border border-[#102A43]/10 rounded p-2">
-      <dt className="text-xs text-[#102A43]/70">{label}</dt>
+    <div className="border border-[#0B2341]/10 rounded p-2">
+      <dt className="text-xs text-[#0B2341]/70">{label}</dt>
       <dd className="font-medium">{value}</dd>
     </div>
   );

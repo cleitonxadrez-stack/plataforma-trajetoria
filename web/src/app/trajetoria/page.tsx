@@ -72,7 +72,7 @@ export default async function TrajetoriaPage() {
   return (
     <main className="mx-auto max-w-5xl px-6 py-10">
       <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-2">Trajetória</p>
-      <h1 className="serif text-4xl text-[#102A43] mb-1">Sua linha do tempo intelectual</h1>
+      <h1 className="serif text-4xl text-[#0B2341] mb-1">Sua linha do tempo intelectual</h1>
       <p className="text-stone-600 max-w-2xl mt-2 mb-6">
         Clique num ano para ver os itens daquele período. Cada item começa <strong>autodeclarado</strong> e vira
         <strong> documentado</strong> quando você anexa um comprovante.
@@ -86,7 +86,7 @@ function EmptyTrajetoria() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-16">
       <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-2">Trajetória</p>
-      <h1 className="serif text-4xl text-[#102A43] mb-3">Sua linha do tempo está vazia</h1>
+      <h1 className="serif text-4xl text-[#0B2341] mb-3">Sua linha do tempo está vazia</h1>
       <p className="text-stone-700 max-w-2xl">Importe seu currículo Lattes e seus itens aparecem aqui, organizados por ano.</p>
       <div className="mt-6 flex gap-3 flex-wrap">
         <Link href="/importar" className="btn-primary">Importar currículo Lattes</Link>

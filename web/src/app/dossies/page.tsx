@@ -35,7 +35,7 @@ export default async function DossiersListPage() {
     <main className="mx-auto max-w-4xl px-6 py-10">
       <header className="mb-6 flex justify-between items-baseline">
         <div>
-          <p className="text-xs uppercase tracking-widest text-[#102A43]/70">Dossiê</p>
+          <p className="text-xs uppercase tracking-widest text-[#0B2341]/70">Dossiê</p>
           <h1 className="serif text-3xl">Dossiês</h1>
         </div>
         <Link href="/dossies/novo" className="btn-primary">+ Novo dossiê</Link>
@@ -44,7 +44,7 @@ export default async function DossiersListPage() {
       {list.length === 0 ? (
         <section className="card text-center py-12">
           <p className="serif text-xl mb-2">Nenhum dossiê ainda</p>
-          <p className="text-sm text-[#102A43]/70 mb-4">
+          <p className="text-sm text-[#0B2341]/70 mb-4">
             Você pode usar a metodologia padrão "Trajetória v1" ou importar um edital em PDF.
           </p>
           <Link href="/dossies/novo" className="btn-primary">Criar primeiro dossiê</Link>
@@ -58,8 +58,8 @@ export default async function DossiersListPage() {
                   <h2 className="serif text-xl">{d.title}</h2>
                   <StatusBadge status={d.status} />
                 </header>
-                {d.purpose && <p className="text-sm text-[#102A43]/70 mt-1">{d.purpose}</p>}
-                <div className="mt-3 text-xs text-[#102A43]/60 grid grid-cols-3 gap-2">
+                {d.purpose && <p className="text-sm text-[#0B2341]/70 mt-1">{d.purpose}</p>}
+                <div className="mt-3 text-xs text-[#0B2341]/60 grid grid-cols-3 gap-2">
                   <span>{d.items_count ?? 0} itens contados</span>
                   <span className="text-[#8a2a1f]">{d.excluded_count ?? 0} excluídos</span>
                   <span className="font-mono">{d.total_points ?? 0} pts</span>
@@ -79,7 +79,7 @@ export default async function DossiersListPage() {
 }
 
 function StatusBadge({ status }: { status: string }) {
-  if (status === "PRONTO") return <span className="text-xs bg-[#e3efe9] text-[#15803D] px-2 py-1 rounded">PRONTO</span>;
-  if (status === "GERADO_PDF") return <span className="text-xs bg-[#e3efe9] text-[#15803D] px-2 py-1 rounded">PDF GERADO</span>;
-  return <span className="text-xs bg-[#F1F5F9] text-[#102A43]/70 px-2 py-1 rounded">RASCUNHO</span>;
+  if (status === "PRONTO") return <span className="text-xs bg-[#e3efe9] text-[#168553] px-2 py-1 rounded">PRONTO</span>;
+  if (status === "GERADO_PDF") return <span className="text-xs bg-[#e3efe9] text-[#168553] px-2 py-1 rounded">PDF GERADO</span>;
+  return <span className="text-xs bg-[#F1F5F9] text-[#0B2341]/70 px-2 py-1 rounded">RASCUNHO</span>;
 }

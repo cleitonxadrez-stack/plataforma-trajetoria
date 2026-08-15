@@ -23,9 +23,9 @@ export default async function NewDossierPage() {
   return (
     <main className="mx-auto max-w-3xl px-6 py-10">
       <header className="mb-8">
-        <p className="text-xs uppercase tracking-widest text-[#102A43]/70">Dossiê</p>
+        <p className="text-xs uppercase tracking-widest text-[#0B2341]/70">Dossiê</p>
         <h1 className="serif text-3xl">Novo dossiê</h1>
-        <p className="text-sm text-[#102A43]/70 mt-2">
+        <p className="text-sm text-[#0B2341]/70 mt-2">
           Escolha uma metodologia existente ou importe um edital em PDF. A tabela de regras
           fica aberta para edição — você sempre vê o que o sistema vai usar.
         </p>
@@ -34,7 +34,7 @@ export default async function NewDossierPage() {
       <section className="card mt-6 space-y-6">
         <div font-sans text-base>
           <h2 className="serif text-xl mb-2">Metodologias disponíveis</h2>
-          <p className="text-xs text-[#102A43]/70 mb-4">
+          <p className="text-xs text-[#0B2341]/70 mb-4">
             Você pode usar uma metodologia pública ou a sua. A metodologia padrão da plataforma
             é <strong>Trajetória v1</strong> — vida inteira, sem teto de pontuação.
           </p>
@@ -65,18 +65,18 @@ export default async function NewDossierPage() {
           </ul>
         </div>
 
-        <hr className="border-[#102A43]/10" />
+        <hr className="border-[#0B2341]/10" />
 
         <div>
           <h3 className="serif text-xl mb-2">Importar edital</h3>
-          <p className="text-xs text-[#102A43]/70 mb-4">
+          <p className="text-xs text-[#0B2341]/70 mb-4">
             Suba o PDF do edital. O sistema extrai categorias, pesos, tetos e janela por
             reconhecimento de padrões. Você revisa e corrige antes de salvar.
           </p>
           <NewDossierForm />
         </div>
 
-        <hr className="border-[#102A43]/10" />
+        <hr className="border-[#0B2341]/10" />
 
         <div className="bg-[#f3e3cd] border border-[#a15a13]/40 p-4 rounded text-sm">
           <p className="font-semibold text-[#a15a13] mb-1">Aviso de simulação</p>
@@ -99,12 +99,12 @@ function MethodRadio(props: {
   meta: string;
 }) {
   return (
-    <li className="border border-[#102A43]/10 rounded p-3">
+    <li className="border border-[#0B2341]/10 rounded p-3">
       <label className="flex items-start gap-3 cursor-pointer">
         <input type="radio" name="method" value={props.id} defaultChecked={props.selected} />
         <div>
           <p className="font-medium">{props.label}</p>
-          <p className="text-xs text-[#102A43]/70 mt-0.5">{props.meta}</p>
+          <p className="text-xs text-[#0B2341]/70 mt-0.5">{props.meta}</p>
         </div>
       </label>
     </li>

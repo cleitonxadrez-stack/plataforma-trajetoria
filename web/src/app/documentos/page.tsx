@@ -67,7 +67,7 @@ export default async function CofrePage() {
   return (
     <main className="max-w-5xl mx-auto px-6 py-12">
       <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-2">Cofre</p>
-      <h1 className="serif text-4xl text-[#102A43] mb-1">Fila de confirmação</h1>
+      <h1 className="serif text-4xl text-[#0B2341] mb-1">Fila de confirmação</h1>
       <p className="text-stone-600 max-w-2xl mt-2">
         Cada documento espera uma decisão sua — confirmar, corrigir ou descartar.
         Nada entra na sua trajetória sem o seu clique (mesmo quando a IA sugere).
@@ -104,7 +104,7 @@ function SummaryTile({ label, count, emphasis, muted, done, alert }: {
   return (
     <div className="card" style={{ background: bg }}>
       <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1">{label}</p>
-      <p className="serif text-3xl text-[#102A43]">{count}</p>
+      <p className="serif text-3xl text-[#0B2341]">{count}</p>
     </div>
   );
 }
@@ -117,7 +117,7 @@ function QueueSection({ title, docs, keyPrefix, archived, muted }: {
   return (
     <section style={{ marginTop: 36 }}>
       <header style={{ display: "flex", alignItems: "baseline", gap: 12, marginBottom: 10 }}>
-        <h2 className="serif text-2xl text-[#102A43]">{title}</h2>
+        <h2 className="serif text-2xl text-[#0B2341]">{title}</h2>
         <span style={{ fontSize: 13, color: "#7a8294" }}>{docs.length}</span>
         <span style={{ flex: 1, height: 1, background: "#E2E8F0", display: "inline-block" }} />
       </header>

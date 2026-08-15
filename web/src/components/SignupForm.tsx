@@ -25,7 +25,7 @@ export function SignupForm() {
   if (done) {
     return (
       <div className="card bg-[#e3efe9] border-[#c5dcd0]">
-        <p className="serif text-lg text-[#15803D] mb-2">Verifique seu e-mail</p>
+        <p className="serif text-lg text-[#168553] mb-2">Verifique seu e-mail</p>
         <p className="text-sm text-stone-700">
           Enviamos um link de confirmação para o endereço informado.
           Clique nele para ativar sua conta.

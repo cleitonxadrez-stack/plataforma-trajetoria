@@ -63,7 +63,7 @@ export default async function DadosPage() {
     <main className="mx-auto max-w-3xl px-6 py-10">
       <Link href="/exportar" className="back-link">← Voltar para Exportar</Link>
       <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-1">Dados pessoais</p>
-      <h1 className="serif text-4xl text-[#102A43] mb-2">Seus dados para cadastros</h1>
+      <h1 className="serif text-4xl text-[#0B2341] mb-2">Seus dados para cadastros</h1>
       <p className="text-stone-600 max-w-2xl mb-6">
         Salvos uma vez, prontos para reutilizar. Cada bloco tem um botão <strong>Copiar bloco</strong> que
         copia a seção inteira de uma vez.
@@ -74,14 +74,14 @@ export default async function DadosPage() {
         : <section className="pd-block"><p className="text-stone-700">Ainda não há dados cadastrados.</p></section>}
 
       {/* Documentos anexados — com link de download ao lado de cada um */}
-      <h2 className="serif text-2xl text-[#102A43] mt-10 mb-3">Documentos anexados</h2>
+      <h2 className="serif text-2xl text-[#0B2341] mt-10 mb-3">Documentos anexados</h2>
       <div className="space-y-4">
         {DOC_GROUPS.map((g) => {
           const items = docs.filter((d) => d.category === g.key);
           if (!items.length) return null;
           return (
             <section key={g.key} className="pd-block">
-              <h3 className="serif text-lg text-[#102A43] mb-2">{g.title}</h3>
+              <h3 className="serif text-lg text-[#0B2341] mb-2">{g.title}</h3>
               {items.map((d) => (
                 <div key={d.id} className="pd-doc-row">
                   <span className="pd-doc-name">{d.label}</span>
@@ -96,7 +96,7 @@ export default async function DadosPage() {
       </div>
 
       {/* Espaços para anexar/atualizar (upload real) */}
-      <h2 className="serif text-2xl text-[#102A43] mt-10 mb-3">Anexar / atualizar</h2>
+      <h2 className="serif text-2xl text-[#0B2341] mt-10 mb-3">Anexar / atualizar</h2>
       <div className="pd-uploads">
         <PersonalUpload category="FOTO" title="Foto de perfil" icon="🪪"
           desc="Aparece no seu perfil e currículo." accept="image/*"

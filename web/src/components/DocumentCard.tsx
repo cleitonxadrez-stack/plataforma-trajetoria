@@ -38,7 +38,7 @@ export function DocumentCard(props: DocumentCardProps) {
         <div style={{ minWidth: 0 }}>
           <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1"
              style={{ fontFamily: "monospace" }}>{registryCode}</p>
-          <h3 className="serif text-[20px] text-[#102A43] leading-snug"
+          <h3 className="serif text-[20px] text-[#0B2341] leading-snug"
               style={{ wordBreak: "break-word" }}>
             {suggestedTitle ?? filename}
           </h3>

@@ -42,7 +42,7 @@ export default async function HomePage() {
       </header>
 
       {/* ───────── Hero azul acadêmico ───────── */}
-      <section className="relative overflow-hidden bg-gradient-to-b from-[#0b2035] via-[#102A43] to-[#1a4870] text-white">
+      <section className="relative overflow-hidden bg-gradient-to-b from-[#0b2035] via-[#0B2341] to-[#1a4870] text-white">
         {/* grade sutil de "organização" ao fundo */}
         <div
           aria-hidden
@@ -170,7 +170,7 @@ export default async function HomePage() {
           ].map((c) => (
             <div
               key={c.n}
-              className="card group transition-shadow hover:shadow-lg hover:shadow-[#102A43]/5"
+              className="card group transition-shadow hover:shadow-lg hover:shadow-[#0B2341]/5"
             >
               <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-[#eaf1f7] text-sm font-semibold text-info">
                 {c.n}

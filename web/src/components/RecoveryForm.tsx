@@ -23,7 +23,7 @@ export function RecoveryForm() {
   if (done) {
     return (
       <div className="card bg-[#e7edf4] border-[#c8d2e1]">
-        <p className="serif text-lg text-[#102A43] mb-2">E-mail enviado</p>
+        <p className="serif text-lg text-[#0B2341] mb-2">E-mail enviado</p>
         <p className="text-sm text-stone-700">
           Se o endereço estiver cadastrado, você receberá um link para redefinir sua senha.
         </p>

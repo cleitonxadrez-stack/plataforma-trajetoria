@@ -71,7 +71,7 @@ export default async function VerificarPage(props: { params: Promise<{ codigo: s
       <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-2">
         Verificação pública
       </p>
-      <h1 className="serif text-3xl text-[#102A43] mb-3">
+      <h1 className="serif text-3xl text-[#0B2341] mb-3">
         Documento <span className="font-mono">{view.registryCode}</span>
       </h1>
       <p className="text-sm text-stone-500 mb-6 font-mono break-all">
@@ -79,7 +79,7 @@ export default async function VerificarPage(props: { params: Promise<{ codigo: s
       </p>
 
       <section className="card mb-6">
-        <h2 className="serif text-lg text-[#102A43] mb-2">Existência e integridade</h2>
+        <h2 className="serif text-lg text-[#0B2341] mb-2">Existência e integridade</h2>
         {view.ok ? (
           <PublicView view={view} />
         ) : (
@@ -102,7 +102,7 @@ function PublicView({ view }: { view: ReturnType<typeof buildVerificationView> }
       <Term k="Registrado em" v={view.registeredAtBR ?? "—"} />
       <Term k="Fingerprint (SHA-256)" v={
         view.fingerprint ? (
-          <span className="font-mono text-[#102A43]">{view.fingerprint}…</span>
+          <span className="font-mono text-[#0B2341]">{view.fingerprint}…</span>
         ) : (
           "—"
         )
@@ -114,8 +114,8 @@ function PublicView({ view }: { view: ReturnType<typeof buildVerificationView> }
 function Term({ k, v }: { k: string; v: React.ReactNode }) {
   return (
     <>
-      <dt className="text-[#102A43]/70 uppercase tracking-widest text-xs">{k}</dt>
-      <dd className="text-[#102A43]">{v}</dd>
+      <dt className="text-[#0B2341]/70 uppercase tracking-widest text-xs">{k}</dt>
+      <dd className="text-[#0B2341]">{v}</dd>
     </>
   );
 }
@@ -123,7 +123,7 @@ function Term({ k, v }: { k: string; v: React.ReactNode }) {
 function Disclaimer() {
   return (
     <aside className="card bg-[#f3e3cd] border-[#a15a13]/40">
-      <p className="text-xs text-[#102A43]/80 leading-relaxed">
+      <p className="text-xs text-[#0B2341]/80 leading-relaxed">
         <strong className="uppercase tracking-widest text-[#a15a13]">Atestado:</strong>{" "}
         A plataforma atesta APENAS a existência do arquivo e a integridade do conteúdo
         desde a data indicada. <strong>NÃO</strong> confirma autoria, originalidade do
@@ -149,7 +149,7 @@ function NotFoundPage({ code, reason }: { code: string; reason: string }) {
       <p className="text-xs uppercase tracking-[.14em] text-stone-500 mb-2">
         Verificação pública
       </p>
-      <h1 className="serif text-3xl text-[#102A43] mb-2">Código não encontrado</h1>
+      <h1 className="serif text-3xl text-[#0B2341] mb-2">Código não encontrado</h1>
       <p className="font-mono text-sm text-stone-500 mb-6 break-all">{code || "(vazio)"}</p>
       <p className="text-sm text-[#8a2a1f] mb-4">{reason}.</p>
       <p className="text-sm text-stone-700">{NOT_FOUND_DISCLAIMER}</p>
