@@ -122,7 +122,7 @@ export function NewDossierForm() {
       </button>
 
       {error && (
-        <p className="text-sm text-[#8a2a1f] bg-[#f3dfda] border border-[#8a2a1f]/30 rounded p-2">
+        <p className="text-sm text-[#B4413C] bg-[#FBE7E7] border border-[#B4413C]/30 rounded p-2">
           {error}
         </p>
       )}
@@ -176,7 +176,7 @@ export function NewDossierForm() {
               </tbody>
             </table>
           ) : (
-            <p className="text-sm text-[#a15a13] bg-[#f3e3cd] border border-[#a15a13]/40 rounded p-3">
+            <p className="text-sm text-[#B7791F] bg-[#FCF3E1] border border-[#B7791F]/40 rounded p-3">
               Nenhuma regra extraída automaticamente. Recomenda-se revisão manual.
             </p>
           )}

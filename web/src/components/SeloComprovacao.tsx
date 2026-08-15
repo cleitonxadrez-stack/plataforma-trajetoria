@@ -15,8 +15,8 @@ export interface SeloProps {
 export function SeloComprovacao({ status, className }: SeloProps) {
   const variant: Record<EvidenceStatus, { label: string; color: string; bg: string }> = {
     SEM_COMPROVANTE:        { label: "Sem comprovante",  color: "#7a8294", bg: "#e2ecf7" },
-    COM_COMPROVANTE_PARCIAL:{ label: "Parcial",         color: "#a15a13", bg: "#f3e3cd" },
-    COMPROVADO:            { label: "Comprovado",      color: "#168553", bg: "#d9ece4" },
+    COM_COMPROVANTE_PARCIAL:{ label: "Parcial",         color: "#B7791F", bg: "#FCF3E1" },
+    COMPROVADO:            { label: "Comprovado",      color: "#168553", bg: "#E7F7EF" },
   };
   const v = variant[status];
   return (

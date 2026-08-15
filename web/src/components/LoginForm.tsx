@@ -32,7 +32,7 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
                autoComplete="current-password" minLength={8} required />
       </div>
       {error && (
-        <p className="text-sm text-[#8a2a1f] bg-[#f3dfda] border border-[#f3dfda] rounded-md px-3 py-2">
+        <p className="text-sm text-[#B4413C] bg-[#FBE7E7] border border-[#FBE7E7] rounded-md px-3 py-2">
           {error}
         </p>
       )}

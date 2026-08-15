@@ -74,7 +74,7 @@ export function UploadForm() {
       <label
         className="flex cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed border-[#E2E8F0] bg-white px-6 py-12 text-center transition-colors hover:border-info hover:bg-[#f2f7fc]"
       >
-        <span className="mb-2 grid h-12 w-12 place-items-center rounded-full bg-[#eaf1f7] text-info">
+        <span className="mb-2 grid h-12 w-12 place-items-center rounded-full bg-[#EAF2FF] text-info">
           ↑
         </span>
         <span className="serif text-lg text-primary">

@@ -51,9 +51,9 @@ export function ReviewForm(props: ReviewFormProps) {
   if (done) {
     return (
       <div className="card" data-testid={`review-done-${done.toLowerCase()}`}
-           style={{ background: done === "CONFIRMED" ? "#d9ece4" : "#f3dfda" }}>
+           style={{ background: done === "CONFIRMED" ? "#E7F7EF" : "#FBE7E7" }}>
         <p className="serif text-lg"
-           style={{ color: done === "CONFIRMED" ? "#168553" : "#8a2a1f" }}>
+           style={{ color: done === "CONFIRMED" ? "#168553" : "#B4413C" }}>
           {done === "CONFIRMED"
             ? "Documento confirmado. Ele aparece agora na sua trajetória."
             : "Documento descartado. O original foi removido (soft-delete)."}
@@ -83,7 +83,7 @@ export function ReviewForm(props: ReviewFormProps) {
 
   return (
     <form className="space-y-5" data-testid={`review-form-${props.documentId}`}>
-      <header className="card" style={{ background: "#eaf1f7" }}>
+      <header className="card" style={{ background: "#EAF2FF" }}>
         <p className="text-xs uppercase tracking-[.12em] text-stone-500 mb-1"
            style={{ fontFamily: "monospace" }}>{props.registryCode}</p>
         <div style={{ display: "flex", alignItems: "center", gap: 12, flexWrap: "wrap" }}>
@@ -91,7 +91,7 @@ export function ReviewForm(props: ReviewFormProps) {
           {props.usedAI && (
             <span style={{
               fontSize: 11, padding: "2px 8px",
-              background: "#f3e3cd", color: "#a15a13",
+              background: "#FCF3E1", color: "#B7791F",
               borderRadius: 6, letterSpacing: ".08em", textTransform: "uppercase",
             }}>
               IA sugeriu — confirme ou edite
@@ -191,7 +191,7 @@ export function ReviewForm(props: ReviewFormProps) {
       </fieldset>
 
       {error && (
-        <p className="text-sm text-[#8a2a1f] bg-[#f3dfda] border border-[#f3dfda] rounded-md px-3 py-2">
+        <p className="text-sm text-[#B4413C] bg-[#FBE7E7] border border-[#FBE7E7] rounded-md px-3 py-2">
           {error}
         </p>
       )}

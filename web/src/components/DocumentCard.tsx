@@ -53,8 +53,8 @@ export function DocumentCard(props: DocumentCardProps) {
               title={`Confiança da extração (${lowConf ? "BAIXA — revise com atenção" : "OK"})`}
               style={{
                 fontSize: 11, letterSpacing: ".06em", padding: "2px 7px",
-                background: lowConf ? "#f3dfda" : "#e2ecf7",
-                color:      lowConf ? "#8a2a1f" : "#4a5266",
+                background: lowConf ? "#FBE7E7" : "#e2ecf7",
+                color:      lowConf ? "#B4413C" : "#4a5266",
                 borderRadius: 6,
               }}
             >
@@ -66,7 +66,7 @@ export function DocumentCard(props: DocumentCardProps) {
               title="Passo 6 — IA foi acionada. Sua confirmação é obrigatória."
               style={{
                 fontSize: 10, letterSpacing: ".08em", padding: "2px 7px",
-                background: "#f3e3cd", color: "#a15a13",
+                background: "#FCF3E1", color: "#B7791F",
                 borderRadius: 6, textTransform: "uppercase",
               }}
             >

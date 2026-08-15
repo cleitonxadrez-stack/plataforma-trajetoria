@@ -99,7 +99,7 @@ export function LattesImporter({ endpoint }: LattesImporterProps) {
       )}
 
       {status.kind === "done" && (
-        <section className="bg-[#e3efe9] border border-[#168553]/40 rounded p-4 mt-4">
+        <section className="bg-[#E7F7EF] border border-[#168553]/40 rounded p-4 mt-4">
           <p className="text-sm text-[#168553]">
             ✓ Importação concluída — <strong>{status.imported}</strong> novos itens,
             <strong className="ml-1"> {status.deduped}</strong> já existentes (dedupe),
@@ -113,8 +113,8 @@ export function LattesImporter({ endpoint }: LattesImporterProps) {
       )}
 
       {status.kind === "error" && (
-        <section className="bg-[#fbeae0] border border-[#8a2a1f]/40 rounded p-4 mt-4">
-          <p className="text-sm text-[#8a2a1f]">✗ {status.message}</p>
+        <section className="bg-[#FBE7E7] border border-[#B4413C]/40 rounded p-4 mt-4">
+          <p className="text-sm text-[#B4413C]">✗ {status.message}</p>
         </section>
       )}
     </div>

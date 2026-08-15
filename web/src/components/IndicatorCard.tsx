@@ -20,9 +20,9 @@ export interface IndicatorCardProps {
 
 const TONE: Record<NonNullable<IndicatorCardProps["tone"]>, { bg: string; fg: string }> = {
   default:  { bg: "#fff",    fg: "#0B2341" },
-  positive: { bg: "#e3efe9", fg: "#168553" },
-  warning:  { bg: "#f3e3cd", fg: "#a15a13" },
-  alert:    { bg: "#f3dfda", fg: "#8a2a1f" },
+  positive: { bg: "#E7F7EF", fg: "#168553" },
+  warning:  { bg: "#FCF3E1", fg: "#B7791F" },
+  alert:    { bg: "#FBE7E7", fg: "#B4413C" },
 };
 
 export function IndicatorCard(props: IndicatorCardProps) {
@@ -49,7 +49,7 @@ export function IndicatorCard(props: IndicatorCardProps) {
         }}
       >
         {props.placeholder ? (
-          <span style={{ color: props.tone === "alert" ? "#8a2a1f" : "#7a8294" }}>
+          <span style={{ color: props.tone === "alert" ? "#B4413C" : "#7a8294" }}>
             {props.placeholder}
           </span>
         ) : (

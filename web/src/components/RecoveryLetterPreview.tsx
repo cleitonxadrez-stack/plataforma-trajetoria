@@ -68,7 +68,7 @@ export function RecoveryLetterPreview({ letter, onMarkSent }: RecoveryLetterPrev
           width: "100%",
           fontFamily: '"Source Serif 4", Georgia, serif',
           fontSize: 13,
-          background: "#eaf1f7",
+          background: "#EAF2FF",
           border: "1px solid #E2E8F0",
           borderRadius: 8,
           padding: 14,

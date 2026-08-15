@@ -6,11 +6,11 @@ import type { DocQueueState } from "@/lib/domain/document-queue";
 
 const VARIANT: Record<DocQueueState, { label: string; bg: string; fg: string }> = {
   PENDENTE:     { label: "Na fila",         bg: "#dce8f6", fg: "#4a5266" },
-  EM_REVISAO:   { label: "Em revisão",      bg: "#f3e3cd", fg: "#a15a13" },
-  CONFIRMADO:   { label: "Confirmado",      bg: "#d9ece4", fg: "#168553" },
+  EM_REVISAO:   { label: "Em revisão",      bg: "#FCF3E1", fg: "#B7791F" },
+  CONFIRMADO:   { label: "Confirmado",      bg: "#E7F7EF", fg: "#168553" },
   CORRIGIDO:    { label: "Corrigido",       bg: "#e1ecf5", fg: "#1F5EFF" },
-  REJEITADO:    { label: "Descartado",      bg: "#f3dfda", fg: "#8a2a1f" },
-  FALHOU:       { label: "Falhou",          bg: "#f3dfda", fg: "#8a2a1f" },
+  REJEITADO:    { label: "Descartado",      bg: "#FBE7E7", fg: "#B4413C" },
+  FALHOU:       { label: "Falhou",          bg: "#FBE7E7", fg: "#B4413C" },
 };
 
 export function DocumentStatusBadge({ state, className }: { state: DocQueueState; className?: string }) {
