@@ -78,8 +78,8 @@ export default async function NewDossierPage() {
 
         <hr className="border-[#0B2341]/10" />
 
-        <div className="bg-[#f3e3cd] border border-[#a15a13]/40 p-4 rounded text-sm">
-          <p className="font-semibold text-[#a15a13] mb-1">Aviso de simulação</p>
+        <div className="bg-[#FCF3E1] border border-[#B7791F]/40 p-4 rounded text-sm">
+          <p className="font-semibold text-[#B7791F] mb-1">Aviso de simulação</p>
           <p>
             O dossiê gerado pelo sistema é uma <strong>simulação</strong> com base na leitura do
             edital e nos itens que você marcou como comprovados. Confira com a comissão

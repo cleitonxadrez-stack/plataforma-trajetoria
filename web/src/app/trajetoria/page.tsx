@@ -99,7 +99,7 @@ function EmptyTrajetoria() {
 function ErrorTrajetoria({ message }: { message: string }) {
   return (
     <main className="mx-auto max-w-3xl px-6 py-16">
-      <h1 className="serif text-3xl text-[#8a2a1f] mb-3">Não foi possível carregar sua trajetória</h1>
+      <h1 className="serif text-3xl text-[#B4413C] mb-3">Não foi possível carregar sua trajetória</h1>
       <p className="text-sm text-stone-700">Erro: {message}</p>
     </main>
   );

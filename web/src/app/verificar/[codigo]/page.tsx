@@ -83,7 +83,7 @@ export default async function VerificarPage(props: { params: Promise<{ codigo: s
         {view.ok ? (
           <PublicView view={view} />
         ) : (
-          <p className="text-sm text-[#8a2a1f]">{view.error}</p>
+          <p className="text-sm text-[#B4413C]">{view.error}</p>
         )}
       </section>
 
@@ -122,9 +122,9 @@ function Term({ k, v }: { k: string; v: React.ReactNode }) {
 
 function Disclaimer() {
   return (
-    <aside className="card bg-[#f3e3cd] border-[#a15a13]/40">
+    <aside className="card bg-[#FCF3E1] border-[#B7791F]/40">
       <p className="text-xs text-[#0B2341]/80 leading-relaxed">
-        <strong className="uppercase tracking-widest text-[#a15a13]">Atestado:</strong>{" "}
+        <strong className="uppercase tracking-widest text-[#B7791F]">Atestado:</strong>{" "}
         A plataforma atesta APENAS a existência do arquivo e a integridade do conteúdo
         desde a data indicada. <strong>NÃO</strong> confirma autoria, originalidade do
         emitente, nem veracidade das informações — isso cabe à comissão avaliadora
@@ -151,7 +151,7 @@ function NotFoundPage({ code, reason }: { code: string; reason: string }) {
       </p>
       <h1 className="serif text-3xl text-[#0B2341] mb-2">Código não encontrado</h1>
       <p className="font-mono text-sm text-stone-500 mb-6 break-all">{code || "(vazio)"}</p>
-      <p className="text-sm text-[#8a2a1f] mb-4">{reason}.</p>
+      <p className="text-sm text-[#B4413C] mb-4">{reason}.</p>
       <p className="text-sm text-stone-700">{NOT_FOUND_DISCLAIMER}</p>
     </main>
   );

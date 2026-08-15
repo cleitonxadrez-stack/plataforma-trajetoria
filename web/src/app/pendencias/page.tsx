@@ -150,7 +150,7 @@ export default async function PendenciasPage() {
       </p>
 
       {decision.usingMock && (
-        <p className="mt-4 text-xs text-[#a15a13] bg-[#f3e3cd] border border-[#a15a13]/40 rounded p-2">
+        <p className="mt-4 text-xs text-[#B7791F] bg-[#FCF3E1] border border-[#B7791F]/40 rounded p-2">
           ⚠ {FALLBACK_BADGE}
         </p>
       )}
@@ -163,7 +163,7 @@ export default async function PendenciasPage() {
 
       <section style={{ marginTop: 32 }}>
         {plan.groups.length === 0 && (
-          <p className="card" style={{ background: "#d9ece4", color: "#168553" }}>
+          <p className="card" style={{ background: "#E7F7EF", color: "#168553" }}>
             <strong>Nada para solicitar.</strong> Todos os itens já têm evidência
             útil ou foram confirmados via outra via.
           </p>
@@ -190,7 +190,7 @@ export default async function PendenciasPage() {
                 <span style={{ flex: 1, height: 1, background: "#E2E8F0", display: "inline-block" }} />
                 {g.partialCoverageRatio > 0 && (
                   <span className="text-xs" style={{
-                    background: "#f3e3cd", color: "#a15a13",
+                    background: "#FCF3E1", color: "#B7791F",
                     padding: "2px 8px", borderRadius: 6,
                   }}>
                     {Math.round(g.partialCoverageRatio * 100)}% com parcial
@@ -235,7 +235,7 @@ function StatCard({ label, value, accent, muted }: {
 }) {
   return (
     <div className="card" style={{
-      background: accent ? "#f3e3cd" : muted ? "#e2ecf7" : "#fff",
+      background: accent ? "#FCF3E1" : muted ? "#e2ecf7" : "#fff",
     }}>
       <p className="text-xs uppercase tracking-[.1em] text-stone-500 mb-1">{label}</p>
       <p className="serif text-3xl text-[#0B2341]">{value}</p>

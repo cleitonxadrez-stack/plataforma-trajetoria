@@ -115,7 +115,7 @@ export default async function DossierDetail(props: { params: Promise<{ id: strin
         </div>
         <div className="text-sm space-y-1">
           <p>{result.items.length} itens contados</p>
-          <p className="text-[#8a2a1f]">{result.excluded.length} itens excluídos</p>
+          <p className="text-[#B4413C]">{result.excluded.length} itens excluídos</p>
           <p className="text-[#0B2341]/70">
             Janela: {method.windowYears === null ? "vida inteira" : `${method.windowYears} anos`} ·
             Tetos: {method.applyCaps ? "aplicados" : "não"}
@@ -164,7 +164,7 @@ export default async function DossierDetail(props: { params: Promise<{ id: strin
         <pre className="text-xs font-mono whitespace-pre-wrap bg-[#F1F5F9] p-3 rounded mt-2">{audit}</pre>
       </details>
 
-      <p className="mt-10 text-xs text-[#a15a13] bg-[#f3e3cd] border border-[#a15a13]/40 rounded p-3">
+      <p className="mt-10 text-xs text-[#B7791F] bg-[#FCF3E1] border border-[#B7791F]/40 rounded p-3">
         Simulação baseada na leitura do edital e nos itens marcados como comprovados.
         Confira com a comissão responsável antes de submeter.
       </p>

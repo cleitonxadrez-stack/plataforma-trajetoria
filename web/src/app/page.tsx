@@ -172,7 +172,7 @@ export default async function HomePage() {
               key={c.n}
               className="card group transition-shadow hover:shadow-lg hover:shadow-[#0B2341]/5"
             >
-              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-[#eaf1f7] text-sm font-semibold text-info">
+              <div className="mb-4 flex h-10 w-10 items-center justify-center rounded-lg bg-[#EAF2FF] text-sm font-semibold text-info">
                 {c.n}
               </div>
               <h3 className="serif text-xl font-semibold text-primary">{c.t}</h3>
@@ -265,7 +265,7 @@ export default async function HomePage() {
           </h2>
           <p className="mx-auto mt-4 max-w-xl text-[15px] leading-relaxed text-muted">
             Todo documento recebe um código único{" "}
-            <code className="rounded bg-[#eaf1f7] px-1.5 py-0.5 font-mono text-sm text-primary">
+            <code className="rounded bg-[#EAF2FF] px-1.5 py-0.5 font-mono text-sm text-primary">
               PLT-AAAA-XXXX-XXXX
             </code>
             . Qualquer pessoa consulta a autenticidade em{" "}

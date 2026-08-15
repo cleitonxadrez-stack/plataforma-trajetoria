@@ -93,7 +93,7 @@ export default async function ImportarPage() {
                 <span className="text-[#0B2341] truncate">{it.title}</span>
                 <span className="text-stone-500 text-xs whitespace-nowrap ml-3">
                   {it.item_type} · {it.year}
-                  {it.flagged_innovation && <span className="ml-2 text-[#a15a13]">inovação</span>}
+                  {it.flagged_innovation && <span className="ml-2 text-[#B7791F]">inovação</span>}
                 </span>
               </li>
             ))}
@@ -112,7 +112,7 @@ export default async function ImportarPage() {
           {" · "}
           <span className="font-mono">{(lastJob as { status: string }).status}</span>
           {((lastJob as { error_message?: string | null }).error_message ?? null) && (
-            <span className="text-[#8a2a1f]"> — {(lastJob as { error_message: string }).error_message}</span>
+            <span className="text-[#B4413C]"> — {(lastJob as { error_message: string }).error_message}</span>
           )}
         </p>
       )}

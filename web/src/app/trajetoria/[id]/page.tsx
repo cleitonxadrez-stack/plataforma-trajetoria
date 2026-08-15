@@ -75,7 +75,7 @@ export default async function ItemDetailPage(
           <span className="text-xs text-[#1F5EFF] bg-[#e1ecf5] rounded px-2 py-1">Lattes</span>
         )}
         {r_row.flagged_innovation && (
-          <span className="text-xs text-[#168553] bg-[#e3efe9] rounded px-2 py-1">Inovação</span>
+          <span className="text-xs text-[#168553] bg-[#E7F7EF] rounded px-2 py-1">Inovação</span>
         )}
       </div>
 

@@ -65,7 +65,7 @@ export default async function DocumentoDetalhe({ params }: Props) {
           {view.riskFlags.usedAI && (
             <span style={{
               fontSize: 11, padding: "2px 8px",
-              background: "#f3e3cd", color: "#a15a13",
+              background: "#FCF3E1", color: "#B7791F",
               borderRadius: 6, letterSpacing: ".08em", textTransform: "uppercase",
             }}>
               IA foi usada no passo 6

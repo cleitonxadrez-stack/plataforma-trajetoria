@@ -92,7 +92,7 @@ export default async function RevisarPage({ searchParams }: Props) {
         confidence={0.83}
       />
 
-      <footer className="card mt-8" style={{ background: "#eaf1f7" }}>
+      <footer className="card mt-8" style={{ background: "#EAF2FF" }}>
         <p className="text-xs text-stone-500">
           Histórico desta VIEW (in-process, ainda não persistido): última ação
           registrada = <strong>{view.lastHumanAction ?? "nenhuma"}</strong>.
