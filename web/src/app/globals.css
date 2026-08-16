@@ -488,6 +488,25 @@ a.cv2-chip:hover { background: #E2E8F0; }
   .cofre-sort { margin-left: 0; }
 }
 
+/* ─── Seleção de documentos para PDF ─── */
+.dps-bar { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; background: #fff; border: 1px solid #E2E8F0; border-radius: 14px; padding: 12px 14px; box-shadow: 0 1px 2px rgba(16,42,67,.04); position: sticky; top: 68px; z-index: 5; }
+.dps-search { flex: 1 1 200px; }
+.dps-count { font-size: 13px; color: #64748B; }
+.dps-gen { margin-left: auto; }
+.dps-gen:disabled { opacity: .5; cursor: not-allowed; }
+.dps-selall { margin: 14px 0 6px; }
+.dps-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
+.dps-row { display: flex; align-items: center; gap: 13px; background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px 16px; cursor: pointer; transition: border-color .12s, background .12s; }
+.dps-row:hover { border-color: #C7D7F5; }
+.dps-row.on { border-color: #1F5EFF; background: #F5F8FF; }
+.dps-row input[type="checkbox"] { width: 17px; height: 17px; accent-color: #1F5EFF; flex: 0 0 auto; cursor: pointer; }
+.dps-row-head { border-style: dashed; font-size: 13.5px; font-weight: 600; color: #10233F; padding: 10px 16px; }
+.dps-file { display: inline-flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 10px; background: #FBECEC; flex: 0 0 auto; }
+.dps-info { display: flex; flex-direction: column; min-width: 0; }
+.dps-code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13.5px; font-weight: 700; color: #0B2341; }
+.dps-name { font-size: 12.5px; color: #64748B; word-break: break-all; }
+@media (max-width: 640px) { .dps-gen { margin-left: 0; width: 100%; justify-content: center; } }
+
 /* ─── Dossiês ─── */
 .dos-empty { text-align: center; background: #fff; border: 1px solid #E2E8F0; border-radius: 20px; padding: 44px 28px; margin-top: 28px; box-shadow: 0 1px 2px rgba(16,42,67,.04); }
 .dos-empty-art { width: 200px; height: 150px; margin: 0 auto 8px; display: block; }

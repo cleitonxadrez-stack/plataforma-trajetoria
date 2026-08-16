@@ -69,10 +69,10 @@ export default async function ExportarPage() {
 
         <article className="exp-card">
           <div className="exp-card-top"><span className="exp-card-icon"><I d={ICONS.clip} /></span></div>
-          <h3 className="serif">PDF com todos os documentos</h3>
-          <p>Reúne os {docs ?? 0} comprovantes anexados em um único arquivo, com capa e índice.</p>
-          <div className="exp-card-foot"><span className="exp-card-note">PDF único</span>
-            <a href="/api/curriculo/documentos" target="_blank" rel="noopener noreferrer" className="exp-btn exp-btn-outline">Criar PDF</a></div>
+          <h3 className="serif">PDF de documentos</h3>
+          <p>Escolha entre os {docs ?? 0} comprovantes e gere um único PDF (capa + índice) só com os selecionados.</p>
+          <div className="exp-card-foot"><span className="exp-card-note">Seleção · PDF único</span>
+            <Link href="/exportar/documentos" className="exp-btn exp-btn-outline">Selecionar e gerar</Link></div>
         </article>
 
         <article className="exp-card">

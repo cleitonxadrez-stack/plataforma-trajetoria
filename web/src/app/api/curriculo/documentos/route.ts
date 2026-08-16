@@ -20,10 +20,14 @@ function safe(s: string): string {
   return s.replace(/[‘’]/g, "'").replace(/[“”]/g, '"').replace(/[–—]/g, "-").replace(/[^\x00-\xFF]/g, "");
 }
 
-export async function GET() {
+export async function GET(req: Request) {
   const sb = await createClient();
   const { data: u } = await sb.auth.getUser();
   if (!u.user) return new Response("Não autenticado.", { status: 401 });
+
+  // Seleção opcional: ?ids=a,b,c → gera só esses. Sem o parâmetro, gera todos.
+  const idsParam = new URL(req.url).searchParams.get("ids");
+  const idSet = idsParam ? new Set(idsParam.split(",").map((s) => s.trim()).filter(Boolean)) : null;
 
   const [{ data: pd }, { data: rows }] = await Promise.all([
     sb.from("personal_data").select("full_name").eq("user_id", u.user.id).maybeSingle<{ full_name: string }>(),
@@ -31,9 +35,12 @@ export async function GET() {
       .eq("user_id", u.user.id).is("deleted_at", null).order("registered_at", { ascending: true }),
   ]);
   const name = pd?.full_name ?? (u.user.email ?? "").split("@")[0];
-  const docs = (rows ?? []).filter((d: { storage_key_original: string }) => !!d.storage_key_original) as Array<{
+  const docs = (rows ?? []).filter((d: { id: string; storage_key_original: string }) =>
+    !!d.storage_key_original && (!idSet || idSet.has(d.id))) as Array<{
     id: string; original_filename: string; storage_key_original: string; mime_type: string;
   }>;
+
+  if (docs.length === 0) return new Response("Nenhum documento selecionado.", { status: 400 });
 
   const out = await PDFDocument.create();
   const font = await out.embedFont(StandardFonts.Helvetica);
