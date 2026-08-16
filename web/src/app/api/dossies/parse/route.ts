@@ -7,12 +7,20 @@
 
 import { NextResponse } from "next/server";
 import { parseEdital } from "@/lib/domain/methodology";
+import { createClient } from "@/lib/supabase/server";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export async function POST(req: Request) {
   try {
+    // Segurança: só usuários autenticados podem processar PDFs (evita abuso/DoS).
+    const sb = await createClient();
+    const { data: auth } = await sb.auth.getUser();
+    if (!auth.user) {
+      return NextResponse.json({ error: "não autenticado" }, { status: 401 });
+    }
+
     const ct = req.headers.get("content-type") ?? "";
     if (!ct.startsWith("multipart/form-data")) {
       return NextResponse.json({ error: "esperado multipart/form-data" }, { status: 415 });

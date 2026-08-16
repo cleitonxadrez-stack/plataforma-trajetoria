@@ -65,7 +65,11 @@ export async function SiteFooter() {
 
       <div className="site-footer-bottom">
         <span>© 2026 Trajetória360</span>
-        <span>Sua trajetória acadêmica, documentada e verificável.</span>
+        <span className="site-footer-legal">
+          <Link href="/privacidade">Privacidade</Link>
+          <span aria-hidden>·</span>
+          <span>Sua trajetória acadêmica, documentada e verificável.</span>
+        </span>
       </div>
     </footer>
   );
