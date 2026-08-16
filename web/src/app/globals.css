@@ -494,7 +494,12 @@ a.cv2-chip:hover { background: #E2E8F0; }
 .dps-count { font-size: 13px; color: #64748B; }
 .dps-gen { margin-left: auto; }
 .dps-gen:disabled { opacity: .5; cursor: not-allowed; }
-.dps-selall { margin: 14px 0 6px; }
+.dps-group { margin-top: 24px; }
+.dps-group-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.dps-group-check { display: flex; align-items: center; gap: 10px; cursor: pointer; }
+.dps-group-check input[type="checkbox"] { width: 17px; height: 17px; accent-color: #1F5EFF; cursor: pointer; }
+.dps-group-label { font-size: 17px; color: #0B2341; }
+.dps-group-n { font-size: 12px; font-weight: 600; color: #64748B; background: #EEF2F8; border-radius: 99px; padding: 2px 10px; white-space: nowrap; }
 .dps-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 8px; }
 .dps-row { display: flex; align-items: center; gap: 13px; background: #fff; border: 1px solid #E2E8F0; border-radius: 12px; padding: 12px 16px; cursor: pointer; transition: border-color .12s, background .12s; }
 .dps-row:hover { border-color: #C7D7F5; }
