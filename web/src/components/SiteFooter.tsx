@@ -5,6 +5,7 @@
 
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
+import { isAdminEmail } from "@/lib/admin/access";
 
 const PLATFORM = [
   { href: "/painel", label: "Painel" },
@@ -20,10 +21,12 @@ const GERAR = [
 
 export async function SiteFooter() {
   let authed = false;
+  let admin = false;
   try {
     const sb = await createClient();
     const { data } = await sb.auth.getUser();
     authed = !!data.user;
+    admin = isAdminEmail(data.user?.email);
   } catch { authed = false; }
 
   return (
@@ -46,6 +49,7 @@ export async function SiteFooter() {
             <nav className="site-footer-col" aria-label="Gerar e conta">
               <p className="site-footer-col-title">Gerar & conta</p>
               {GERAR.map((l) => <Link key={l.href} href={l.href}>{l.label}</Link>)}
+              {admin && <Link href="/admin">Admin</Link>}
               <Link href="/auth/signout" className="site-footer-signout">Sair da conta</Link>
             </nav>
           </div>
